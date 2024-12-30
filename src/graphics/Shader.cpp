@@ -1,6 +1,6 @@
 #include "Shader.hpp"
 
-Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
+Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
 	programID = glCreateProgram();
 
@@ -13,21 +13,25 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 	vertFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	fragFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
-	// Open and read shader programs
-	vertFile.open(vertexPath);
-	fragFile.open(fragmentPath);
 	try 
 	{
+		// Open and read shader programs
+		vertFile.open(vertexPath);
+		fragFile.open(fragmentPath);
+
 		std::stringstream vertStream, fragStream;
 		vertStream << vertFile.rdbuf();
 		fragStream << fragFile.rdbuf();
 
 		vertexSource = vertStream.str();
 		fragmentSource = fragStream.str();
+
+		vertFile.close();
+		fragFile.close();
 	}
 	catch (const std::ifstream::failure& e) 
 	{
-		std::err << "Failed to read shader file: " << e.what() << std::endl;
+		std::cerr << "Failed to read shader file: " << e.what() << std::endl;
 		if (vertFile.is_open())
 			vertFile.close();
 		if (fragFile.is_open())
@@ -66,7 +70,7 @@ Shader::~Shader()
 	}
 }
 
-Shader::useProgram()
+void Shader::useProgram()
 {
 	glUseProgram(programID);
 }

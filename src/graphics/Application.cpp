@@ -1,5 +1,6 @@
 #include "Application.hpp"
 #include "Shader.hpp"
+#include <filesystem>
 
 Application::Application(int width, int height)
 {
@@ -101,8 +102,9 @@ void Application::run()
 	glAttachShader(shaderProgram, fShader);
 	glLinkProgram(shaderProgram);*/
 
-	Shader shaderProgram("shader.vert", "shader.frag");
+	std::cout << std::filesystem::current_path() << std::endl;
 
+	Shader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 
 	while (!glfwWindowShouldClose(window))
 	{

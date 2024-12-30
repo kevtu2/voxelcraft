@@ -2,6 +2,7 @@
 
 #include <glad\glad.h>
 
+#include <sstream>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -13,7 +14,7 @@ private:
 	unsigned int programID;
 
 public:
-	Shader(const std::string& vertexPath, const std::string& fragmentPath);
+	Shader(const char* vertexPath, const char* fragmentPath);
 	~Shader();
 
 	void useProgram();
