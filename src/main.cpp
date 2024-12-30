@@ -1,4 +1,4 @@
-#include "ui/Application.h"
+#include "graphics/Application.hpp"
 
 #define WINDOW_WIDTH 600
 #define WINDOW_HEIGHT 800

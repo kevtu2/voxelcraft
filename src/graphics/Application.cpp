@@ -1,4 +1,5 @@
-#include "Application.h"
+#include "Application.hpp"
+#include "Shader.hpp"
 
 Application::Application(int width, int height)
 {
@@ -57,7 +58,7 @@ void Application::run()
 		 0.5f, -0.5f, 0.0f,
 	};
 
-	const char* vertexSource =
+	/*const char* vertexSource =
 		"#version 330 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
 		"void main()\n"
@@ -71,7 +72,7 @@ void Application::run()
 		"void main()\n"
 		"{\n"
 		" FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);\n"
-		"}\n\0";
+		"}\n\0";*/
 
 	unsigned int VBO, VAO;
 
@@ -86,7 +87,7 @@ void Application::run()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	unsigned int shaderProgram, vShader, fShader;
+	/*unsigned int shaderProgram, vShader, fShader;
 	shaderProgram = glCreateProgram();
 	vShader = glCreateShader(GL_VERTEX_SHADER);
 	fShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -98,34 +99,9 @@ void Application::run()
 
 	glAttachShader(shaderProgram, vShader);
 	glAttachShader(shaderProgram, fShader);
-	glLinkProgram(shaderProgram);
+	glLinkProgram(shaderProgram);*/
 
-	int success;
-	char infoLog[512];
-
-	// Vertex Shader
-	glGetShaderiv(vShader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(vShader, 512, NULL, infoLog);
-		std::cerr << "ERROR: Vertex Shader Compilation Failed\n" << infoLog << std::endl;
-	}
-
-	// Fragment Shader
-	glGetShaderiv(fShader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(fShader, 512, NULL, infoLog);
-		std::cerr << "ERROR: Fragment Shader Compilation Failed\n" << infoLog << std::endl;
-	}
-
-	// Shader Program Linking
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cerr << "ERROR: Shader Program Linking Failed\n" << infoLog << std::endl;
-	}
-
-	glDeleteShader(vShader);
-	glDeleteShader(fShader);
+	Shader shaderProgram("shader.vert", "shader.frag");
 
 
 	while (!glfwWindowShouldClose(window))
@@ -139,7 +115,7 @@ void Application::run()
 		processInput();
 
 		// Render
-		glUseProgram(shaderProgram);
+		shaderProgram.useProgram();
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
