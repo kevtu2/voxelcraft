@@ -1,0 +1,111 @@
+# *** VISUAL STUDIO SPECIFIC FILES ***
+
+# User-specific files
+*.rsuser
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Visual Studio 2019 and later
+.vs/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Uncomment if using Visual Studio precompiled headers
+*.pch
+
+# Auto-generated files
+*.idb
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+
+# Database files
+*.mdb
+*.ldb
+*.sdf
+*.sqlite
+*.sqlite3
+
+# Workspaces
+*.code-workspace
+
+# Backup and temporary files
+*.bak
+*.swp
+*.tmp
+*.temp
+~$*
+*.old
+*.orig
+
+# Compiled DLLs and executables
+*.dll
+*.exe
+*.app
+*.lib
+*.so
+*.dylib
+
+# Package and cache files
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Temporary files for packaging
+*.package
+*.Publish.xml
+
+# Visual Studio Code specific
+.vscode/
+
+
+# *** Other C++ build files ***
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
