@@ -7,6 +7,7 @@ class Application
 {
 private:
 	GLFWwindow* window;
+	void processInput();
 
 public:
 	Application(int width, int height);
