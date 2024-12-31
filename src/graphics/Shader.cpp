@@ -74,3 +74,14 @@ void Shader::useProgram()
 {
 	glUseProgram(programID);
 }
+
+void Shader::setUniformMatrix4f(const char* name, const glm::mat4 value)
+{
+	int location = glGetUniformLocation(programID, name);
+	if (location == -1)
+	{
+		std::cerr << "Uniform with name '" << name << "'" << " not found." << std::endl;
+		exit(-1);
+	}
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+}

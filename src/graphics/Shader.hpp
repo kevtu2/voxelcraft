@@ -1,6 +1,8 @@
 #pragma once
 
 #include <glad\glad.h>
+#include <glm\glm.hpp>
+#include <glm\gtc\type_ptr.hpp>
 
 #include <sstream>
 #include <fstream>
@@ -19,4 +21,7 @@ public:
 
 	void useProgram();
 
+	unsigned int getID() const { return programID; }
+	
+	void setUniformMatrix4f(const char* name, const glm::mat4 value);
 };
