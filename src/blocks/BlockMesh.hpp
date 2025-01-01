@@ -1,6 +1,6 @@
 #pragma once
 
-static const float BLOCK_VERTEX_DATA[] =
+constexpr float BLOCK_VERTEX_DATA[] =
 {
 	0, 0, 1,
 	1, 0, 1,
@@ -14,7 +14,7 @@ static const float BLOCK_VERTEX_DATA[] =
 };
 
 
-static const unsigned int BLOCK_VERTEX_INDICES[] =
+constexpr unsigned int BLOCK_VERTEX_INDICES[] =
 {
 	0, 1, 2, 2, 3, 1, // Bottom
 	1, 0, 4, 4, 6, 1, // Front
