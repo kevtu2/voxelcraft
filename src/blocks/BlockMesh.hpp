@@ -23,3 +23,5 @@ constexpr unsigned int BLOCK_VERTEX_INDICES[] =
 	5, 2, 3, 3, 7, 5, // Back
 	5, 4, 2, 2, 0, 4  // Left
 };
+
+

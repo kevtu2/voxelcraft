@@ -6,6 +6,6 @@
 int main()
 {
 	Application app(WINDOW_WIDTH, WINDOW_HEIGHT);
-	app.run();
+	app.Run();
 	return 0;
 }

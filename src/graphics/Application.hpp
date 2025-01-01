@@ -7,10 +7,10 @@ class Application
 {
 private:
 	GLFWwindow* window;
-	void processInput();
+	void ProcessInput();
 
 public:
 	Application(int width, int height);
 	~Application();
-	void run();
+	void Run();
 };

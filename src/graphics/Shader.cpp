@@ -70,12 +70,12 @@ Shader::~Shader()
 	}
 }
 
-void Shader::useProgram()
+void Shader::UseProgram() const
 {
 	glUseProgram(programID);
 }
 
-void Shader::setUniformMatrix4f(const char* name, const glm::mat4 value)
+void Shader::SetUniformMatrix4f(const char* name, const glm::mat4 value)
 {
 	int location = glGetUniformLocation(programID, name);
 	if (location == -1)

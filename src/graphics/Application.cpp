@@ -3,6 +3,8 @@
 #include "blocks\BlockMesh.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
+#include "VertexArray.hpp"
+#include "Renderer.hpp"
 
 
 #include <filesystem>
@@ -63,57 +65,49 @@ Application::~Application()
 	glfwTerminate();
 }
 
-void Application::processInput()
+void Application::ProcessInput()
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
 
-void Application::run()
+void Application::Run()
 {
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
+	VertexArray va_Block;
 
 	VertexBuffer vb_Block(BLOCK_VERTEX_DATA, sizeof(BLOCK_VERTEX_DATA));
-	IndexBuffer ib_Block(BLOCK_VERTEX_INDICES, sizeof(BLOCK_VERTEX_DATA));
-	
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	IndexBuffer ib_Block(BLOCK_VERTEX_INDICES, sizeof(BLOCK_VERTEX_INDICES));
+
+	va_Block.BindVertexBuffer(vb_Block, 0);
 
 	Shader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 
-	shaderProgram.useProgram();
+	shaderProgram.UseProgram();
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	shaderProgram.setUniformMatrix4f("model", model);
+	shaderProgram.SetUniformMatrix4f("model", model);
 
 	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, -1.0f, -5.0f));
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
 	view = glm::rotate(view, glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	shaderProgram.setUniformMatrix4f("view", view);
+	shaderProgram.SetUniformMatrix4f("view", view);
 
 	glm::mat4 projection = glm::mat4(1.0f);
 	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-	shaderProgram.setUniformMatrix4f("projection", projection);
+	shaderProgram.SetUniformMatrix4f("projection", projection);
 
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		processInput();
+		ProcessInput();
 
 		// Render
-		shaderProgram.useProgram();
-		glBindVertexArray(VAO);
-		ib_Block.Bind();
-		glDrawElements(GL_TRIANGLES, sizeof(BLOCK_VERTEX_INDICES), GL_UNSIGNED_INT, 0);
-
+		Renderer::Draw(va_Block, ib_Block, shaderProgram);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
 	}
 }

@@ -19,9 +19,9 @@ public:
 	Shader(const char* vertexPath, const char* fragmentPath);
 	~Shader();
 
-	void useProgram();
+	void UseProgram() const;
 
-	unsigned int getID() const { return programID; }
+	unsigned int GetID() const { return programID; }
 	
-	void setUniformMatrix4f(const char* name, const glm::mat4 value);
+	void SetUniformMatrix4f(const char* name, const glm::mat4 value);
 };
