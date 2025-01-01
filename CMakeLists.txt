@@ -26,9 +26,3 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
-
-file(GLOB_RECURSE HEADER_FILES "${CMAKE_SOURCE_DIR}/src/*.h")
-file(GLOB_RECURSE SOURCE_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
-
-source_group("Include Files" FILES ${HEADER_FILES})
-source_group("Source Files" FILES ${SOURCE_FILES})
