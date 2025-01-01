@@ -1,6 +1,10 @@
 #include "Application.hpp"
 #include "Shader.hpp"
 #include "blocks\BlockMesh.hpp"
+#include "VertexBuffer.hpp"
+#include "IndexBuffer.hpp"
+
+
 #include <filesystem>
 
 static void GLClearError()
@@ -68,17 +72,12 @@ void Application::processInput()
 
 void Application::run()
 {
-	unsigned int VBO, VAO, EBO;
+	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(BLOCK_VERTEX_DATA), BLOCK_VERTEX_DATA, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(BLOCK_VERTEX_INDICES), BLOCK_VERTEX_INDICES, GL_STATIC_DRAW);
+	VertexBuffer vb_Block(BLOCK_VERTEX_DATA, sizeof(BLOCK_VERTEX_DATA));
+	IndexBuffer ib_Block(BLOCK_VERTEX_INDICES, sizeof(BLOCK_VERTEX_DATA));
 	
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -110,6 +109,7 @@ void Application::run()
 		// Render
 		shaderProgram.useProgram();
 		glBindVertexArray(VAO);
+		ib_Block.Bind();
 		glDrawElements(GL_TRIANGLES, sizeof(BLOCK_VERTEX_INDICES), GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
