@@ -99,12 +99,6 @@ void Application::ProcessInput()
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.HandleInputControls(RIGHT, deltaTime);
-
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-		camera.HandleInputControls(UP, deltaTime);
-
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-		camera.HandleInputControls(DOWN, deltaTime);
 }
 
 

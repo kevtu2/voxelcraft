@@ -3,8 +3,8 @@
 Camera::Camera()
 	: position(glm::vec3(0.0f, 0.0f, 0.0f)),
 	lookDirection(glm::vec3(0.0f, 0.0f, -1.0f)),
-	cameraSpeed(2.5f),
-	cameraSensitivity(3.0f),
+	cameraSpeed(3.5f),
+	cameraSensitivity(5.0f),
 	yaw(-90.0f),
 	pitch(0.0f)
 {
@@ -41,14 +41,6 @@ void Camera::HandleInputControls(CameraMovement move, float deltaTime)
 	case RIGHT:
 		position += cameraRight * cameraSpeed * deltaTime;
 		break;
-	
-	case UP:
-		position += -cameraUp * cameraSpeed * deltaTime;
-		break;
-		
-	case DOWN:
-		position += cameraUp * cameraSpeed * deltaTime;
-		break;
 	}
 }
 
@@ -72,4 +64,9 @@ void Camera::UpdateCameraLookAt(float deltaTime, double xPos, double yPos)
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 
 	lookDirection = glm::normalize(direction);
+
+	// Update right and up vectors
+	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	cameraRight = glm::normalize(glm::cross(lookDirection, up));
+	cameraUp = glm::normalize(glm::cross(cameraRight, lookDirection));
 }
