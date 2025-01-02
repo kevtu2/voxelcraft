@@ -1,5 +1,16 @@
 #pragma once
 
+enum BlockType
+{
+	BT_Air, // Default type
+	BT_Grass,
+	BT_Dirt,
+	BT_Water,
+	BT_Stone,
+	BT_Sand,
+	BT_Wood
+};
+
 constexpr float BLOCK_VERTEX_DATA[] =
 {
 	0, 0, 1,
@@ -25,3 +36,15 @@ constexpr unsigned int BLOCK_VERTEX_INDICES[] =
 };
 
 
+class Block
+{
+private:
+	bool active;
+	BlockType type;
+
+public:
+	Block();
+	~Block();
+	void allowRendering(bool shouldRender);
+	bool shouldRender const { return active; }
+};

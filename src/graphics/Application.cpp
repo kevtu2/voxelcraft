@@ -116,10 +116,10 @@ void Application::Run()
 
 	shaderProgram.UseProgram();
 
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(-2.0f, -1.0f, -5.0f));
-	shaderProgram.SetUniformMatrix4f("model", model);
+	//glm::mat4 model = glm::mat4(1.0f);
+	//model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	//model = glm::translate(model, glm::vec3(-2.0f, -1.0f, -5.0f));
+	//shaderProgram.SetUniformMatrix4f("model", model);
 
 	shaderProgram.SetUniformMatrix4f("projection", camera.GetProjectionMatrix());
 
@@ -138,7 +138,19 @@ void Application::Run()
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
 
 		// Render
-		Renderer::Draw(va_Block, ib_Block, shaderProgram);
+		for (unsigned int x = 0; x < 4; ++x) 
+		{
+			for (unsigned int y = 0; y < 4; ++y)
+			{
+				for (unsigned int z = 0; z < 4; ++z)
+				{
+					glm::mat4 model = glm::mat4(1.0f);
+					model = glm::translate(model, glm::vec3(x, y, z));
+					shaderProgram.SetUniformMatrix4f("model", model);
+					Renderer::Draw(va_Block, ib_Block, shaderProgram);
+				}
+			}
+		}
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
