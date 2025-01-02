@@ -16,10 +16,25 @@ class Application
 {
 private:
 	GLFWwindow* window;
-	void ProcessInput();
+	Camera camera;
+
+	// Application runtime properties
+	float deltaTime;
+	float lastTime;
+
+	// Cursor positions
+	float lastX;
+	float lastY;
+	bool firstMouseInput;
+
+	void ProcessInput(); // Make camera an attribute?
+
+	void CalculateNewMousePosition();
+
 
 public:
 	Application(int width, int height);
 	~Application();
 	void Run();
+
 };

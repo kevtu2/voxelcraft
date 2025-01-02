@@ -15,6 +15,11 @@ static void GLCheckError()
 }
 
 Application::Application(int width, int height)
+	: deltaTime(0.0f),
+	lastTime(0.0f),
+	firstMouseInput(true),
+	lastX(400.0f),
+	lastY(300.0f)
 {
 	// Initialize GLFW
 	glfwInit();
@@ -39,13 +44,34 @@ Application::Application(int width, int height)
 		exit(-1);
 	}
 
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 	glViewport(0, 0, width, height);
+	glEnable(GL_DEPTH_TEST);
+
 	// Allow dynamic resizing of viewport
 	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	});
+}
 
-	glEnable(GL_DEPTH_TEST);
+void Application::CalculateNewMousePosition()
+{
+	double xPos;
+	double yPos;
+	glfwGetCursorPos(window, &xPos, &yPos);
+	if (firstMouseInput)
+	{
+		lastX = xPos;
+		lastY = yPos;
+		firstMouseInput = false;
+	}
+	float xOffset = xPos - lastX;
+	float yOffset = lastY - yPos;
+	lastX = xPos;
+	lastY = yPos;
+
+	camera.UpdateCameraLookAt(deltaTime, xOffset, yOffset);
 }
 
 Application::~Application()
@@ -61,7 +87,26 @@ void Application::ProcessInput()
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.HandleInputControls(FORWARD, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.HandleInputControls(LEFT, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.HandleInputControls(BACKWARD, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.HandleInputControls(RIGHT, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		camera.HandleInputControls(UP, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		camera.HandleInputControls(DOWN, deltaTime);
 }
+
 
 
 void Application::Run()
@@ -82,19 +127,21 @@ void Application::Run()
 	model = glm::translate(model, glm::vec3(-2.0f, -1.0f, -5.0f));
 	shaderProgram.SetUniformMatrix4f("model", model);
 
-	Camera camera;
-	shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
+	shaderProgram.SetUniformMatrix4f("projection", camera.GetProjectionMatrix());
 
-	glm::mat4 projection = glm::mat4(1.0f);
-	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-	shaderProgram.SetUniformMatrix4f("projection", projection);
 
 	while (!glfwWindowShouldClose(window))
 	{
+		float currentTime = glfwGetTime();
+		deltaTime = currentTime - lastTime;
+		lastTime = currentTime;
+
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		ProcessInput();
+		//CalculateNewMousePosition();
+		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
 
 		// Render
 		Renderer::Draw(va_Block, ib_Block, shaderProgram);

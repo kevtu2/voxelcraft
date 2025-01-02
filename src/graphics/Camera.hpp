@@ -4,7 +4,7 @@
 
 enum CameraMovement
 {
-	FORWARD, BACKWARD, RIGHT, LEFT, UP, DOWN;
+	FORWARD, BACKWARD, RIGHT, LEFT, UP, DOWN
 };
 
 class Camera
@@ -12,12 +12,21 @@ class Camera
 private:
 	glm::vec3 position;
 	glm::vec3 lookDirection;
-	const glm::vec3 up; // World up vector
+	glm::vec3 cameraRight;
+	glm::vec3 cameraUp;
 	const float cameraSpeed;
+	const float cameraSensitivity;
+
+	float yaw;
+	float pitch;
+
+	glm::mat4 projection;
 
 public:
 	Camera();
 	glm::mat4 GetViewMatrix() const;
+	glm::mat4 GetProjectionMatrix() const { return projection; }
 
-	void HandleInputControls();
+	void HandleInputControls(CameraMovement move, float deltaTime);
+	void UpdateCameraLookAt(float deltaTime, double xPos, double yPos);
 };
