@@ -1,5 +1,7 @@
 #include "Application.hpp"
 #include <filesystem>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 static void GLClearError()
 {
@@ -101,8 +103,6 @@ void Application::ProcessInput()
 		camera.HandleInputControls(RIGHT, deltaTime);
 }
 
-
-
 void Application::Run()
 {
 	VertexArray va_Block;
@@ -110,19 +110,39 @@ void Application::Run()
 	VertexBuffer vb_Block(BLOCK_VERTEX_DATA, sizeof(BLOCK_VERTEX_DATA));
 	IndexBuffer ib_Block(BLOCK_VERTEX_INDICES, sizeof(BLOCK_VERTEX_INDICES));
 
-	va_Block.BindVertexBuffer(vb_Block, 0);
+	va_Block.BindVertexBuffer(vb_Block);
 
 	Shader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 
 	shaderProgram.UseProgram();
 
-	//glm::mat4 model = glm::mat4(1.0f);
-	//model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	//model = glm::translate(model, glm::vec3(-2.0f, -1.0f, -5.0f));
-	//shaderProgram.SetUniformMatrix4f("model", model);
-
 	shaderProgram.SetUniformMatrix4f("projection", camera.GetProjectionMatrix());
 
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	shaderProgram.SetUniformMatrix4f("model", model);
+
+	unsigned int texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	int width, height, nrChannels;
+	unsigned char* data = stbi_load("../textures/blocks.png", &width, &height, &nrChannels, 0);
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cerr << "Failed to load texture" << std::endl;
+	}
+
+	stbi_image_free(data);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -136,21 +156,9 @@ void Application::Run()
 		ProcessInput();
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
+		glBindTexture(GL_TEXTURE_2D, texture);
+		Renderer::Draw(va_Block, ib_Block, shaderProgram);
 
-		// Render
-		for (unsigned int x = 0; x < 4; ++x) 
-		{
-			for (unsigned int y = 0; y < 4; ++y)
-			{
-				for (unsigned int z = 0; z < 4; ++z)
-				{
-					glm::mat4 model = glm::mat4(1.0f);
-					model = glm::translate(model, glm::vec3(x, y, z));
-					shaderProgram.SetUniformMatrix4f("model", model);
-					Renderer::Draw(va_Block, ib_Block, shaderProgram);
-				}
-			}
-		}
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

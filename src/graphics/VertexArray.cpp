@@ -11,11 +11,14 @@ VertexArray::~VertexArray()
 	glDeleteVertexArrays(1, &arrayID);
 }
 
-void VertexArray::BindVertexBuffer(const VertexBuffer& vb, unsigned int layout) const
+void VertexArray::BindVertexBuffer(const VertexBuffer& vb) const
 {
 	vb.Bind();
-	glVertexAttribPointer(layout, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(layout);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float)));
+	glEnableVertexAttribArray(1);
 }
 
 void VertexArray::Bind() const
