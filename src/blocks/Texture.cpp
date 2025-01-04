@@ -1,5 +1,9 @@
 #include "Texture.hpp"
 
+// Texture will have to replace the texture coordinates in Block.hpp
+// The textures will be based on a texture atlas.
+// Some math needs to be done..
+
 // For normal textures
 Texture::Texture(const char* filename)
 	: numberOfRows(1)
