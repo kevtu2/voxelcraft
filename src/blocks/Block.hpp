@@ -89,17 +89,19 @@ constexpr unsigned int BLOCK_VERTEX_INDICES[] =
 
 
 
-//struct Block
-//{
-//private:
-//	BlockType type;
-//
-//	// textureInfo: {(UP texture index), (SIDE texture index), (BOT texture index)} -- Used for texture atlas, where texture index is (col, row).
-//	// By default, a value of one texture index pair means the block uses one texture
-//	std::vector<int> textureInfo; 
-//	unsigned int texturesUsed;
-//
-//public:
-//	Block();
-//	Block(BlockType type);
-//};
+struct Block
+{
+private:
+	BlockType type;
+
+	// textureInfo: {(UP texture index), (SIDE texture index), (BOT texture index)} -- Used for texture atlas, where texture index is (col, row).
+	// By default, a value of one texture index pair means the block uses one texture
+	std::vector<int> textureInfo; 
+	unsigned int texturesUsed;
+
+public:
+	Block();
+	Block(BlockType type);
+	std::vector<int> GetTextureInfo() const { return textureInfo; }
+	unsigned int GetTexturesUsed() const { return texturesUsed; }
+};
