@@ -28,16 +28,16 @@ Texture::Texture(const char* filename)
 }
 
 // For texture atlas
-Texture::Texture(unsigned int rows, const char* filename)
-	: numberOfRows(rows)
+Texture::Texture(unsigned int rows, const char* filename) 
+	: Texture(filename)
 {
-
+	numberOfRows = rows;
 }
 
 Texture::~Texture()
 {
 	stbi_image_free(data);
-	glDeleteTextures(1, textureID);
+	glDeleteTextures(1, &textureID);
 }
 
 void Texture::Bind() const
@@ -55,9 +55,9 @@ void Texture::Unbind() const
 // Assuming our texture atlas is 16x16, in a 256x256 px png file.
 void Texture::CalculateTexCoord(Block block)
 {
-	glm::vec2 uvMin;
+	/*glm::vec2 uvMin;
 	glm::vec2 uvMax;
 	std::vector<int> atlasCoords = block.GetTextureInfo();
-	unsigned int texturesToUse = block.GetTexturesUsed();
+	unsigned int texturesToUse = block.GetTexturesUsed();*/
 }
 

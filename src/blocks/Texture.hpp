@@ -3,6 +3,7 @@
 #include "Block.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include <iostream>
 
 class Texture
 {
@@ -15,7 +16,7 @@ private:
 	
 public:
 	Texture(const char* filename);
-	Texture(unsigned int rows, const char* filename) : Texture(filename);
+	Texture(unsigned int rows, const char* filename);
 	~Texture();
 
 	void Bind() const;

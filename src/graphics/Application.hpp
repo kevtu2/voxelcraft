@@ -11,6 +11,7 @@
 #include "Renderer.hpp"
 #include "Camera.hpp"
 
+#include <stb_image.h>
 
 class Application
 {

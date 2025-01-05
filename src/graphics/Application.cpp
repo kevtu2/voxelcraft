@@ -1,7 +1,5 @@
 #include "Application.hpp"
 #include <filesystem>
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 static void GLClearError()
 {
