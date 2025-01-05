@@ -59,5 +59,8 @@ void Texture::CalculateTexCoord(Block block)
 	glm::vec2 uvMax;
 	std::vector<int> atlasCoords = block.GetTextureInfo();
 	unsigned int texturesToUse = block.GetTexturesUsed();*/
+	Block grass(GRASS);
+	auto atlasCoords = grass.GetTextureInfo();
+	unsigned int texturesToUse = grass.GetTexturesUsed();
 }
 

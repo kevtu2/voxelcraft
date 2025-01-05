@@ -10,8 +10,7 @@
 #include "VertexArray.hpp"
 #include "Renderer.hpp"
 #include "Camera.hpp"
-
-#include <stb_image.h>
+#include "blocks\Texture.hpp"
 
 class Application
 {

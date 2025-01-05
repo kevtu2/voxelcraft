@@ -111,36 +111,14 @@ void Application::Run()
 	va_Block.BindVertexBuffer(vb_Block);
 
 	Shader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
-
 	shaderProgram.UseProgram();
-
 	shaderProgram.SetUniformMatrix4f("projection", camera.GetProjectionMatrix());
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
 	shaderProgram.SetUniformMatrix4f("model", model);
 
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	int width, height, nrChannels;
-	unsigned char* data = stbi_load("../textures/blocks.png", &width, &height, &nrChannels, STBI_rgb);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cerr << "Failed to load texture" << std::endl;
-	}
-
-	stbi_image_free(data);
+	Texture textureAtlas("../textures/blocks.png");
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -154,7 +132,7 @@ void Application::Run()
 		ProcessInput();
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
-		glBindTexture(GL_TEXTURE_2D, texture);
+		textureAtlas.Bind();
 		Renderer::Draw(va_Block, ib_Block, shaderProgram);
 
 		glfwSwapBuffers(window);
