@@ -15,4 +15,5 @@ void Renderer::DrawChunk(const Shader& shaderProgram, const Texture& texture)
 	BlockMesh::GenerateBlockFaceMesh(chunk, glm::vec3(0.0f, 0.0f, 0.0f), grass, texture, shaderProgram);
 	if (!chunk.printed)
 		chunk.PrintChunkData();
+		
 }

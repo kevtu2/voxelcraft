@@ -11,7 +11,7 @@ void Chunk::PrintChunkData() const
 	{
 		std::ostream& out = std::cout;
 		if (i % 5 == 0)
-			out << "," << std::endl;
+			out << std::endl;
 		out << chunkData[i] << ", ";
 	}
 }

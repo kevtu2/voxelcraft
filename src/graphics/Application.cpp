@@ -121,6 +121,8 @@ void Application::Run()
 	Texture textureAtlas("../textures/blocks.png");
 	shaderProgram.SetUniformVec2f("blockID", glm::vec2(2.0f, 0.0f));
 
+	Renderer::DrawChunk(shaderProgram, textureAtlas);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentTime = glfwGetTime();
