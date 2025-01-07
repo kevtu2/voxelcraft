@@ -1,7 +1,7 @@
 #pragma once
 #include <glad\glad.h>
 #include "Block.hpp"
-#define STB_IMAGE_IMPLEMENTATION
+#include <iostream>
 #include "stb_image.h"
 
 class Texture
@@ -15,12 +15,12 @@ private:
 	
 public:
 	Texture(const char* filename);
-	Texture(unsigned int rows, const char* filename) : Texture(filename);
+	Texture(unsigned int rows, const char* filename);
 	~Texture();
 
 	void Bind() const;
 	void Unbind() const;
 	unsigned int GetNumberOfRows() const { return numberOfRows; }
-	void CalculateTexCoord(Block block);
+	void CalculateTexCoord(int textureIndex[2], unsigned int texturesUsed, std::vector<float>& uvMin, std::vector<float>& uvMax);
 	
 };

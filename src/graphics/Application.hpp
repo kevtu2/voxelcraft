@@ -10,7 +10,7 @@
 #include "VertexArray.hpp"
 #include "Renderer.hpp"
 #include "Camera.hpp"
-
+#include "blocks\Texture.hpp"
 
 class Application
 {

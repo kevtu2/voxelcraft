@@ -1,4 +1,5 @@
 #include "Texture.hpp"
+#include "glm/glm.hpp"
 
 // Texture will have to replace the texture coordinates in Block.hpp
 // The textures will be based on a texture atlas.
@@ -28,16 +29,16 @@ Texture::Texture(const char* filename)
 }
 
 // For texture atlas
-Texture::Texture(unsigned int rows, const char* filename)
-	: numberOfRows(rows)
+Texture::Texture(unsigned int rows, const char* filename) 
+	: Texture(filename)
 {
-
+	numberOfRows = rows;
 }
 
 Texture::~Texture()
 {
 	stbi_image_free(data);
-	glDeleteTextures(1, textureID);
+	glDeleteTextures(1, &textureID);
 }
 
 void Texture::Bind() const
@@ -48,17 +49,15 @@ void Texture::Bind() const
 void Texture::Unbind() const
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
-
 }
 
 
 // Assuming our texture atlas is 16x16, in a 256x256 px png file.
-void Texture::CalculateTexCoord(Block block)
+void Texture::CalculateTextureCoord(int textureIndex[2], unsigned int texturesUsed, std::vector<float>& uvMin, std::vector<float>& uvMax)
 {
-	glm::vec2 uvMin;
+	/*glm::vec2 uvMin;
 	glm::vec2 uvMax;
 	std::vector<int> atlasCoords = block.GetTextureInfo();
-	unsigned int texturesToUse = block.GetTexturesUsed();
-	uvMin()
+	unsigned int texturesToUse = block.GetTexturesUsed();*/
 }
 
