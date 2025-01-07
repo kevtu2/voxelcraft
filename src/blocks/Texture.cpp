@@ -53,12 +53,11 @@ void Texture::Unbind() const
 
 
 // Assuming our texture atlas is 16x16, in a 256x256 px png file.
-void Texture::CalculateTexCoord(std::vector<int> textureIndex, unsigned int texturesUsed, glm::vec2& uvMin, glm::vec2& uvMax)
+void Texture::CalculateTextureCoord(int textureIndex[2], unsigned int texturesUsed, std::vector<float>& uvMin, std::vector<float>& uvMax)
 {
 	/*glm::vec2 uvMin;
 	glm::vec2 uvMax;
 	std::vector<int> atlasCoords = block.GetTextureInfo();
 	unsigned int texturesToUse = block.GetTexturesUsed();*/
-
 }
 

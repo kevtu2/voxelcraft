@@ -21,6 +21,6 @@ public:
 	void Bind() const;
 	void Unbind() const;
 	unsigned int GetNumberOfRows() const { return numberOfRows; }
-	void CalculateTexCoord(std::vector<int> textureIndex, unsigned int texturesUsed, glm::vec2& uvMin, glm::vec2& uvMax);
+	void CalculateTexCoord(int textureIndex[2], unsigned int texturesUsed, std::vector<float>& uvMin, std::vector<float>& uvMax);
 	
 };
