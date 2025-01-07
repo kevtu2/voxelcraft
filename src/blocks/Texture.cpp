@@ -50,9 +50,3 @@ void Texture::Unbind() const
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
-
-void Texture::SetTextureOffset(glm::vec2 atlas, unsigned int shaderProgramID)
-{
-	glUniform2fv(glGetUniformLocation(shaderProgramID, "blockID"), 1, glm::value_ptr(atlas));
-}
-
