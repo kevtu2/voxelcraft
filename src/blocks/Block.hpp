@@ -21,43 +21,45 @@ enum BlockState
 	LIQUID
 };
 
+constexpr float textureSize = 0.0625f;
+
 constexpr float BLOCK_VERTEX_DATA[] =
 {
 	// Bottom face
-	0.0f, 0.0f, 1.0f,  0.0f, 0.0f,  // Bottom-left
-	1.0f, 0.0f, 1.0f,  1.0f, 0.0f,  // Bottom-right
-	1.0f, 0.0f, 0.0f,  1.0f, 1.0f,  // Top-right
-	0.0f, 0.0f, 0.0f,  0.0f, 1.0f,  // Top-left
+	0.0f, 0.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
+	1.0f, 0.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
+	1.0f, 0.0f, 0.0f,  textureSize, textureSize,  // Top-right
+	0.0f, 0.0f, 0.0f,  0.0f,		textureSize,  // Top-left
 
 	// Top face
-	0.0f, 1.0f, 1.0f,  0.0f, 0.0f,  // Bottom-left
-	1.0f, 1.0f, 1.0f,  1.0f, 0.0f,  // Bottom-right
-	1.0f, 1.0f, 0.0f,  1.0f, 1.0f,  // Top-right
-	0.0f, 1.0f, 0.0f,  0.0f, 1.0f,  // Top-left
+	0.0f, 1.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
+	1.0f, 1.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
+	1.0f, 1.0f, 0.0f,  textureSize, textureSize,  // Top-right
+	0.0f, 1.0f, 0.0f,  0.0f,		textureSize,  // Top-left
 
 	// Front face
-	0.0f, 0.0f, 1.0f,  0.0f, 0.0f,  // Bottom-left
-	1.0f, 0.0f, 1.0f,  1.0f, 0.0f,  // Bottom-right
-	1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  // Top-right
-	0.0f, 1.0f, 1.0f,  0.0f, 1.0f,  // Top-left
+	0.0f, 0.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
+	1.0f, 0.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
+	1.0f, 1.0f, 1.0f,  textureSize, textureSize,  // Top-right
+	0.0f, 1.0f, 1.0f,  0.0f,		textureSize,  // Top-left
 
 	// Back face
-	1.0f, 0.0f, 0.0f,  0.0f, 0.0f,  // Bottom-left
-	0.0f, 0.0f, 0.0f,  1.0f, 0.0f,  // Bottom-right
-	0.0f, 1.0f, 0.0f,  1.0f, 1.0f,  // Top-right
-	1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  // Top-left
+	1.0f, 0.0f, 0.0f,  0.0f,		0.0f,		  // Bottom-left
+	0.0f, 0.0f, 0.0f,  textureSize, 0.0f,		  // Bottom-right
+	0.0f, 1.0f, 0.0f,  textureSize, textureSize,  // Top-right
+	1.0f, 1.0f, 0.0f,  0.0f,		textureSize,  // Top-left
 
 	// Left face
-	0.0f, 0.0f, 0.0f,  0.0f, 0.0f,  // Bottom-left
-	0.0f, 0.0f, 1.0f,  1.0f, 0.0f,  // Bottom-right
-	0.0f, 1.0f, 1.0f,  1.0f, 1.0f,  // Top-right
-	0.0f, 1.0f, 0.0f,  0.0f, 1.0f,  // Top-left
+	0.0f, 0.0f, 0.0f,  0.0f,		0.0f,		  // Bottom-left
+	0.0f, 0.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
+	0.0f, 1.0f, 1.0f,  textureSize, textureSize,  // Top-right
+	0.0f, 1.0f, 0.0f,  0.0f,		textureSize,  // Top-left
 
 	// Right face
-	1.0f, 0.0f, 1.0f,  0.0f, 0.0f,  // Bottom-left
-	1.0f, 0.0f, 0.0f,  1.0f, 0.0f,  // Bottom-right
-	1.0f, 1.0f, 0.0f,  1.0f, 1.0f,  // Top-right
-	1.0f, 1.0f, 1.0f,  0.0f, 1.0f,  // Top-left
+	1.0f, 0.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
+	1.0f, 0.0f, 0.0f,  textureSize, 0.0f,		  // Bottom-right
+	1.0f, 1.0f, 0.0f,  textureSize, textureSize,  // Top-right
+	1.0f, 1.0f, 1.0f,  0.0f,		textureSize  // Top-left
 };
 
 constexpr unsigned int BLOCK_VERTEX_INDICES[] =

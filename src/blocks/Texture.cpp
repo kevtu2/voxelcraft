@@ -1,5 +1,5 @@
 #include "Texture.hpp"
-#include "glm/glm.hpp"
+
 
 // Texture will have to replace the texture coordinates in Block.hpp
 // The textures will be based on a texture atlas.
@@ -51,13 +51,8 @@ void Texture::Unbind() const
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-
-// Assuming our texture atlas is 16x16, in a 256x256 px png file.
-void Texture::CalculateTextureCoord(int textureIndex[2], unsigned int texturesUsed, std::vector<float>& uvMin, std::vector<float>& uvMax)
+void Texture::SetTextureOffset(glm::vec2 atlas, unsigned int shaderProgramID)
 {
-	/*glm::vec2 uvMin;
-	glm::vec2 uvMax;
-	std::vector<int> atlasCoords = block.GetTextureInfo();
-	unsigned int texturesToUse = block.GetTexturesUsed();*/
+	glUniform2fv(glGetUniformLocation(shaderProgramID, "blockID"), 1, glm::value_ptr(atlas));
 }
 

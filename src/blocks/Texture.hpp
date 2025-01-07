@@ -3,6 +3,8 @@
 #include "Block.hpp"
 #include <iostream>
 #include "stb_image.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 class Texture
 {
@@ -21,6 +23,6 @@ public:
 	void Bind() const;
 	void Unbind() const;
 	unsigned int GetNumberOfRows() const { return numberOfRows; }
-	void CalculateTexCoord(int textureIndex[2], unsigned int texturesUsed, std::vector<float>& uvMin, std::vector<float>& uvMax);
+	void SetTextureOffset(glm::vec2 atlas, unsigned int shaderProgramID);
 	
 };
