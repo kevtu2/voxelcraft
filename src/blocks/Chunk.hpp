@@ -5,9 +5,11 @@
 class Chunk
 {
 private:
-	std::vector<float> chunkData;
+	std::vector<float> chunkVertexData;
+	std::vector<unsigned int> chunkIndexData;
 public:
 	bool printed = false;
-	void AppendToChunk(float value);
+	void AppendToVBO(float value);
+	void AppentToIBO(unsigned int value);
 	void PrintChunkData() const;
 };
