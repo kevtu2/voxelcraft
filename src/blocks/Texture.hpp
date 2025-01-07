@@ -24,5 +24,4 @@ public:
 	void Unbind() const;
 	unsigned int GetNumberOfRows() const { return numberOfRows; }
 	void SetTextureOffset(glm::vec2 atlas, unsigned int shaderProgramID);
-	
 };

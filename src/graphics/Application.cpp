@@ -119,7 +119,7 @@ void Application::Run()
 	shaderProgram.SetUniformMatrix4f("model", model);
 
 	Texture textureAtlas("../textures/blocks.png");
-	textureAtlas.SetTextureOffset(glm::vec2(3.0f, 1.0f), shaderProgram.GetID());
+	shaderProgram.SetUniformVec2f("blockID", glm::vec2(2.0f, 0.0f));
 
 	while (!glfwWindowShouldClose(window))
 	{
