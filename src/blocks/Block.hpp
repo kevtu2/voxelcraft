@@ -14,13 +14,6 @@ enum BlockType
 };
 
 
-enum BlockState
-{
-	TRANSPARENT,
-	SOLID,
-	LIQUID
-};
-
 constexpr float textureSize = 0.0625f;
 
 constexpr float BLOCK_VERTEX_DATA[] =

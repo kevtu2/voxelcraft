@@ -51,5 +51,5 @@ static constexpr float CUBE_UV_COORDS[] =
 class BlockMesh
 {
 public:
-    static void GenerateBlockFaceMesh(Chunk& chunk, const glm::vec3 blockOffset, const Block& block, const Texture& texture, const Shader& shaderProgram);
+    static void GenerateBlock(Chunk& chunk, const glm::vec3 blockOffset, const Block& block, const Texture& texture, const Shader& shaderProgram);
 };

@@ -119,9 +119,6 @@ void Application::Run()
 	shaderProgram.SetUniformMatrix4f("model", model);
 
 	Texture textureAtlas("../textures/blocks.png");
-	shaderProgram.SetUniformVec2f("blockID", glm::vec2(2.0f, 0.0f));
-
-	Renderer::DrawChunk(shaderProgram, textureAtlas);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -135,8 +132,10 @@ void Application::Run()
 		ProcessInput();
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
+
 		textureAtlas.Bind();
-		Renderer::Draw(va_Block, ib_Block, shaderProgram);
+		Renderer::DrawChunk(shaderProgram, textureAtlas);
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -27,7 +27,7 @@ private:
 	float lastY;
 	bool firstMouseInput;
 
-	void ProcessInput(); // Make camera an attribute?
+	void ProcessInput();
 
 	void CalculateNewMousePosition();
 

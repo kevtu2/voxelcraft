@@ -1,6 +1,6 @@
 #include "BlockMesh.hpp"
 
-void BlockMesh::GenerateBlockFaceMesh(Chunk& chunk, const glm::vec3 blockOffset, const Block& block, const Texture& texture, const Shader& shaderProgram)
+void BlockMesh::GenerateBlock(Chunk& chunk, const glm::vec3 blockOffset, const Block& block, const Texture& texture, const Shader& shaderProgram)
 {
 	auto textureCoords =  block.GetTextureInfo();
 	unsigned int texturesUsed = block.GetTexturesUsed();
