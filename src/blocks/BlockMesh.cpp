@@ -4,7 +4,6 @@ void BlockMesh::GenerateBlock(Chunk& chunk, const glm::vec3 blockOffset, const B
 {
 	auto textureCoords =  block.GetTextureInfo();
 	unsigned int texturesUsed = block.GetTexturesUsed();
-
 	// Append faces to chunk VBO -- Vertex by vertex
 	for (size_t i = 0; i < 36; ++i)
 	{
@@ -16,7 +15,13 @@ void BlockMesh::GenerateBlock(Chunk& chunk, const glm::vec3 blockOffset, const B
 		chunk.AppendToVBO(CUBE_VERTICES[vertexIndex * 3 + 2] + blockOffset.z);
 
 		// Append texture coordinates
-		chunk.AppendToVBO(CUBE_UV_COORDS[i % 4 + 0] + textureCoords[i % 11 + 0] * sizeOfTexture);
-		chunk.AppendToVBO(CUBE_UV_COORDS[i % 4 + 1] + textureCoords[i % 11 + 1] * sizeOfTexture);
+		chunk.AppendToVBO(CUBE_UV_COORDS[(i % 4) * 2 + 0] + (textureCoords[(i % 6) * 2 + 0] * sizeOfTexture));
+		chunk.AppendToVBO(CUBE_UV_COORDS[(i % 4) * 2 + 1] + (textureCoords[(i % 6) * 2 + 1] * sizeOfTexture));
+
+		/*std::cout << CUBE_VERTICES[vertexIndex * 3 + 0] << ", " << CUBE_VERTICES[vertexIndex * 3 + 1] << ", " << CUBE_VERTICES[vertexIndex * 3 + 2] << ", "
+			<< CUBE_UV_COORDS[(i % 4) * 2 + 0] << ", " << CUBE_UV_COORDS[(i % 4) * 2 + 1] << std::endl;*/
+		//std::cout << "CUBE_UV_COORDS[" << i << "]: " << "[" << (i % 4) * 2 + 0 << ", " << (i % 4) * 2 + 1 << "]" << std::endl;
+		//std::cout << "textureCoords[" << i << "]: " << "[" << (i % 6) * 2 + 0 << ", " << (i % 6) * 2 + 1 << "]" << std::endl;
+		std::cout << CUBE_VERTICES[vertexIndex * 3 + 0] << ", " << CUBE_VERTICES[vertexIndex * 3 + 1] << ", " << CUBE_VERTICES[vertexIndex * 3 + 2] << std::endl;
 	}
 }

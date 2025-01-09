@@ -36,10 +36,10 @@ static constexpr unsigned int CUBE_INDICES[] =
 // sizeOfTexture will just be multiplied by an offset to choose whichever texture that specific face uses.
 static constexpr float CUBE_UV_COORDS[] =
 {
-    sizeOfTexture, 0.0f,
-    0.0f,          0.0f,
+    0.0f,          0.0f, 
+    sizeOfTexture, 0.0f,  
+    sizeOfTexture, sizeOfTexture,  
     0.0f,          sizeOfTexture,
-    sizeOfTexture, sizeOfTexture
 };
 
 class BlockMesh

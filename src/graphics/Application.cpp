@@ -54,9 +54,6 @@ Application::Application(int width, int height)
 		glViewport(0, 0, width, height);
 	});
 
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW); // Counter-clockwise
 }
 
 void Application::CalculateNewMousePosition()
@@ -107,13 +104,6 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	VertexArray va_Block;
-
-	VertexBuffer vb_Block(BLOCK_VERTEX_DATA, sizeof(BLOCK_VERTEX_DATA));
-	IndexBuffer ib_Block(BLOCK_VERTEX_INDICES, sizeof(BLOCK_VERTEX_INDICES));
-
-	va_Block.BindVertexBuffer(vb_Block);
-
 	Shader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 	shaderProgram.UseProgram();
 	shaderProgram.SetUniformMatrix4f("projection", camera.GetProjectionMatrix());
@@ -123,6 +113,8 @@ void Application::Run()
 	shaderProgram.SetUniformMatrix4f("model", model);
 
 	Texture textureAtlas("../textures/blocks.png");
+
+
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -136,7 +128,6 @@ void Application::Run()
 		ProcessInput();
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
-
 		Renderer::DrawChunk(shaderProgram, textureAtlas);
 
 
