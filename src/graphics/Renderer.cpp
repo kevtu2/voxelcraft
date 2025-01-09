@@ -10,20 +10,22 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
 
 void Renderer::DrawChunk(const Shader& shaderProgram, const Texture& texture)
 {
+	shaderProgram.UseProgram();
+	texture.Bind();
 	Chunk chunk;
 	Block grass(GRASS);
-	for (size_t x = 0; x < 10; ++x)
+	for (size_t x = 0; x < 2; ++x)
 	{
-		for (size_t y = 0; y < 10; ++y)
+		for (size_t y = 0; y < 2; ++y)
 		{
-			for (size_t z = 0; z < 10; ++z)
+			for (size_t z = 0; z < 2; ++z)
 			{
 				BlockMesh::GenerateBlock(chunk, glm::vec3(x,y,z), grass, texture, shaderProgram);
-				chunk.BufferData();
 			}
 		}
 	}
-
+	chunk.PrintChunkData();
+	chunk.BufferData();
 	auto IBO = chunk.GetIndexData();
 	glDrawElements(GL_TRIANGLES, IBO.size(), GL_UNSIGNED_INT, 0);
 }

@@ -133,9 +133,7 @@ void Application::Run()
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
 
-		textureAtlas.Bind();
 		Renderer::DrawChunk(shaderProgram, textureAtlas);
-
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
