@@ -16,12 +16,7 @@ void BlockMesh::GenerateBlock(Chunk& chunk, const glm::vec3 blockOffset, const B
 		chunk.AppendToVBO(CUBE_VERTICES[vertexIndex * 3 + 2] + blockOffset.z);
 
 		// Append texture coordinates
-		chunk.AppendToVBO(CUBE_UV_COORDS[i % 7 + 0] + textureCoords[i % 11 + 0] * sizeOfTexture);
-		chunk.AppendToVBO(CUBE_UV_COORDS[i % 7 + 1] + textureCoords[i % 11 + 1] * sizeOfTexture);
-	}
-
-	for (unsigned int index : CUBE_INDICES)
-	{
-		chunk.AppendToIBO(index);
+		chunk.AppendToVBO(CUBE_UV_COORDS[i % 4 + 0] + textureCoords[i % 11 + 0] * sizeOfTexture);
+		chunk.AppendToVBO(CUBE_UV_COORDS[i % 4 + 1] + textureCoords[i % 11 + 1] * sizeOfTexture);
 	}
 }

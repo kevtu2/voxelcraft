@@ -10,7 +10,6 @@ private:
 	std::vector<float> chunkVertexData;
 	std::vector<unsigned int> chunkIndexData;
 	unsigned int chunkVBO_ID;
-	unsigned int chunkIBO_ID;
 	unsigned int chunkVAO_ID;
 public:
 	Chunk();
@@ -24,4 +23,6 @@ public:
 	void PrintChunkData() const;
 	
 	std::vector<unsigned int> GetIndexData() const {return chunkIndexData;}
+
+	void DrawArrays() const;
 };

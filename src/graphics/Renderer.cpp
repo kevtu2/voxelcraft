@@ -19,6 +19,5 @@ void Renderer::DrawChunk(const Shader& shaderProgram, const Texture& texture)
 
 	chunk.PrintChunkData();
 	chunk.BufferData();
-	auto IBO = chunk.GetIndexData();
-	glDrawElements(GL_TRIANGLES, IBO.size(), GL_UNSIGNED_INT, 0);
+	chunk.DrawArrays();
 }
