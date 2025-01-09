@@ -53,6 +53,10 @@ Application::Application(int width, int height)
 	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	});
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW); // Counter-clockwise
 }
 
 void Application::CalculateNewMousePosition()
@@ -120,6 +124,8 @@ void Application::Run()
 
 	Texture textureAtlas("../textures/blocks.png");
 
+
+
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentTime = glfwGetTime();
@@ -134,6 +140,7 @@ void Application::Run()
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
 
 		Renderer::DrawChunk(shaderProgram, textureAtlas);
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

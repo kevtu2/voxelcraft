@@ -14,16 +14,9 @@ void Renderer::DrawChunk(const Shader& shaderProgram, const Texture& texture)
 	texture.Bind();
 	Chunk chunk;
 	Block grass(GRASS);
-	for (size_t x = 0; x < 2; ++x)
-	{
-		for (size_t y = 0; y < 2; ++y)
-		{
-			for (size_t z = 0; z < 2; ++z)
-			{
-				BlockMesh::GenerateBlock(chunk, glm::vec3(x,y,z), grass, texture, shaderProgram);
-			}
-		}
-	}
+
+	BlockMesh::GenerateBlock(chunk, glm::vec3(0.f,0.f,0.f), grass, texture, shaderProgram);
+
 	chunk.PrintChunkData();
 	chunk.BufferData();
 	auto IBO = chunk.GetIndexData();

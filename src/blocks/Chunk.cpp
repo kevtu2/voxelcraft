@@ -27,6 +27,7 @@ void Chunk::AppendToIBO(unsigned int value)
 void Chunk::BufferData() const
 {
 	glBindVertexArray(chunkVAO_ID);
+
 	glBindBuffer(GL_ARRAY_BUFFER, chunkVBO_ID);
 	glBufferData(GL_ARRAY_BUFFER, chunkVertexData.size() * sizeof(float), &chunkVertexData[0], GL_STATIC_DRAW);
 

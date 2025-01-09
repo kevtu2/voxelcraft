@@ -24,28 +24,22 @@ static constexpr float CUBE_VERTICES[] =
 
 static constexpr unsigned int CUBE_INDICES[] =
 {
-    // Front face
-    4, 5, 6,  4, 6, 7,
-    // Back face
-    0, 1, 2,  0, 2, 3,
-    // Left face
-    0, 3, 7,  0, 7, 4,
-    // Right face
-    1, 2, 6,  1, 6, 5,
-    // Top face
-    3, 2, 6,  3, 6, 7,
-    // Bottom face
-    0, 1, 5,  0, 5, 4
+    1, 0, 3, 1, 3, 2, // north (-z)
+    4, 5, 6, 4, 6, 7, // south (+z)
+    5, 1, 2, 5, 2, 6, // east (+x)
+    0, 4, 7, 0, 7, 3, // west (-x)
+    2, 3, 7, 2, 7, 6, // top (+y)
+    5, 4, 0, 5, 0, 1, // bottom (-y)
 };
 
 
 // sizeOfTexture will just be multiplied by an offset to choose whichever texture that specific face uses.
 static constexpr float CUBE_UV_COORDS[] =
 {
-    0.0f,          0.0f,           // Bottom-left
-    sizeOfTexture, 0.0f,           // Bottom-right
-    sizeOfTexture, sizeOfTexture,  // Top-right
-    0.0f,          sizeOfTexture   // Top-left
+    sizeOfTexture, 0.0f,
+    0.0f,          0.0f,
+    0.0f,          sizeOfTexture,
+    sizeOfTexture, sizeOfTexture
 };
 
 class BlockMesh

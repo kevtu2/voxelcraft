@@ -9,13 +9,19 @@ void BlockMesh::GenerateBlock(Chunk& chunk, const glm::vec3 blockOffset, const B
 	for (size_t i = 0; i < 36; ++i)
 	{
 		// Append vertices of the face
-		chunk.AppendToVBO(CUBE_VERTICES[CUBE_INDICES[i % 6 * 3 + 0]] + blockOffset.x);
-		chunk.AppendToVBO(CUBE_VERTICES[CUBE_INDICES[i % 6 * 3 + 1]] + blockOffset.y);
-		chunk.AppendToVBO(CUBE_VERTICES[CUBE_INDICES[i % 6 * 3 + 2]] + blockOffset.z);
+		unsigned int vertexIndex = CUBE_INDICES[i];
+
+		chunk.AppendToVBO(CUBE_VERTICES[vertexIndex * 3 + 0] + blockOffset.x);
+		chunk.AppendToVBO(CUBE_VERTICES[vertexIndex * 3 + 1] + blockOffset.y);
+		chunk.AppendToVBO(CUBE_VERTICES[vertexIndex * 3 + 2] + blockOffset.z);
 
 		// Append texture coordinates
-		chunk.AppendToVBO(CUBE_UV_COORDS[CUBE_INDICES[i % 6 * 2 + 0]] + textureCoords[i % 6 + 0] * sizeOfTexture);
-		chunk.AppendToVBO(CUBE_UV_COORDS[CUBE_INDICES[i % 6 * 2 + 1]] + textureCoords[i % 6 + 1] * sizeOfTexture);
+		chunk.AppendToVBO(CUBE_UV_COORDS[i % 7 + 0] + textureCoords[i % 11 + 0] * sizeOfTexture);
+		chunk.AppendToVBO(CUBE_UV_COORDS[i % 7 + 1] + textureCoords[i % 11 + 1] * sizeOfTexture);
 	}
-	
+
+	for (unsigned int index : CUBE_INDICES)
+	{
+		chunk.AppendToIBO(index);
+	}
 }

@@ -23,5 +23,5 @@ public:
 
 	void PrintChunkData() const;
 	
-	std::vector<unsigned int> GetIndexData() const { return chunkIndexData; }
+	std::vector<unsigned int> GetIndexData() const {return chunkIndexData;}
 };
