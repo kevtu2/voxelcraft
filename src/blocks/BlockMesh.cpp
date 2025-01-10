@@ -4,6 +4,7 @@ void BlockMesh::GenerateBlock(Chunk& chunk, const glm::vec3 blockOffset, const B
 {
 	auto textureCoords =  block.GetTextureInfo();
 	unsigned int texturesUsed = block.GetTexturesUsed();
+
 	// Append faces to chunk VBO -- Vertex by vertex
 	for (size_t i = 0; i < 36; ++i)
 	{
@@ -15,7 +16,9 @@ void BlockMesh::GenerateBlock(Chunk& chunk, const glm::vec3 blockOffset, const B
 		chunk.AppendToVBO(CUBE_VERTICES[vertexIndex * 3 + 2] + blockOffset.z);
 
 		// Append texture coordinates
-		chunk.AppendToVBO(CUBE_UV_COORDS[(i % 4) * 2 + 0]);
-		chunk.AppendToVBO(CUBE_UV_COORDS[(i % 4) * 2 + 1]);
+
+		unsigned int uvIndex = CUBE_UV_INDICES[(i % 6)];
+		chunk.AppendToVBO(CUBE_UV_COORDS[uvIndex * 2 + 0]);
+		chunk.AppendToVBO(CUBE_UV_COORDS[uvIndex * 2 + 1]);
 	}
 }

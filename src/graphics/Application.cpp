@@ -53,7 +53,6 @@ Application::Application(int width, int height)
 	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	});
-
 }
 
 void Application::CalculateNewMousePosition()
@@ -104,6 +103,7 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
+
 	Shader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 	shaderProgram.UseProgram();
 	shaderProgram.SetUniformMatrix4f("projection", camera.GetProjectionMatrix());
@@ -114,7 +114,6 @@ void Application::Run()
 
 	Texture textureAtlas("../textures/blocks.png");
 
-	Renderer::DrawChunk(shaderProgram, textureAtlas);
 
 
 	while (!glfwWindowShouldClose(window))
@@ -129,6 +128,8 @@ void Application::Run()
 		ProcessInput();
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
+
+		Renderer::DrawChunk(shaderProgram, textureAtlas);
 
 
 		glfwSwapBuffers(window);

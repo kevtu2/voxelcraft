@@ -18,105 +18,68 @@ constexpr float textureSize = 0.0625f;
 
 constexpr float BLOCK_VERTEX_DATA[] =
 {
+	// Bottom face
+	0.0f, 0.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
+	1.0f, 0.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
+	1.0f, 0.0f, 0.0f,  textureSize, textureSize,  // Top-right
+	0.0f, 0.0f, 0.0f,  0.0f,		textureSize,  // Top-left
+
+	// Top face
+	0.0f, 1.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
+	1.0f, 1.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
+	1.0f, 1.0f, 0.0f,  textureSize, textureSize,  // Top-right
+	0.0f, 1.0f, 0.0f,  0.0f,		textureSize,  // Top-left
+
 	// Front face
-	0.0f, 0.0f, 0.0f,  // Bottom-left
-	1.0f, 0.0f, 0.0f,  // Bottom-right
-	1.0f, 1.0f, 0.0f,  // Top-right
-	0.0f, 1.0f, 0.0f,  // Top-left
+	0.0f, 0.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
+	1.0f, 0.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
+	1.0f, 1.0f, 1.0f,  textureSize, textureSize,  // Top-right
+	0.0f, 1.0f, 1.0f,  0.0f,		textureSize,  // Top-left
 
 	// Back face
-	0.0f, 0.0f, 1.0f,  // Bottom-left
-	1.0f, 0.0f, 1.0f,  // Bottom-right
-	1.0f, 1.0f, 1.0f,  // Top-right
-	0.0f, 1.0f, 1.0f,  // Top-left
+	1.0f, 0.0f, 0.0f,  0.0f,		0.0f,		  // Bottom-left
+	0.0f, 0.0f, 0.0f,  textureSize, 0.0f,		  // Bottom-right
+	0.0f, 1.0f, 0.0f,  textureSize, textureSize,  // Top-right
+	1.0f, 1.0f, 0.0f,  0.0f,		textureSize,  // Top-left
+
+	// Left face
+	0.0f, 0.0f, 0.0f,  0.0f,		0.0f,		  // Bottom-left
+	0.0f, 0.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
+	0.0f, 1.0f, 1.0f,  textureSize, textureSize,  // Top-right
+	0.0f, 1.0f, 0.0f,  0.0f,		textureSize,  // Top-left
+
+	// Right face
+	1.0f, 0.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
+	1.0f, 0.0f, 0.0f,  textureSize, 0.0f,		  // Bottom-right
+	1.0f, 1.0f, 0.0f,  textureSize, textureSize,  // Top-right
+	1.0f, 1.0f, 1.0f,  0.0f,		textureSize  // Top-left
 };
-//{
-//	// Bottom face
-//	0.0f, 0.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
-//	1.0f, 0.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
-//	1.0f, 0.0f, 0.0f,  textureSize, textureSize,  // Top-right
-//	0.0f, 0.0f, 0.0f,  0.0f,		textureSize,  // Top-left
-//
-//	// Top face
-//	0.0f, 1.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
-//	1.0f, 1.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
-//	1.0f, 1.0f, 0.0f,  textureSize, textureSize,  // Top-right
-//	0.0f, 1.0f, 0.0f,  0.0f,		textureSize,  // Top-left
-//
-//	// Front face
-//	0.0f, 0.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
-//	1.0f, 0.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
-//	1.0f, 1.0f, 1.0f,  textureSize, textureSize,  // Top-right
-//	0.0f, 1.0f, 1.0f,  0.0f,		textureSize,  // Top-left
-//
-//	// Back face
-//	1.0f, 0.0f, 0.0f,  0.0f,		0.0f,		  // Bottom-left
-//	0.0f, 0.0f, 0.0f,  textureSize, 0.0f,		  // Bottom-right
-//	0.0f, 1.0f, 0.0f,  textureSize, textureSize,  // Top-right
-//	1.0f, 1.0f, 0.0f,  0.0f,		textureSize,  // Top-left
-//
-//	// Left face
-//	0.0f, 0.0f, 0.0f,  0.0f,		0.0f,		  // Bottom-left
-//	0.0f, 0.0f, 1.0f,  textureSize, 0.0f,		  // Bottom-right
-//	0.0f, 1.0f, 1.0f,  textureSize, textureSize,  // Top-right
-//	0.0f, 1.0f, 0.0f,  0.0f,		textureSize,  // Top-left
-//
-//	// Right face
-//	1.0f, 0.0f, 1.0f,  0.0f,		0.0f,		  // Bottom-left
-//	1.0f, 0.0f, 0.0f,  textureSize, 0.0f,		  // Bottom-right
-//	1.0f, 1.0f, 0.0f,  textureSize, textureSize,  // Top-right
-//	1.0f, 1.0f, 1.0f,  0.0f,		textureSize  // Top-left
-//};
 
 constexpr unsigned int BLOCK_VERTEX_INDICES[] =
 {
-	// Front face
-	0, 1, 2,  // First triangle
-	0, 2, 3,  // Second triangle
-
-	// Back face
-	4, 5, 6,  // First triangle
-	4, 6, 7,  // Second triangle
-
-	// Left face
-	0, 3, 7,
-	0, 7, 4,
-
-	// Right face
-	1, 2, 6,
-	1, 6, 5,
+	// Bottom face
+	0, 1, 2,
+	2, 3, 0,
 
 	// Top face
-	3, 2, 6,
-	3, 6, 7,
+	4, 5, 6,
+	6, 7, 4,
 
-	// Bottom face
-	0, 1, 5,
-	0, 5, 4,
+	// Front face
+	8, 9, 10,
+	10, 11, 8,
 
-	//// Bottom face
-	//0, 1, 2,
-	//2, 3, 0,
+	// Back face
+	12, 13, 14,
+	14, 15, 12,
 
-	//// Top face
-	//4, 5, 6,
-	//6, 7, 4,
+	// Left face
+	16, 17, 18,
+	18, 19, 16,
 
-	//// Front face
-	//8, 9, 10,
-	//10, 11, 8,
-
-	//// Back face
-	//12, 13, 14,
-	//14, 15, 12,
-
-	//// Left face
-	//16, 17, 18,
-	//18, 19, 16,
-
-	//// Right face
-	//20, 21, 22,
-	//22, 23, 20
+	// Right face
+	20, 21, 22,
+	22, 23, 20
 };
 
 

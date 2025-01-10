@@ -7,14 +7,10 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-uniform vec2 atlasCoord;
-
-const float textureSize = 0.0625f;
-
 out vec2 TexCoord;
 
 void main()
 {
 	gl_Position = projection * view * model * vec4(aPos, 1.0f);
-	TexCoord = vec2(aTexCoord.x + (atlasCoord.x * textureSize), aTexCoord.y + (atlasCoord.x * textureSize));
+	TexCoord = aTexCoord;
 }

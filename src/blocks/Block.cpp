@@ -12,7 +12,7 @@ Block::Block(BlockType type)
 {
 	switch (type) {
 		case GRASS:
-			textureInfo = { 1, 0, 1, 0, 1, 0, 1, 0,  0, 0, 2, 0 };
+			textureInfo = { 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2, 0 };
 			texturesUsed = 3;
 			break;
 		case DIRT:
@@ -32,7 +32,7 @@ Block::Block(BlockType type)
 			texturesUsed = 1;
 			break;
 		case WOOD:
-			textureInfo = { 2, 1, 2, 1, 2, 1, 2, 1, 3, 1, 3, 1 };
+			textureInfo = { 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1 };
 			texturesUsed = 2;
 			break;
 		case LEAVES:
