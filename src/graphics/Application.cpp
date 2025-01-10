@@ -114,6 +114,7 @@ void Application::Run()
 
 	Texture textureAtlas("../textures/blocks.png");
 
+	Renderer::DrawChunk(shaderProgram, textureAtlas);
 
 
 	while (!glfwWindowShouldClose(window))
@@ -128,7 +129,6 @@ void Application::Run()
 		ProcessInput();
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
-		Renderer::DrawChunk(shaderProgram, textureAtlas);
 
 
 		glfwSwapBuffers(window);
