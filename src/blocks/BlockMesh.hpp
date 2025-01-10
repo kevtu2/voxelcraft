@@ -16,14 +16,15 @@ static constexpr float sizeOfTexture = 0.0625f;
 
 static constexpr float CUBE_VERTICES[] =
 {
-    -1, -1, -1,
-    1, -1, -1,
-    1, 1, -1,
-    -1, 1, -1,
-    -1, -1, 1,
-    1, -1, 1,
+    0, 0, 0,
+    1, 0, 0,
+    1, 1, 0,
+    0, 1, 0,
+
+    0, 0, 1,
+    1, 0, 1,
     1, 1, 1,
-    -1, 1, 1
+    0, 1, 1
 };
 
 static constexpr unsigned int CUBE_INDICES[] =
