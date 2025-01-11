@@ -13,7 +13,7 @@ void Renderer::DrawChunk(const Shader& shaderProgram, const Texture& texture)
 	shaderProgram.UseProgram();
 	texture.Bind();
 	Chunk chunk;
-	Block grass(GRASS);
+	BlockMesh grass(GRASS);
 
 	for (size_t x = 0; x < 10; ++x)
 	{
@@ -21,7 +21,7 @@ void Renderer::DrawChunk(const Shader& shaderProgram, const Texture& texture)
 		{
 			for (size_t z = 0; z < 10; ++z)
 			{
-				BlockMesh::GenerateBlock(chunk, glm::vec3(x,y,z), grass, texture, shaderProgram);
+				grass.LoadVBO(chunk, glm::vec3(x, y, z), texture);
 			}
 		}
 	}

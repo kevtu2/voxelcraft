@@ -1,18 +1,29 @@
 #pragma once
-#include "Block.hpp"
 #include "Texture.hpp"
 #include "Chunk.hpp"
 #include "../graphics/Shader.hpp"
 #include <glm/glm.hpp>
 #include <vector>
 
-enum Face {
-    F_UP,
-    F_SIDE,
-    F_DOWN
+enum BlockType
+{
+    AIR, // Default type
+    GRASS,
+    DIRT,
+    WATER,
+    STONE,
+    SAND,
+    WOOD,
+    LEAVES
 };
 
-static constexpr float sizeOfTexture = 0.0625f;
+enum Face {
+    F_TOP,
+    F_SIDE,
+    F_BOT
+};
+
+static constexpr float SIZE_OF_TEXTURE = 0.0625f;
 
 static constexpr float CUBE_VERTICES[] =
 {
@@ -38,19 +49,36 @@ static constexpr unsigned int CUBE_INDICES[] =
 };
 
 
-// sizeOfTexture will just be multiplied by an offset to choose whichever texture that specific face uses.
+// SIZE_OF_TEXTURE will just be multiplied by an offset to choose whichever texture that specific face uses.
 static constexpr float CUBE_UV_COORDS[] =
 {
-    0,             0,
-    sizeOfTexture, 0,
-    sizeOfTexture, sizeOfTexture,
-    0,             sizeOfTexture,
+    0,               0,
+    SIZE_OF_TEXTURE, 0,
+    SIZE_OF_TEXTURE, SIZE_OF_TEXTURE,
+    0,               SIZE_OF_TEXTURE,
 };
 
 static constexpr unsigned int CUBE_UV_INDICES[] = { 1, 0, 3, 1, 3, 2 };
 
-class BlockMesh
+
+
+struct BlockMesh
 {
+private:
+    BlockType blockType;
+    std::vector<int> textureCoords;
+    unsigned int texturesUsed;
+
+    void AssignBlockInfo(BlockType blockType);
+
 public:
-    static void GenerateBlock(Chunk& chunk, const glm::vec3 blockOffset, const Block& block, const Texture& texture, const Shader& shaderProgram);
+    BlockMesh();
+    BlockMesh(BlockType blockType);
+
+    std::vector<int> GetTextureCoords(BlockType type) const { return textureCoords; }
+    unsigned int GetTexturesUsed(BlockType type) const { return texturesUsed; }
+    
+    void changeBlockType(BlockType blockType);
+
+    void LoadVBO(Chunk& chunk, const glm::vec3 blockOffset, const Texture& texture);
 };
