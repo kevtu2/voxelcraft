@@ -6,7 +6,6 @@
 #include "../blocks/Chunk.hpp"
 #include "../blocks/Texture.hpp"
 #include "../blocks/BlockMesh.hpp"
-#include "../blocks/Block.hpp"
 
 class Renderer
 {

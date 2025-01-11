@@ -83,6 +83,5 @@ void BlockMesh::LoadVBO(Chunk& chunk, const glm::vec3 blockOffset, const Texture
 		unsigned int uvIndex = CUBE_UV_INDICES[(i % 6)];
 		chunk.AppendToVBO(CUBE_UV_COORDS[uvIndex * 2 + 0] + textureCoords[currentTexCoord * 2 + 0] * SIZE_OF_TEXTURE);
 		chunk.AppendToVBO(CUBE_UV_COORDS[uvIndex * 2 + 1] + textureCoords[currentTexCoord * 2 + 1] * SIZE_OF_TEXTURE);
-
 	}
 }

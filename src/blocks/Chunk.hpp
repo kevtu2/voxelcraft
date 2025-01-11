@@ -1,6 +1,6 @@
 #pragma once
-#include "glad/glad.h"
 
+#include <glad/glad.h>
 #include <vector>
 #include <iostream>
 
@@ -11,12 +11,13 @@ private:
 	std::vector<unsigned int> chunkIndexData;
 	unsigned int chunkVBO_ID;
 	unsigned int chunkVAO_ID;
+	//unsigned int chunkIBO_ID;
 public:
 	Chunk();
 	~Chunk();
 
 	void AppendToVBO(float value);
-	void AppendToIBO(unsigned int value);
+	void AppendToIBO(const float indices[]);
 
 	void BufferData() const;
 

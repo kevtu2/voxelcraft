@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "Shader.hpp"
-#include "blocks\Block.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
