@@ -36,6 +36,7 @@ enum Face {
     F_BOT
 };
 
+// Adapted from jdh
 static constexpr float SIZE_OF_TEXTURE = 0.0625f;
 
 static constexpr float CUBE_VERTICES[] =

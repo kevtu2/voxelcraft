@@ -53,6 +53,7 @@ Application::Application(int width, int height)
 	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	});
+	glEnable(GL_CULL_FACE);
 }
 
 void Application::CalculateNewMousePosition()
@@ -130,7 +131,6 @@ void Application::Run()
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
 
 		Renderer::DrawChunk(shaderProgram, textureAtlas);
-
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

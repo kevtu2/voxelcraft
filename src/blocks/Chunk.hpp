@@ -6,9 +6,9 @@
 
 #include "../graphics/Vertex.hpp"
 
-#define CHUNK_SIZE_X 10
-#define CHUNK_SIZE_Y 10
-#define CHUNK_SIZE_Z 10
+#define CHUNK_SIZE_X 3
+#define CHUNK_SIZE_Y 3
+#define CHUNK_SIZE_Z 3
 
 class Chunk
 {
@@ -27,10 +27,12 @@ public:
 
 	void BufferData() const;
 	
-	std::vector<unsigned int> GetIndexData() const {return chunkIndexData;}
+	std::vector<unsigned int> GetIndexData() const { return chunkIndexData; }
 
 	void DrawArrays() const;
 
-	std::vector<Vertex> GetVertexDataArray() const { return chunkVertexData; }
+	void FilterVisibleFaces();
+
+	std::vector<Vertex>& GetVertexDataArray() { return chunkVertexData; }
 
 };

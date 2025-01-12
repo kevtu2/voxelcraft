@@ -78,15 +78,27 @@ void BlockMesh::LoadVBO(Chunk& chunk, const glm::vec3 blockOffset, const Texture
 		float yPos = CUBE_VERTICES[vertexIndex * 3 + 1] + blockOffset.y;
 		float zPos = CUBE_VERTICES[vertexIndex * 3 + 2] + blockOffset.z;
 		glm::vec3 positions = glm::vec3(xPos, yPos, zPos);
-		
+
 		// Append texture coordinates
 		unsigned int uvIndex = CUBE_UV_INDICES[(i % 6)];
-		float xUV = CUBE_UV_COORDS[uvIndex * 2 + 0] + textureCoords[currentTexCoord * 2 + 0] * SIZE_OF_TEXTURE;
-		float yUV = CUBE_UV_COORDS[uvIndex * 2 + 1] + textureCoords[currentTexCoord * 2 + 1] * SIZE_OF_TEXTURE;
-		glm::vec2 UV = glm::vec2(xUV, yUV);
-		
-		Vertex vertex(positions, UV);
-		chunk.AddToChunkArray(vertex);
+		if (texturesUsed > 1)
+		{
+			float xUV = CUBE_UV_COORDS[uvIndex * 2 + 0] + textureCoords[currentTexCoord * 2 + 0] * SIZE_OF_TEXTURE;
+			float yUV = CUBE_UV_COORDS[uvIndex * 2 + 1] + textureCoords[currentTexCoord * 2 + 1] * SIZE_OF_TEXTURE;
+			glm::vec2 UV = glm::vec2(xUV, yUV);
+
+			Vertex vertex(positions, UV);
+			chunk.AddToChunkArray(vertex);
+		}
+		else
+		{
+			float xUV = CUBE_UV_COORDS[uvIndex * 2 + 0] + textureCoords[0] * SIZE_OF_TEXTURE;
+			float yUV = CUBE_UV_COORDS[uvIndex * 2 + 1] + textureCoords[1] * SIZE_OF_TEXTURE;
+			glm::vec2 UV = glm::vec2(xUV, yUV);
+
+			Vertex vertex(positions, UV);
+			chunk.AddToChunkArray(vertex);
+		}
 	}
 }
 

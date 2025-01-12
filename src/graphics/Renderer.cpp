@@ -13,7 +13,7 @@ void Renderer::DrawChunk(const Shader& shaderProgram, const Texture& texture)
 	shaderProgram.UseProgram();
 	texture.Bind();
 	Chunk chunk;
-	BlockMesh grass(GRASS);
+	BlockMesh grass(DIRT);
 
 	for (size_t x = 0; x < CHUNK_SIZE_X; ++x)
 	{
@@ -27,6 +27,7 @@ void Renderer::DrawChunk(const Shader& shaderProgram, const Texture& texture)
 	}
 
 	//chunk.PrintChunkData();
+	//chunk.FilterVisibleFaces();
 	chunk.BufferData();
 	chunk.DrawArrays();
 }

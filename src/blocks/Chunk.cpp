@@ -48,3 +48,33 @@ void Chunk::DrawArrays() const
 {
 	glDrawArrays(GL_TRIANGLES, 0, chunkVertexData.size());
 }
+
+void Chunk::FilterVisibleFaces()
+{
+	bool shouldDraw = true;
+	std::vector<Vertex> visibleVertices;
+	for (size_t i = 0; i < chunkVertexData.size(); ++i)
+	{
+		if (i != 0 && i <= chunkVertexData.size() - 1)
+		{
+			// TODO overload != or == operator for Vertex struct?
+			shouldDraw =
+				!(
+					chunkVertexData[i - 1].xPos == chunkVertexData[i].xPos ||
+					chunkVertexData[i - 1].yPos == chunkVertexData[i].yPos ||
+					chunkVertexData[i - 1].zPos == chunkVertexData[i].zPos ||
+
+					chunkVertexData[i + 1].xPos == chunkVertexData[i].xPos ||
+					chunkVertexData[i + 1].yPos == chunkVertexData[i].yPos ||
+					chunkVertexData[i + 1].zPos == chunkVertexData[i].zPos
+				 );
+		}
+		if (!shouldDraw)
+		{
+			// Remove current Vertex to prevent drawing it
+			// TODO: Add .erase for IndexData when you add it
+			visibleVertices.push_back(chunkVertexData[i]);
+		}
+	}
+	//chunkVertexData.assign(visibleVertices);
+}
