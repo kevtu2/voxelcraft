@@ -2,6 +2,7 @@
 #include "Texture.hpp"
 #include "Chunk.hpp"
 #include "../graphics/Shader.hpp"
+#include "../graphics/Vertex.hpp"
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -113,4 +114,5 @@ public:
      * @param texture The texture atlas containing the necessary textures to draw the block.
      */
     void LoadVBO(Chunk& chunk, const glm::vec3 blockOffset, const Texture& texture);
+    void FilterVisibleFaces(Chunk& chunk);
 };
