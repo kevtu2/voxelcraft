@@ -3,6 +3,7 @@
 #include "Chunk.hpp"
 #include "../graphics/Shader.hpp"
 #include "../graphics/Vertex.hpp"
+#include "../blocks/Block.hpp"
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -17,18 +18,10 @@
  * 
  */
 
+#define CHUNK_X 32
+#define CHUNK_Y 32
+#define CHUNK_Z 32
 
-enum BlockType
-{
-    AIR, // Default type
-    GRASS,
-    DIRT,
-    WATER,
-    STONE,
-    SAND,
-    WOOD,
-    LEAVES
-};
 
 enum Face {
     F_TOP,
@@ -86,27 +79,6 @@ static constexpr unsigned int CUBE_UV_INDICES[] = { 1, 0, 3, 1, 3, 2 };
  */
 struct BlockMesh
 {
-private:
-    BlockType blockType;
-    std::vector<int> textureCoords;
-    unsigned int texturesUsed;
-
-    void AssignBlockInfo(BlockType blockType);
-
-public:
-    BlockMesh();
-    BlockMesh(BlockType blockType);
-
-    std::vector<int> GetTextureCoords(BlockType type) const { return textureCoords; }
-    unsigned int GetTexturesUsed(BlockType type) const { return texturesUsed; }
-    
-    /**
-     * @brief Changes the type of the current block that we want to draw.
-     * 
-     * @param blockType Specifies the block we currently want to draw
-     */
-    void changeBlockType(BlockType blockType);
-
      /**
      * @brief Generates vertex data depending on the block currently bounded.
      * 
@@ -114,6 +86,5 @@ public:
      * @param blockOffset Where the block needs to be drawn in the world.
      * @param texture The texture atlas containing the necessary textures to draw the block.
      */
-    void LoadVBO(Chunk& chunk, const glm::vec3 blockOffset, const Texture& texture);
-    void FilterVisibleFaces(Chunk& chunk);
+    static void LoadVBO(Block(&blocks)[CHUNK_X][CHUNK_Y][CHUNK_Z], BlockType type, const glm::vec3 blockOffset);
 };

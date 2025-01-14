@@ -1,65 +1,13 @@
 #include "BlockMesh.hpp"
 
-BlockMesh::BlockMesh()
-	: blockType(AIR),
-	texturesUsed(0)
-{
-
-}
-
-BlockMesh::BlockMesh(BlockType blockType)
-	: blockType(blockType)
-{
-	AssignBlockInfo(blockType);
-}
-
-void BlockMesh::AssignBlockInfo(BlockType blockType)
-{
-	switch (blockType) {
-	case GRASS:
-		// Structured as <(UP.x, UP.y), (SIDE.x, SIDE.y), (DOWN.x, DOWN.y)> if more than one textures used in texture atlas.
-		// Note that the texture atlas is flipped vertically, hence the indices specified below.
-		textureCoords = { 0, 15, 1, 15, 2, 15 };
-		texturesUsed = 3;
-		break;
-	case DIRT:
-		textureCoords = { 2, 15 };
-		texturesUsed = 1;
-		break;
-	case WATER:
-		textureCoords = { 0, 0 };
-		texturesUsed = 1;
-		break;
-	case STONE:
-		textureCoords = { 3, 15 };
-		texturesUsed = 1;
-		break;
-	case SAND:
-		textureCoords = { 0, 14 };
-		texturesUsed = 1;
-		break;
-	case WOOD:
-		textureCoords = { 3, 14, 2, 14, 3, 14 };
-		texturesUsed = 2;
-		break;
-	case LEAVES:
-		textureCoords = { 4, 14 };
-		texturesUsed = 1;
-		break;
-	}
-}
-
-void BlockMesh::changeBlockType(BlockType blockType)
-{
-	this->blockType = blockType;
-	AssignBlockInfo(blockType);
-}
-
-void BlockMesh::LoadVBO(Chunk& chunk, const glm::vec3 blockOffset, const Texture& texture)
+void BlockMesh::LoadVBO(Block(&blocks)[CHUNK_X][CHUNK_Y][CHUNK_Z], BlockType type, const glm::vec3 blockOffset)
 {
 	// If the block uses more than 1 texture, it's texture for the sides is the second pair (1,0)
 	// located inside textureCoords vector (in Block.cpp). If the block uses only 1, the
 	// texture coordinates in the texture atlas will just be the first and only pair (0)
+	Block block(type);
+	auto texturesUsed = block.GetTexturesUsed();
+	auto textureCoords = block.GetTextureCoords();
 	unsigned int currentTexCoord = (texturesUsed > 1) ? F_SIDE : 0;
 
 	// Append faces to chunk VBO -- Vertex by vertex
@@ -88,7 +36,7 @@ void BlockMesh::LoadVBO(Chunk& chunk, const glm::vec3 blockOffset, const Texture
 			glm::vec2 UV = glm::vec2(xUV, yUV);
 
 			Vertex vertex(positions, UV);
-			chunk.AddToChunkArray(vertex);
+			block.AppendVertexData(vertex);
 		}
 		else
 		{
@@ -97,9 +45,10 @@ void BlockMesh::LoadVBO(Chunk& chunk, const glm::vec3 blockOffset, const Texture
 			glm::vec2 UV = glm::vec2(xUV, yUV);
 
 			Vertex vertex(positions, UV);
-			chunk.AddToChunkArray(vertex);
+			block.AppendVertexData(vertex);
 		}
 	}
+	blocks[(int)blockOffset.x][(int)blockOffset.y][(int)blockOffset.z] = block;
 }
 
 

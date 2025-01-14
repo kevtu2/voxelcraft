@@ -13,21 +13,9 @@ void Renderer::DrawChunk(const Shader& shaderProgram, const Texture& texture)
 	shaderProgram.UseProgram();
 	texture.Bind();
 	Chunk chunk;
-	BlockMesh grass(DIRT);
-
-	for (size_t x = 0; x < CHUNK_SIZE_X; ++x)
-	{
-		for (size_t y = 0; y < CHUNK_SIZE_Y; ++y)
-		{
-			for (size_t z = 0; z < CHUNK_SIZE_Z; ++z)
-			{
-				grass.LoadVBO(chunk, glm::vec3(x, y, z), texture);
-			}
-		}
-	}
-
+	chunk.GenerateChunkData();
 	//chunk.PrintChunkData();
-	//chunk.FilterVisibleFaces();
+	chunk.FilterVisibleFaces();
 	chunk.BufferData();
 	chunk.DrawArrays();
 }

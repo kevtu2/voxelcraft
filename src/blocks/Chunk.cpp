@@ -5,7 +5,28 @@ Chunk::Chunk()
 	glGenBuffers(1, &chunkVBO_ID);
 	//glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
-	chunkVertexData.reserve(CHUNK_SIZE_X * CHUNK_SIZE_Y * CHUNK_SIZE_Z);
+	chunkVertexData.reserve(CHUNK_X * CHUNK_Y * CHUNK_Z);
+
+	// Top grass layer
+	for (int x = 0; x < CHUNK_X; ++x)
+	{
+		for (int z = 0; z < CHUNK_Z; ++z)
+		{
+			chunkData[x][CHUNK_Y - 1][z] = BlockType::GRASS;
+		}
+	}
+
+	// Lower dirt layers
+	for (int x = 0; x < CHUNK_X; ++x)
+	{
+		for (int y = 0; y < CHUNK_Y - 1; ++y)
+		{
+			for (int z = 0; z < CHUNK_Z; ++z)
+			{
+				chunkData[x][y][z] = BlockType::DIRT;
+			}
+		}
+	}
 }
 
 Chunk::~Chunk()
@@ -52,29 +73,54 @@ void Chunk::DrawArrays() const
 void Chunk::FilterVisibleFaces()
 {
 	bool shouldDraw = true;
-	std::vector<Vertex> visibleVertices;
-	for (size_t i = 0; i < chunkVertexData.size(); ++i)
+	for (size_t x = 0; x < CHUNK_X; ++x)
 	{
-		if (i != 0 && i <= chunkVertexData.size() - 1)
+		for (size_t y = 0; y < CHUNK_Y; ++y)
 		{
-			// TODO overload != or == operator for Vertex struct?
-			shouldDraw =
-				!(
-					chunkVertexData[i - 1].xPos == chunkVertexData[i].xPos ||
-					chunkVertexData[i - 1].yPos == chunkVertexData[i].yPos ||
-					chunkVertexData[i - 1].zPos == chunkVertexData[i].zPos ||
+			for (size_t z = 0; z < CHUNK_Z; ++z)
+			{
+				std::vector<Vertex> blockVertices = blocks[x][y][z].GetBlockVertices();
+				// If the current block is air, it shouldn't be drawn
+				if (blocks[x][y][z].IsTransparent()) // Currently does not draw water, leaves, etc.
+					shouldDraw = false;
 
-					chunkVertexData[i + 1].xPos == chunkVertexData[i].xPos ||
-					chunkVertexData[i + 1].yPos == chunkVertexData[i].yPos ||
-					chunkVertexData[i + 1].zPos == chunkVertexData[i].zPos
-				 );
-		}
-		if (!shouldDraw)
-		{
-			// Remove current Vertex to prevent drawing it
-			// TODO: Add .erase for IndexData when you add it
-			visibleVertices.push_back(chunkVertexData[i]);
+				// Boundary blocks should be drawn
+				else if (x == 0 || y == 0 || z == 0 || x == CHUNK_X - 1 || y == CHUNK_Y - 1 || z == CHUNK_Z - 1)
+					shouldDraw = true;
+				// Check surrounding blocks if they are transparent
+				else
+				{
+					shouldDraw = 
+						blocks[x - 1][y][z].IsTransparent() ||
+						blocks[x][y - 1][z].IsTransparent() ||
+						blocks[x][y][z - 1].IsTransparent() ||
+						blocks[x + 1][y][z].IsTransparent() ||
+						blocks[x][y + 1][z].IsTransparent() ||
+						blocks[x][y][z + 1].IsTransparent();
+				}
+
+				if (shouldDraw)
+				{
+					for (Vertex vertex : blockVertices)
+					{
+						chunkVertexData.push_back(vertex);
+					}
+				}
+			}
 		}
 	}
-	//chunkVertexData.assign(visibleVertices);
+}
+
+void Chunk::GenerateChunkData()
+{
+	for (size_t x = 0; x < CHUNK_X; ++x)
+	{
+		for (size_t y = 0; y < CHUNK_Y; ++y)
+		{
+			for (size_t z = 0; z < CHUNK_Z; ++z)
+			{
+				BlockMesh::LoadVBO(blocks, static_cast<BlockType>(chunkData[x][y][z]), glm::vec3(x, y, z));
+			}
+		}
+	}
 }

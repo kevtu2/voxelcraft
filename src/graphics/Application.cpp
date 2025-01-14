@@ -115,8 +115,6 @@ void Application::Run()
 
 	Texture textureAtlas("../textures/blocks.png");
 
-
-
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentTime = glfwGetTime();
