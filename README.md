@@ -1,2 +1,2 @@
-# Voxelworx
-A Minecraft clone
+# Voxelcraft
+An abitious Minecraft clone - WIP
