@@ -30,6 +30,8 @@ private:
 	// Contains which blocks to generate
 	// TODO: Implement terrain generator with this
 	BlockType chunkData[CHUNK_X][CHUNK_Y][CHUNK_Z];
+
+	unsigned int vertexCount = 0;
 	
 public:
 	Chunk();

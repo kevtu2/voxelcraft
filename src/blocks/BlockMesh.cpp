@@ -53,4 +53,13 @@ void BlockMesh::LoadVBO(std::vector<Vertex>& data, BlockType type, const glm::ve
 	}
 }
 
+void BlockMesh::AddFace(std::vector<Vertex>& data, BlockType type, const glm::vec3 blockOffset, Face faceIndex)
+{
+	// Generate 4 vertices for one face
+	for (int i = 0; i < 4; ++i)
+	{
+
+	}
+}
+
 

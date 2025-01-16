@@ -31,9 +31,13 @@ public:
 
     std::vector<int> GetTextureCoords() const { return textureCoords; }
     unsigned int GetTexturesUsed() const { return texturesUsed; }
-    bool IsTransparent() const { return transparent; }
+    
+    // TODO: Get rid of this getter and the attribute itself.
+    //bool IsTransparent() const { return transparent; }
 
     void AppendVertexData(Vertex vertex);
 
     std::vector<Vertex> GetBlockVertices() const { return vertices; }
+
+    static bool IsTransparent(BlockType blockType);
 };

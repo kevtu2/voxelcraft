@@ -114,14 +114,23 @@ void Chunk::FilterVisibleFaces()
 
 void Chunk::GenerateChunkData()
 {
+	bool shouldDraw = true;
 	for (size_t x = 0; x < CHUNK_X; ++x)
 	{
 		for (size_t y = 0; y < CHUNK_Y; ++y)
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
-			{
-				BlockMesh::LoadVBO(chunkRawVertexData, chunkData[x][y][z], glm::vec3(x, y, z));
+			{	
+				// Check surrounding blocks for transparent faces
+				if (Block::IsTransparent(chunkData[x - 1][y][z])) BlockMesh::AddFace(chunkRawVertexData, chunkData[x][y][z], glm::vec3(x, y, z), WEST);
+				if (Block::IsTransparent(chunkData[x][y - 1][z])) BlockMesh::AddFace(chunkRawVertexData, chunkData[x][y][z], glm::vec3(x, y, z), DOWN);
+				if (Block::IsTransparent(chunkData[x][y][z - 1])) BlockMesh::AddFace(chunkRawVertexData, chunkData[x][y][z], glm::vec3(x, y, z), NORTH);
+				if (Block::IsTransparent(chunkData[x + 1][y][z])) BlockMesh::AddFace(chunkRawVertexData, chunkData[x][y][z], glm::vec3(x, y, z), EAST);
+				if (Block::IsTransparent(chunkData[x][y + 1][z])) BlockMesh::AddFace(chunkRawVertexData, chunkData[x][y][z], glm::vec3(x, y, z), UP);
+				if (Block::IsTransparent(chunkData[x][y][z + 1])) BlockMesh::AddFace(chunkRawVertexData, chunkData[x][y][z], glm::vec3(x, y, z), SOUTH);
+				// BlockMesh::LoadVBO(chunkRawVertexData, chunkData[x][y][z], glm::vec3(x, y, z));
 			}
 		}
 	}
 }
+

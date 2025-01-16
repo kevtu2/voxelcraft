@@ -12,10 +12,14 @@
 #define CHUNK_Z 32
 
 
-enum Face {
-    F_TOP,
-    F_SIDE,
-    F_BOT
+enum Face 
+{
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST,
+    UP,
+    DOWN
 };
 
 // Adapted from jdh
@@ -57,10 +61,10 @@ static constexpr float CUBE_UV_COORDS[] =
 static constexpr unsigned int CUBE_UV_INDICES[] = { 1, 0, 3, 1, 3, 2 };
 
 // North, South, East, West, Up, Down
-// North is always the first face to be generated, so we ignore in this list.
-static constexpr char CUBE_FACE[] = { 's', 'e', 'w', 'u', 'd' };
+static constexpr char CUBE_FACE[] = { 'n', 's', 'e', 'w', 'u', 'd' };
 
 struct BlockMesh
 {
     static void LoadVBO(std::vector<Vertex>& data, BlockType type, const glm::vec3 blockOffset);
+    static void AddFace(std::vector<Vertex>& data, BlockType type, const glm::vec3 blockOffset, Face faceIndex);
 };

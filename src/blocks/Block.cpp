@@ -60,3 +60,25 @@ void Block::AppendVertexData(Vertex vertex)
 	vertices.push_back(vertex);
 }
 
+bool Block::IsTransparent(BlockType blockType)
+{
+	switch (blockType) {
+	case AIR:
+		return true;
+	case GRASS:
+		return false;
+	case DIRT:
+		return false;
+	case WATER:
+		return true;
+	case STONE:
+		return false;
+	case SAND:
+		return false;
+	case WOOD:
+		return false;
+	case LEAVES:
+		return true;
+	}
+}
+
