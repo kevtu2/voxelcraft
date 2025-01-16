@@ -16,7 +16,12 @@
 class Chunk
 {
 private:
+	std::vector<Vertex> chunkRawVertexData;
+	// The idea is that once we determine which face is hidden from the player,
+	// We can remove it from rendering, but we still have its original data so
+	// when it is visible (when breaking a block, etc) it can be added back to be rendered.
 	std::vector<Vertex> chunkVertexData;
+
 	std::vector<unsigned int> chunkIndexData;
 	unsigned int chunkVBO_ID;
 	unsigned int chunkVAO_ID;
@@ -24,9 +29,7 @@ private:
 
 	// Contains which blocks to generate
 	// TODO: Implement terrain generator with this
-	int chunkData[CHUNK_X][CHUNK_Y][CHUNK_Z];
-	Block blocks[CHUNK_X][CHUNK_Y][CHUNK_Z];
-
+	BlockType chunkData[CHUNK_X][CHUNK_Y][CHUNK_Z];
 	
 public:
 	Chunk();

@@ -1,6 +1,6 @@
 #include "BlockMesh.hpp"
 
-void BlockMesh::LoadVBO(Block(&blocks)[CHUNK_X][CHUNK_Y][CHUNK_Z], BlockType type, const glm::vec3 blockOffset)
+void BlockMesh::LoadVBO(std::vector<Vertex>& data, BlockType type, const glm::vec3 blockOffset)
 {
 	// If the block uses more than 1 texture, it's texture for the sides is the second pair (1,0)
 	// located inside textureCoords vector (in Block.cpp). If the block uses only 1, the
@@ -9,6 +9,7 @@ void BlockMesh::LoadVBO(Block(&blocks)[CHUNK_X][CHUNK_Y][CHUNK_Z], BlockType typ
 	auto texturesUsed = block.GetTexturesUsed();
 	auto textureCoords = block.GetTextureCoords();
 	unsigned int currentTexCoord = (texturesUsed > 1) ? F_SIDE : 0;
+	char direction = 'n';
 
 	// Append faces to chunk VBO -- Vertex by vertex
 	for (size_t i = 0; i < 36; ++i)
@@ -18,10 +19,11 @@ void BlockMesh::LoadVBO(Block(&blocks)[CHUNK_X][CHUNK_Y][CHUNK_Z], BlockType typ
 			currentTexCoord = F_TOP;
 		else if (i > 29)
 			currentTexCoord = F_BOT;
+		if (i % 6 == 0)
+			direction = CUBE_FACE[i / 6];
 
 		// Append vertices of the face
 		unsigned int vertexIndex = CUBE_INDICES[i];
-
 		float xPos = CUBE_VERTICES[vertexIndex * 3 + 0] + blockOffset.x;
 		float yPos = CUBE_VERTICES[vertexIndex * 3 + 1] + blockOffset.y;
 		float zPos = CUBE_VERTICES[vertexIndex * 3 + 2] + blockOffset.z;
@@ -35,8 +37,9 @@ void BlockMesh::LoadVBO(Block(&blocks)[CHUNK_X][CHUNK_Y][CHUNK_Z], BlockType typ
 			float yUV = CUBE_UV_COORDS[uvIndex * 2 + 1] + textureCoords[currentTexCoord * 2 + 1] * SIZE_OF_TEXTURE;
 			glm::vec2 UV = glm::vec2(xUV, yUV);
 
-			Vertex vertex(positions, UV);
-			block.AppendVertexData(vertex);
+
+			Vertex vertex(positions, UV, direction, block.IsTransparent());
+			data.push_back(vertex);
 		}
 		else
 		{
@@ -44,11 +47,10 @@ void BlockMesh::LoadVBO(Block(&blocks)[CHUNK_X][CHUNK_Y][CHUNK_Z], BlockType typ
 			float yUV = CUBE_UV_COORDS[uvIndex * 2 + 1] + textureCoords[1] * SIZE_OF_TEXTURE;
 			glm::vec2 UV = glm::vec2(xUV, yUV);
 
-			Vertex vertex(positions, UV);
-			block.AppendVertexData(vertex);
+			Vertex vertex(positions, UV, direction, block.IsTransparent());
+			data.push_back(vertex);
 		}
 	}
-	blocks[(int)blockOffset.x][(int)blockOffset.y][(int)blockOffset.z] = block;
 }
 
 

@@ -7,17 +7,6 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-/**
- * @file BlockMesh.hpp
- * @brief Defines and generates vertex buffer data for a given block.
- * 
- * This entire class/file consists of the necessary data to create a
- * block of a specified type. It's  state machine, meaning that it 
- * should be created once, but its state should be changed to create 
- * different blocks.
- * 
- */
-
 #define CHUNK_X 32
 #define CHUNK_Y 32
 #define CHUNK_Z 32
@@ -67,24 +56,11 @@ static constexpr float CUBE_UV_COORDS[] =
 
 static constexpr unsigned int CUBE_UV_INDICES[] = { 1, 0, 3, 1, 3, 2 };
 
+// North, South, East, West, Up, Down
+// North is always the first face to be generated, so we ignore in this list.
+static constexpr char CUBE_FACE[] = { 's', 'e', 'w', 'u', 'd' };
 
-/**
- * @struct BlockMesh
- * @brief A container class used to store and generate block data.
- * 
- * The BlockMesh class represents a state machine, meaning that it
- * should be created once, but its attributes can be changed to
- * specify which block to draw via OpenGL. Similar to OpenGL binding,
- * we can bind a block type to only draw that when performing draw calls.
- */
 struct BlockMesh
 {
-     /**
-     * @brief Generates vertex data depending on the block currently bounded.
-     * 
-     * @param chunk The current chunk that the block is being drawn to.
-     * @param blockOffset Where the block needs to be drawn in the world.
-     * @param texture The texture atlas containing the necessary textures to draw the block.
-     */
-    static void LoadVBO(Block(&blocks)[CHUNK_X][CHUNK_Y][CHUNK_Z], BlockType type, const glm::vec3 blockOffset);
+    static void LoadVBO(std::vector<Vertex>& data, BlockType type, const glm::vec3 blockOffset);
 };

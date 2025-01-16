@@ -79,9 +79,10 @@ void Chunk::FilterVisibleFaces()
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
-				std::vector<Vertex> blockVertices = blocks[x][y][z].GetBlockVertices();
 				// If the current block is air, it shouldn't be drawn
-				if (blocks[x][y][z].IsTransparent()) // Currently does not draw water, leaves, etc.
+				// We can just check one vertex of a block for transparency
+				// Since transparency is applied to the entire block.
+				if (chunkRawVertexData[x*y*z].transparent) // Currently does not draw water, leaves, etc.
 					shouldDraw = false;
 
 				// Boundary blocks should be drawn
@@ -90,13 +91,13 @@ void Chunk::FilterVisibleFaces()
 				// Check surrounding blocks if they are transparent
 				else
 				{
-					shouldDraw = 
+					/*shouldDraw = 
 						blocks[x - 1][y][z].IsTransparent() ||
 						blocks[x][y - 1][z].IsTransparent() ||
 						blocks[x][y][z - 1].IsTransparent() ||
 						blocks[x + 1][y][z].IsTransparent() ||
 						blocks[x][y + 1][z].IsTransparent() ||
-						blocks[x][y][z + 1].IsTransparent();
+						blocks[x][y][z + 1].IsTransparent();*/
 				}
 
 				if (shouldDraw)
@@ -119,7 +120,7 @@ void Chunk::GenerateChunkData()
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
-				BlockMesh::LoadVBO(blocks, static_cast<BlockType>(chunkData[x][y][z]), glm::vec3(x, y, z));
+				BlockMesh::LoadVBO(chunkRawVertexData, chunkData[x][y][z], glm::vec3(x, y, z));
 			}
 		}
 	}
