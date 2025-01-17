@@ -1,6 +1,6 @@
 #pragma once
-#include <glad\glad.h>
-#include <GLFW\glfw3.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <iostream>
 
 #include "Shader.hpp"
@@ -9,7 +9,8 @@
 #include "VertexArray.hpp"
 #include "Renderer.hpp"
 #include "Camera.hpp"
-#include "blocks\Texture.hpp"
+#include "blocks/Texture.hpp"
+#include "blocks/Chunk.hpp"
 
 class Application
 {

@@ -3,7 +3,7 @@
 struct Vertex
 {
 	float xUV, yUV;
-	char xPos, yPos, zPos;
+	float xPos, yPos, zPos;
 
 	// (n)orth, (s)outh, (w)est, (e)ast, (u)p, (d)own
 	char direction;
