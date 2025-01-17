@@ -12,10 +12,8 @@ void Renderer::DrawChunk(const Shader& shaderProgram, const Texture& texture)
 {
 	shaderProgram.UseProgram();
 	texture.Bind();
-	Chunk chunk;
-	chunk.GenerateChunkData();
-	//chunk.PrintChunkData();
-	chunk.FilterVisibleFaces();
-	chunk.BufferData();
-	chunk.DrawArrays();
+	Chunk* chunk = new Chunk();
+	chunk->GenerateChunkData();
+	chunk->BufferData();
+	chunk->DrawArrays();
 }

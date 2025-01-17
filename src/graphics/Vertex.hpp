@@ -19,4 +19,7 @@ struct Vertex
 		zPos(positions.z),
 		direction(direction),
 		transparent(transparent)
+	{
+
+	}
 };

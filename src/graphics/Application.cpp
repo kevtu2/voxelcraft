@@ -90,16 +90,16 @@ void Application::ProcessInput()
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.HandleInputControls(FORWARD, deltaTime);
+		camera.HandleInputControls(C_FORWARD, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.HandleInputControls(LEFT, deltaTime);
+		camera.HandleInputControls(C_LEFT, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.HandleInputControls(BACKWARD, deltaTime);
+		camera.HandleInputControls(C_BACKWARD, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.HandleInputControls(RIGHT, deltaTime);
+		camera.HandleInputControls(C_RIGHT, deltaTime);
 }
 
 void Application::Run()

@@ -55,10 +55,6 @@ void Block::AssignBlockInfo(BlockType blockType)
 	}
 }
 
-void Block::AppendVertexData(Vertex vertex)
-{
-	vertices.push_back(vertex);
-}
 
 bool Block::IsTransparent(BlockType blockType)
 {

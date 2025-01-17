@@ -4,12 +4,10 @@
 #include "../graphics/Shader.hpp"
 #include "../graphics/Vertex.hpp"
 #include "../blocks/Block.hpp"
+#include "../blocks/ChunkMesh.hpp"
 #include <glm/glm.hpp>
 #include <vector>
 
-#define CHUNK_X 32
-#define CHUNK_Y 32
-#define CHUNK_Z 32
 
 
 enum Face 
@@ -24,6 +22,7 @@ enum Face
 
 // Adapted from jdh
 static constexpr float SIZE_OF_TEXTURE = 0.0625f;
+
 
 static constexpr float CUBE_VERTICES[] =
 {
@@ -59,12 +58,13 @@ static constexpr float CUBE_UV_COORDS[] =
 };
 
 static constexpr unsigned int CUBE_UV_INDICES[] = { 1, 0, 3, 1, 3, 2 };
+static constexpr unsigned int FACE_INDICES[] = {1, 0, 3, 1, 3, 2};
 
 // North, South, East, West, Up, Down
 static constexpr char CUBE_FACE[] = { 'n', 's', 'e', 'w', 'u', 'd' };
 
 struct BlockMesh
 {
-    static void LoadVBO(std::vector<Vertex>& data, BlockType type, const glm::vec3 blockOffset);
-    static void AddFace(std::vector<Vertex>& data, BlockType type, const glm::vec3 blockOffset, Face faceIndex);
+    //static void LoadVBO(std::vector<Vertex>& data, BlockType type, const glm::vec3 blockOffset);
+    static void AddFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face);
 };

@@ -7,22 +7,16 @@
 #include "../graphics/Vertex.hpp"
 #include "../blocks/BlockMesh.hpp"
 #include "../blocks/Block.hpp"
+#include "../blocks/ChunkMesh.hpp"
 
-#define CHUNK_X 32
-#define CHUNK_Y 32
-#define CHUNK_Z 32
+#define CHUNK_X 1
+#define CHUNK_Y 1
+#define CHUNK_Z 1
 
 
 class Chunk
 {
 private:
-	std::vector<Vertex> chunkRawVertexData;
-	// The idea is that once we determine which face is hidden from the player,
-	// We can remove it from rendering, but we still have its original data so
-	// when it is visible (when breaking a block, etc) it can be added back to be rendered.
-	std::vector<Vertex> chunkVertexData;
-
-	std::vector<unsigned int> chunkIndexData;
 	unsigned int chunkVBO_ID;
 	unsigned int chunkVAO_ID;
 	//unsigned int chunkIBO_ID;
@@ -37,18 +31,11 @@ public:
 	Chunk();
 	~Chunk();
 
-	void AppendToIBO(const float indices[]);
-	void AddToChunkArray(Vertex vertex);
+	ChunkMesh* chunkMesh;
 
 	void BufferData() const;
-	
-	std::vector<unsigned int> GetIndexData() const { return chunkIndexData; }
 
 	void DrawArrays() const;
-
-	void FilterVisibleFaces();
-
-	std::vector<Vertex>& GetVertexDataArray() { return chunkVertexData; }
 
 	void GenerateChunkData();
 

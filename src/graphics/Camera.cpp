@@ -26,19 +26,19 @@ glm::mat4 Camera::GetViewMatrix() const
 void Camera::HandleInputControls(CameraMovement move, float deltaTime)
 {
 	switch (move) {
-	case FORWARD:
+	case C_FORWARD:
 		position += lookDirection * cameraSpeed * deltaTime;
 		break;
 
-	case LEFT:
+	case C_LEFT:
 		position += -cameraRight * cameraSpeed * deltaTime;
 		break;
 
-	case BACKWARD:
+	case C_BACKWARD:
 		position += -lookDirection * cameraSpeed * deltaTime;
 		break;
 
-	case RIGHT:
+	case C_RIGHT:
 		position += cameraRight * cameraSpeed * deltaTime;
 		break;
 	}

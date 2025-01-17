@@ -19,7 +19,6 @@ class Block
 {
 private:
     BlockType blockType;
-    std::vector<Vertex> vertices;
     std::vector<int> textureCoords;
     unsigned int texturesUsed;
     bool transparent;
@@ -34,10 +33,6 @@ public:
     
     // TODO: Get rid of this getter and the attribute itself.
     //bool IsTransparent() const { return transparent; }
-
-    void AppendVertexData(Vertex vertex);
-
-    std::vector<Vertex> GetBlockVertices() const { return vertices; }
 
     static bool IsTransparent(BlockType blockType);
 };
