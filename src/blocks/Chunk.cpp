@@ -85,7 +85,7 @@ void Chunk::GenerateChunkData()
 					BlockMesh::AddFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), EAST);
 					BlockMesh::AddFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), UP);
 					BlockMesh::AddFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), SOUTH);
-					break;
+					continue;
 				}
 				// Check surrounding blocks for transparent faces
 				if (Block::IsTransparent(chunkData[x - 1][y][z])) BlockMesh::AddFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), WEST);
@@ -98,7 +98,7 @@ void Chunk::GenerateChunkData()
 			}
 		}
 	}
-	//chunkMesh->PrintChunkIndices();
-	//chunkMesh->PrintChunkVertex();
+	/*chunkMesh->PrintChunkIndices();
+	chunkMesh->PrintChunkVertex();*/
 }
 

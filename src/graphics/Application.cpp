@@ -115,11 +115,6 @@ void Application::Run()
 
 	Texture textureAtlas("../textures/blocks.png");
 
-	Chunk* chunk = new Chunk();
-
-	Renderer::DrawChunk(chunk, shaderProgram, textureAtlas);
-
-	delete chunk;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -134,7 +129,12 @@ void Application::Run()
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
 
-		
+
+		Chunk* chunk = new Chunk();
+
+		Renderer::DrawChunk(chunk, shaderProgram, textureAtlas);
+
+		delete chunk;
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
