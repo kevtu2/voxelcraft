@@ -1,5 +1,5 @@
 #pragma once
-#include <glad\glad.h>
+#include <glad/glad.h>
 #include <iostream>
 #include "stb_image.h"
 #include "glm/glm.hpp"
@@ -13,7 +13,6 @@ private:
 	int width, height, nrChannels;
 	unsigned char* data;
 
-	
 public:
 	Texture(const char* filename);
 	Texture(unsigned int rows, const char* filename);

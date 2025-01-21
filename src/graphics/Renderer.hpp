@@ -5,7 +5,7 @@
 #include "Shader.hpp"
 #include "../blocks/Chunk.hpp"
 #include "../blocks/Texture.hpp"
-#include "../blocks/BlockMesh.hpp"
+#include "../blocks/BlockGeneration.hpp"
 
 class Renderer
 {

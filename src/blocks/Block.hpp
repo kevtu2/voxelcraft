@@ -15,6 +15,16 @@ enum BlockType
     LEAVES
 };
 
+enum Face
+{
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST,
+    UP,
+    DOWN
+};
+
 class Block 
 {
 private:
@@ -30,9 +40,6 @@ public:
 
     std::vector<int> GetTextureCoords() const { return textureCoords; }
     unsigned int GetTexturesUsed() const { return texturesUsed; }
-    
-    // TODO: Get rid of this getter and the attribute itself.
-    //bool IsTransparent() const { return transparent; }
 
     static bool IsTransparent(BlockType blockType);
 };

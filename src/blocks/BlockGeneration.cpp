@@ -1,6 +1,6 @@
-#include "BlockMesh.hpp"
+#include "BlockGeneration.hpp"
 
-void BlockMesh::AddFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face)
+void BlockGeneration::GenerateFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face)
 {
  	Block block(type);
 	auto texCoords = block.GetTextureCoords();
@@ -21,7 +21,6 @@ void BlockMesh::AddFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 bl
 		unsigned int uvIndex = CUBE_UV_INDICES[i];
 		glm::vec2 UV = glm::vec2(1.0f);
 
-		// TODO: Fix this hacky code :(!!
 		if (texturesUsed > 1 && (face != DOWN && face != UP))
 		{
 			// Side faces
