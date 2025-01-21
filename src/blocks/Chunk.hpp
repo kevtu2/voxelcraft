@@ -37,6 +37,6 @@ public:
 
 	void DrawArrays() const;
 
-	void GenerateChunkData();
+	void GenerateChunkVertexData();
 
 };

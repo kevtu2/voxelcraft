@@ -12,7 +12,7 @@ void Renderer::DrawChunk(Chunk* chunk, const Shader& shaderProgram, const Textur
 {
 	shaderProgram.UseProgram();
 	texture.Bind();
-	chunk->GenerateChunkData();
+	chunk->GenerateChunkVertexData();
 	chunk->BufferData();
 	chunk->DrawArrays();
 }

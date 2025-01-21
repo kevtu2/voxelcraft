@@ -65,7 +65,7 @@ void Chunk::DrawArrays() const
 }
 
 
-void Chunk::GenerateChunkData()
+void Chunk::GenerateChunkVertexData()
 {	
 	for (size_t x = 0; x < CHUNK_X; ++x)
 	{
