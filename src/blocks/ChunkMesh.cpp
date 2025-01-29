@@ -11,6 +11,7 @@ void ChunkMesh::PrintChunkVertex() const
 			<< vertex.xUV << ", " 
 			<< vertex.yUV << std::endl;
 	}
+	std::cout << "Number of vertices: " << chunkVertexData.size();
 }
 
 void ChunkMesh::PrintChunkIndices() const

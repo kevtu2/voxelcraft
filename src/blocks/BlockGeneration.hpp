@@ -46,7 +46,7 @@ namespace BlockGeneration
     };
 
     static constexpr unsigned int CUBE_UV_INDICES[] = { 1, 0, 3, 1, 3, 2 };
-    static constexpr unsigned int FACE_INDICES[] = { 1, 0, 3, 1, 3, 2 };
+    static constexpr unsigned int FACE_INDICES[] = { 0, 4, 7, 0, 7, 3 };
 
 
      void GenerateFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face);

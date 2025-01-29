@@ -3,7 +3,7 @@
 Chunk::Chunk()
 {
 	glGenBuffers(1, &chunkVBO_ID);
-	//glGenBuffers(1, &chunkIBO_ID);
+	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
 
 	chunkMesh = new ChunkMesh();
@@ -34,7 +34,7 @@ Chunk::Chunk()
 Chunk::~Chunk()
 {
 	glDeleteBuffers(1, &chunkVBO_ID);
-	//glDeleteBuffers(1, &chunkIBO_ID);
+	glDeleteBuffers(1, &chunkIBO_ID);
 	glDeleteVertexArrays(1, &chunkVAO_ID);
 	delete chunkMesh;
 }
@@ -47,8 +47,8 @@ void Chunk::BufferData() const
 	glBindBuffer(GL_ARRAY_BUFFER, chunkVBO_ID);
 	glBufferData(GL_ARRAY_BUFFER, chunkMesh->chunkVertexData.size() * sizeof(Vertex), chunkMesh->chunkVertexData.data(), GL_STATIC_DRAW);
 
-	 //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, chunkIBO_ID);
-	 //glBufferData(GL_ELEMENT_ARRAY_BUFFER, chunkMesh->chunkIndexData.size() * sizeof(unsigned int), chunkMesh->chunkIndexData.data(), GL_STATIC_DRAW);
+	 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, chunkIBO_ID);
+	 glBufferData(GL_ELEMENT_ARRAY_BUFFER, chunkMesh->chunkIndexData.size() * sizeof(unsigned int), chunkMesh->chunkIndexData.data(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -60,8 +60,9 @@ void Chunk::BufferData() const
 
 void Chunk::DrawArrays() const
 {
-	glDrawArrays(GL_TRIANGLES, 0, chunkMesh->chunkVertexData.size());
-	//glDrawElements(GL_TRIANGLES, chunkMesh->chunkIndexData.size(), GL_UNSIGNED_INT, 0);
+	//glDrawArrays(GL_TRIANGLES, 0, chunkMesh->chunkVertexData.size());
+	glBindVertexArray(chunkVAO_ID);
+	glDrawElements(GL_TRIANGLES, chunkMesh->chunkIndexData.size(), GL_UNSIGNED_INT, 0);
 }
 
 
@@ -106,7 +107,7 @@ void Chunk::GenerateChunkVertexData()
 			}
 		}
 	}
-	/*chunkMesh->PrintChunkIndices();
-	chunkMesh->PrintChunkVertex();*/
+	//chunkMesh->PrintChunkIndices();
+	//chunkMesh->PrintChunkVertex();
 }
 

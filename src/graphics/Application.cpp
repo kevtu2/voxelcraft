@@ -53,7 +53,11 @@ Application::Application(int width, int height)
 	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	});
+
 	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+
+	
 }
 
 void Application::CalculateNewMousePosition()
@@ -136,8 +140,8 @@ void Application::Run()
 
 		delete chunk;
 
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
 	}
 }
