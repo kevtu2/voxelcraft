@@ -9,7 +9,7 @@
 
 namespace BlockGeneration
 {
-    // Adapted from jdh
+    // Cube data adapted from jdah's weekend minecraft repository
     static constexpr float SIZE_OF_TEXTURE = 0.0625f;
 
     static constexpr float CUBE_VERTICES[] =
@@ -35,19 +35,30 @@ namespace BlockGeneration
         5, 4, 0, 5, 0, 1, // bottom (-y)
     };
 
+    static constexpr unsigned int CUBE_UNIQUE_INDICES[] = { 1, 0, 5, 2 };
+
 
     // SIZE_OF_TEXTURE will just be multiplied by an offset to choose whichever texture that specific face uses.
-    static constexpr float CUBE_UV_COORDS[] =
+    /*static constexpr float CUBE_UV_COORDS[] =
     {
         0,               0,
         SIZE_OF_TEXTURE, 0,
         SIZE_OF_TEXTURE, SIZE_OF_TEXTURE,
         0,               SIZE_OF_TEXTURE,
+    };*/
+
+    static constexpr float CUBE_UV_COORDS[] =
+    {
+        SIZE_OF_TEXTURE, 0,
+        0,               0,
+        0,               SIZE_OF_TEXTURE,
+        SIZE_OF_TEXTURE, SIZE_OF_TEXTURE
     };
 
-    static constexpr unsigned int CUBE_UV_INDICES[] = { 1, 0, 3, 1, 3, 2 };
-    static constexpr unsigned int FACE_INDICES[] = { 0, 4, 7, 0, 7, 3 };
 
+    static constexpr unsigned int CUBE_UV_INDICES[] = { 1, 0, 3, 1, 3, 2 };
+
+    static constexpr unsigned int FACE_INDICES[] = { 1, 0, 3, 1, 3, 2 };
 
      void GenerateFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face);
 

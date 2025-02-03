@@ -9,9 +9,9 @@
 #include "../blocks/Block.hpp"
 #include "../blocks/ChunkMesh.hpp"
 
-#define CHUNK_X 1
-#define CHUNK_Y 1
-#define CHUNK_Z 1
+#define CHUNK_X 16
+#define CHUNK_Y 16
+#define CHUNK_Z 16
 
 
 class Chunk

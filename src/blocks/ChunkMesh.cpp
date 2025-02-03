@@ -2,14 +2,14 @@
 
 void ChunkMesh::PrintChunkVertex() const
 {
-	for (Vertex vertex : chunkVertexData)
+	for (const Vertex& vertex : chunkVertexData)
 	{
 		std::cout 
-			<< vertex.xPos << ", " 
-			<< vertex.yPos << ", " 
-			<< vertex.zPos << ", " 
-			<< vertex.xUV << ", " 
-			<< vertex.yUV << std::endl;
+			<< vertex.x << ", " 
+			<< vertex.y << ", " 
+			<< vertex.z << ", " 
+			<< vertex.u << ", " 
+			<< vertex.v << std::endl;
 	}
 	std::cout << "Number of vertices: " << chunkVertexData.size();
 }
