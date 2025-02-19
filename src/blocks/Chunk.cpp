@@ -9,23 +9,13 @@ Chunk::Chunk()
 	chunkMesh = new ChunkMesh();
 
 	// TODO: Replace this with a terrain generator
-	// Top grass layer
 	for (int x = 0; x < CHUNK_X; ++x)
 	{
-		for (int z = 0; z < CHUNK_Z; ++z)
-		{
-			chunkData[x][CHUNK_Y - 1][z] = BlockType::GRASS;
-		}
-	}
-
-	// Lower dirt layers
-	for (int x = 0; x < CHUNK_X; ++x)
-	{
-		for (int y = 0; y < CHUNK_Y - 1; ++y)
+		for (int y = 0; y < CHUNK_Y; ++y)
 		{
 			for (int z = 0; z < CHUNK_Z; ++z)
 			{
-				chunkData[x][y][z] = BlockType::DIRT;
+				GenerateTerrain(x, y, z);
 			}
 		}
 	}
@@ -64,6 +54,12 @@ void Chunk::DrawArrays() const
 	glDrawElements(GL_TRIANGLES, chunkMesh->chunkIndexData.size(), GL_UNSIGNED_INT, 0);
 }
 
+
+void Chunk::GenerateTerrain(int x, int y, int z)
+{
+	rand() % 2 == 0 ? chunkData[x][y][z] = BlockType::AIR : chunkData[x][y][z] = BlockType::GRASS;
+}
+
 void Chunk::GenerateChunkVertexData()
 {
 	for (size_t x = 0; x < CHUNK_X; ++x)
@@ -72,6 +68,7 @@ void Chunk::GenerateChunkVertexData()
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
+				
 				// Do not draw anything if the block is AIR
 				if (chunkData[x][y][z] == BlockType::AIR) continue;
 

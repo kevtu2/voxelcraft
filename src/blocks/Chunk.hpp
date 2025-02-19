@@ -3,15 +3,16 @@
 #include <glad/glad.h>
 #include <vector>
 #include <iostream>
+#include <cstdlib>
 
 #include "../graphics/Vertex.hpp"
 #include "../blocks/BlockGeneration.hpp"
 #include "../blocks/Block.hpp"
 #include "../blocks/ChunkMesh.hpp"
 
-#define CHUNK_X 32
-#define CHUNK_Y 32
-#define CHUNK_Z 32
+#define CHUNK_X 16
+#define CHUNK_Y 384
+#define CHUNK_Z 16
 
 
 class Chunk
@@ -38,5 +39,9 @@ public:
 	void DrawArrays() const;
 
 	void GenerateChunkVertexData();
+	
+	// Terrain generator
+	void GenerateTerrain(int x, int y, int z);
+	
 
 };
