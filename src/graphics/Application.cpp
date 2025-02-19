@@ -53,6 +53,11 @@ Application::Application(int width, int height)
 	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	});
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+
+	
 }
 
 void Application::CalculateNewMousePosition()
@@ -89,26 +94,20 @@ void Application::ProcessInput()
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.HandleInputControls(FORWARD, deltaTime);
+		camera.HandleInputControls(C_FORWARD, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.HandleInputControls(LEFT, deltaTime);
+		camera.HandleInputControls(C_LEFT, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.HandleInputControls(BACKWARD, deltaTime);
+		camera.HandleInputControls(C_BACKWARD, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.HandleInputControls(RIGHT, deltaTime);
+		camera.HandleInputControls(C_RIGHT, deltaTime);
 }
 
 void Application::Run()
 {
-	VertexArray va_Block;
-
-	VertexBuffer vb_Block(BLOCK_VERTEX_DATA, sizeof(BLOCK_VERTEX_DATA));
-	IndexBuffer ib_Block(BLOCK_VERTEX_INDICES, sizeof(BLOCK_VERTEX_INDICES));
-
-	va_Block.BindVertexBuffer(vb_Block);
 
 	Shader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 	shaderProgram.UseProgram();
@@ -119,9 +118,9 @@ void Application::Run()
 	shaderProgram.SetUniformMatrix4f("model", model);
 
 	Texture textureAtlas("../textures/blocks.png");
-	shaderProgram.SetUniformVec2f("blockID", glm::vec2(2.0f, 0.0f));
 
-	Renderer::DrawChunk(shaderProgram, textureAtlas);
+	Chunk* chunk = new Chunk();
+	chunk->GenerateChunkVertexData();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -135,10 +134,13 @@ void Application::Run()
 		ProcessInput();
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
-		textureAtlas.Bind();
-		Renderer::Draw(va_Block, ib_Block, shaderProgram);
+
+		Renderer::DrawChunk(chunk, shaderProgram, textureAtlas);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	delete chunk;
+
 }

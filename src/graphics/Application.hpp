@@ -1,16 +1,16 @@
 #pragma once
-#include <glad\glad.h>
-#include <GLFW\glfw3.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <iostream>
 
 #include "Shader.hpp"
-#include "blocks\Block.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
 #include "Renderer.hpp"
 #include "Camera.hpp"
-#include "blocks\Texture.hpp"
+#include "blocks/Texture.hpp"
+#include "blocks/Chunk.hpp"
 
 class Application
 {
@@ -27,7 +27,7 @@ private:
 	float lastY;
 	bool firstMouseInput;
 
-	void ProcessInput(); // Make camera an attribute?
+	void ProcessInput();
 
 	void CalculateNewMousePosition();
 

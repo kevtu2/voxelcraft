@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 
 Camera::Camera()
-	: position(glm::vec3(0.0f, 0.0f, 0.0f)),
+	: position(glm::vec3(0.0f, 64.0f, 0.0f)),
 	lookDirection(glm::vec3(0.0f, 0.0f, -1.0f)),
 	cameraSpeed(3.5f),
 	cameraSensitivity(5.0f),
@@ -26,19 +26,19 @@ glm::mat4 Camera::GetViewMatrix() const
 void Camera::HandleInputControls(CameraMovement move, float deltaTime)
 {
 	switch (move) {
-	case FORWARD:
+	case C_FORWARD:
 		position += lookDirection * cameraSpeed * deltaTime;
 		break;
 
-	case LEFT:
+	case C_LEFT:
 		position += -cameraRight * cameraSpeed * deltaTime;
 		break;
 
-	case BACKWARD:
+	case C_BACKWARD:
 		position += -lookDirection * cameraSpeed * deltaTime;
 		break;
 
-	case RIGHT:
+	case C_RIGHT:
 		position += cameraRight * cameraSpeed * deltaTime;
 		break;
 	}

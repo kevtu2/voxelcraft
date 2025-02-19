@@ -1,43 +1,80 @@
 #include "Block.hpp"
 
-Block::Block()
-	: type(AIR),
-	texturesUsed(0)
+
+
+Block::Block(BlockType blockType)
+	: blockType(blockType)
 {
-	
+	AssignBlockInfo(blockType);
 }
 
-Block::Block(BlockType type)
-	: type(type)
+void Block::AssignBlockInfo(BlockType blockType)
 {
-	switch (type) {
-		case GRASS:
-			textureInfo = { 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2, 0 };
-			texturesUsed = 3;
-			break;
-		case DIRT:
-			textureInfo = { 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0 };
-			texturesUsed = 1;
-			break;
-		case WATER:
-			textureInfo = { 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15 };
-			texturesUsed = 1;
-			break;
-		case STONE:
-			textureInfo = { 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0 };
-			texturesUsed = 1;
-			break;
-		case SAND:
-			textureInfo = { 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2 };
-			texturesUsed = 1;
-			break;
-		case WOOD:
-			textureInfo = { 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1 };
-			texturesUsed = 2;
-			break;
-		case LEAVES:
-			textureInfo = { 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1 };
-			texturesUsed = 1;
-			break;
+	// Structured as <(UP.x, UP.y), (SIDE.x, SIDE.y), (DOWN.x, DOWN.y)> if more than one textures used in texture atlas.
+	// Note that the texture atlas is flipped vertically, hence the indices specified below.
+
+	switch (blockType) {
+	case AIR:
+		texturesUsed = 0;
+		break;
+	case GRASS:
+		textureCoords = { 0, 15, 1, 15, 2, 15 };
+		texturesUsed = 3;
+		transparent = false;
+		break;
+	case DIRT:
+		textureCoords = { 2, 15 };
+		texturesUsed = 1;
+		transparent = false;
+		break;
+	case WATER:
+		textureCoords = { 0, 0 };
+		texturesUsed = 1;
+		transparent = true;
+		break;
+	case STONE:
+		textureCoords = { 3, 15 };
+		texturesUsed = 1;
+		transparent = false;
+		break;
+	case SAND:
+		textureCoords = { 0, 14 };
+		texturesUsed = 1;
+		transparent = false;
+		break;
+	case WOOD:
+		textureCoords = { 3, 14, 2, 14, 3, 14 };
+		texturesUsed = 2;
+		transparent = false;
+		break;
+	case LEAVES:
+		textureCoords = { 4, 14 };
+		texturesUsed = 1;
+		transparent = true;
+		break;
 	}
 }
+
+
+bool Block::IsTransparent(BlockType blockType)
+{
+	switch (blockType) {
+	case AIR:
+		return true;
+	case GRASS:
+		return false;
+	case DIRT:
+		return false;
+	case WATER:
+		return true;
+	case STONE:
+		return false;
+	case SAND:
+		return false;
+	case WOOD:
+		return false;
+	case LEAVES:
+		return true;
+	}
+}
+
