@@ -27,6 +27,8 @@ private:
 	BlockType chunkData[CHUNK_X][CHUNK_Y][CHUNK_Z];
 
 	unsigned int vertexCount = 0;
+
+	const int surfaceY = 100;
 	
 public:
 	Chunk();
@@ -41,7 +43,7 @@ public:
 	void GenerateChunkVertexData();
 	
 	// Terrain generator
-	void GenerateTerrain(int x, int y, int z);
+	BlockType GetBlock(int x, int y, int z);
 	
 
 };
