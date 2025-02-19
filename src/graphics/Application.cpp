@@ -141,7 +141,6 @@ void Application::Run()
 
 		delete chunk;
 
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

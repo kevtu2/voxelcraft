@@ -64,49 +64,37 @@ void Chunk::DrawArrays() const
 	glDrawElements(GL_TRIANGLES, chunkMesh->chunkIndexData.size(), GL_UNSIGNED_INT, 0);
 }
 
-
 void Chunk::GenerateChunkVertexData()
-{	
+{
 	for (size_t x = 0; x < CHUNK_X; ++x)
 	{
 		for (size_t y = 0; y < CHUNK_Y; ++y)
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
-			{	
-				// Do not draw anything
-				if (chunkData[x][y][z] == AIR) continue;
+			{
+				// Do not draw anything if the block is AIR
+				if (chunkData[x][y][z] == BlockType::AIR) continue;
 
-				// Draw boundary blocks
-				if (x == 0 || y == 0 || z == 0 || x == CHUNK_X - 1 || y == CHUNK_Y - 1 || z == CHUNK_Z - 1)
-				{
-					// For now, I'm gonna just render the redundant faces for these boundary blocks
-					// TODO: Fix logic for boundary blocks
+				// Check surrounding blocks and draw faces only if the adjacent block is transparent
+				if (z == 0 || Block::IsTransparent(chunkData[x][y][z - 1]))
 					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), NORTH);
-					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), SOUTH);
-					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), EAST);
-					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), WEST);
-					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), UP);
-					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), DOWN);
-					continue;
-				}
 
-				// Check surrounding blocks and draw if they are AIR blocks
-				if (Block::IsTransparent(chunkData[x][y][z - 1]))
-					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), NORTH);
-				if (Block::IsTransparent(chunkData[x][y][z + 1]))
+				if (z == CHUNK_Z - 1 || Block::IsTransparent(chunkData[x][y][z + 1]))
 					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), SOUTH);
-				if (Block::IsTransparent(chunkData[x + 1][y][z]))
+
+				if (x == CHUNK_X - 1 || Block::IsTransparent(chunkData[x + 1][y][z]))
 					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), EAST);
-				if (Block::IsTransparent(chunkData[x - 1][y][z]))
+
+				if (x == 0 || Block::IsTransparent(chunkData[x - 1][y][z]))
 					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), WEST);
-				if (Block::IsTransparent(chunkData[x][y + 1][z])) 
+
+				if (y == CHUNK_Y - 1 || Block::IsTransparent(chunkData[x][y + 1][z]))
 					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), UP);
-				if (Block::IsTransparent(chunkData[x][y - 1][z]))
+
+				if (y == 0 || Block::IsTransparent(chunkData[x][y - 1][z]))
 					BlockGeneration::GenerateFace(chunkMesh, chunkData[x][y][z], glm::vec3(x, y, z), DOWN);
 			}
 		}
 	}
-	/*chunkMesh->PrintChunkIndices();
-	chunkMesh->PrintChunkVertex();*/
 }
 
