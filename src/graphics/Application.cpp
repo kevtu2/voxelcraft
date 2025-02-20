@@ -14,7 +14,7 @@ static void GLCheckError()
 	}
 }
 
-Application::Application(int width, int height)
+Application::Application()
 	: deltaTime(0.0f),
 	lastTime(0.0f),
 	firstMouseInput(true),
@@ -28,6 +28,11 @@ Application::Application(int width, int height)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create the main application window
+	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* modes = glfwGetVideoMode(primaryMonitor);
+	int width, height;
+	glfwGetMonitorPhysicalSize(primaryMonitor, &width, &height);
+
 	window = glfwCreateWindow(width, height, "voxelworx", NULL, NULL);
 	if (window == NULL)
 	{
