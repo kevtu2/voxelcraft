@@ -28,7 +28,7 @@ git clone --recurse-submodules https://github.com/kevtu2/voxelcraft.git
 ```markdown
 cd voxelcraft
 ```
-3. Run CMake desired configuration. For Visual Studio 2022:
+3. Run desired CMake build. For Visual Studio 2022:
 ```markdown
 cmake -B build -G "Visual Studio 17 2022"
 ```
