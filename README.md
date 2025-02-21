@@ -13,7 +13,7 @@ The project is built with C++ and OpenGL. I just wanted to use this as an opport
   - [ ] Gameplay aspects such as a health bar, inventory, etc.
  
 ## Getting Started
-I don't really plan on creating a cross-platform version of this project since it's mostly just for my learning, but here is the installation guide for Windows.
+I don't really plan on figuring out a cross-platform installation of this project since it's mostly just for my learning, but here is the installation guide for Windows.
 
 ### Prerequisites
 * CMake
