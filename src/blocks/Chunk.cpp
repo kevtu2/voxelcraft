@@ -1,16 +1,24 @@
 #include "Chunk.hpp"
 
+
 Chunk::Chunk()
 {
 	glGenBuffers(1, &chunkVBO_ID);
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
+	position = glm::vec3(0, 0, 0);
 	chunkMesh = new ChunkMesh();
 }
 
-Chunk::Chunk(int x, int y, int z)
+Chunk::Chunk(int x, int y, int z) : Chunk()
 {
-	
+	position.x = x;
+	position.y = y;
+	position.z = z;
+	northChunk = new Chunk(x, y, z - CHUNK_Z);
+	southChunk = new Chunk(x, y, z + CHUNK_Z);
+	eastChunk = new Chunk(x + CHUNK_X, y, z);
+	westChunk = new Chunk(x - CHUNK_X, y, z);
 }
 
 Chunk::~Chunk()
@@ -62,28 +70,30 @@ void Chunk::GenerateChunkVertexData()
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
+				glm::vec3 worldPosition(x + position.x, y, z + position.z);
 				BlockType currentBlock = GetBlock(x, y, z);
+
 				// Do not draw anything if the block is AIR
 				if (currentBlock == BlockType::AIR) continue;
 
 				// Check surrounding blocks and draw faces only if the adjacent block is transparent
 				if (z == 0 || Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, glm::vec3(x, y, z), NORTH);
+					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
 
 				if (z == CHUNK_Z - 1 || Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, glm::vec3(x, y, z), SOUTH);
+					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
 
 				if (x == CHUNK_X - 1 || Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, glm::vec3(x, y, z), EAST);
+					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
 
 				if (x == 0 || Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, glm::vec3(x, y, z), WEST);
+					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
 
 				if (y == surfaceY || Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, glm::vec3(x, y, z), UP);
+					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, UP);
 
 				if (y == 0 || Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, glm::vec3(x, y, z), DOWN);
+					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, DOWN);
 			}
 		}
 	}

@@ -25,7 +25,7 @@ private:
 	unsigned int chunkIBO_ID;
 
 	// Chunk world position
-	int x, y, z;
+	glm::vec3 position;
 
 	// Contains which blocks to generate
 	// TODO: Implement terrain generator with this
@@ -54,5 +54,5 @@ public:
 	// Terrain generator
 	BlockType GetBlock(int x, int y, int z);
 	
-
+	glm::vec3 GetWorldPosition() const { return position; }
 };
