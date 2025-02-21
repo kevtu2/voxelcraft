@@ -2,7 +2,7 @@
 Voxelcraft is a clone of the popular indie game called Minecraft, originally created by [Notch](https://x.com/notch?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor) and [Mojang Studios](https://www.minecraft.net/en-us/article/meet-mojang-studios).
 
 ## About The Project
-The project is built with C++ and OpenGL. I just wanted to use this as an opportunity to strengthen my skills in C++ and learn more about OpenGL. I then figured, what is better than to clone Minecraft for this exact purpose?? And so, here is my attempt at it.
+The project is built with C++ and OpenGL. I wanted to use this as an opportunity to strengthen my skills in C++ and learn more about OpenGL. I then figured, what is better than to clone Minecraft for this exact purpose?? And so, here is my attempt at it.
 
 ## Current Features
 * Currently, I have yet to extensively work on the project, so right now it only renders a small 16x384x16 chunk (length x height x width).
