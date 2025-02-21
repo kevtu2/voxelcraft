@@ -61,8 +61,6 @@ Application::Application()
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-
-	
 }
 
 void Application::CalculateNewMousePosition()

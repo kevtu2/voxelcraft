@@ -35,5 +35,4 @@ public:
 	Application();
 	~Application();
 	void Run();
-
 };

@@ -5,8 +5,12 @@ Chunk::Chunk()
 	glGenBuffers(1, &chunkVBO_ID);
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
-
 	chunkMesh = new ChunkMesh();
+}
+
+Chunk::Chunk(int x, int y, int z)
+{
+	
 }
 
 Chunk::~Chunk()
@@ -45,7 +49,8 @@ void Chunk::DrawArrays() const
 
 BlockType Chunk::GetBlock(int x, int y, int z)
 {
-	if (y <= surfaceY) return BlockType::STONE;
+	if (y < surfaceY) return BlockType::STONE;
+	if (y == surfaceY) return BlockType::GRASS;
 	if (y > surfaceY) return BlockType::AIR;
 }
 
