@@ -29,4 +29,6 @@ public:
 
 	void HandleInputControls(CameraMovement move, float deltaTime);
 	void UpdateCameraLookAt(float deltaTime, double xPos, double yPos);
+
+	glm::vec3 GetCameraPosition() const { return position; }
 };

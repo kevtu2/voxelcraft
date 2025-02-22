@@ -15,10 +15,6 @@ Chunk::Chunk(int x, int y, int z) : Chunk()
 	position.x = x;
 	position.y = y;
 	position.z = z;
-	northChunk = new Chunk(x, y, z - CHUNK_Z);
-	southChunk = new Chunk(x, y, z + CHUNK_Z);
-	eastChunk = new Chunk(x + CHUNK_X, y, z);
-	westChunk = new Chunk(x - CHUNK_X, y, z);
 }
 
 Chunk::~Chunk()
@@ -37,8 +33,8 @@ void Chunk::BufferData() const
 	glBindBuffer(GL_ARRAY_BUFFER, chunkVBO_ID);
 	glBufferData(GL_ARRAY_BUFFER, chunkMesh->chunkVertexData.size() * sizeof(Vertex), chunkMesh->chunkVertexData.data(), GL_STATIC_DRAW);
 
-	 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, chunkIBO_ID);
-	 glBufferData(GL_ELEMENT_ARRAY_BUFFER, chunkMesh->chunkIndexData.size() * sizeof(unsigned int), chunkMesh->chunkIndexData.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, chunkIBO_ID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, chunkMesh->chunkIndexData.size() * sizeof(unsigned int), chunkMesh->chunkIndexData.data(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);

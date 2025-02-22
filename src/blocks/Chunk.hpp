@@ -40,11 +40,6 @@ public:
 
 	ChunkMesh* chunkMesh;
 
-	std::unique_ptr<Chunk> northChunk;
-	std::unique_ptr<Chunk> southChunk;
-	std::unique_ptr<Chunk> eastChunk;
-	std::unique_ptr<Chunk> westChunk;
-
 	void BufferData() const;
 
 	void DrawArrays() const;
