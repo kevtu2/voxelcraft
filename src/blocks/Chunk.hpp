@@ -36,6 +36,7 @@ private:
 public:
 	Chunk();
 	Chunk(int x, int y, int z);
+
 	~Chunk();
 
 	ChunkMesh* chunkMesh;

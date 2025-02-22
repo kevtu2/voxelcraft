@@ -17,6 +17,7 @@ Chunk::Chunk(int x, int y, int z) : Chunk()
 	position.z = z;
 }
 
+
 Chunk::~Chunk()
 {
 	glDeleteBuffers(1, &chunkVBO_ID);
