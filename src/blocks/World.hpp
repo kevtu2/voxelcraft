@@ -11,7 +11,7 @@ private:
 	unsigned int renderDistance;
 
 	// Chunk data
-	std::unique_ptr<Chunk> currentChunk;
+	std::unique_ptr<Chunk> spawnChunk;
 	std::unordered_map<glm::vec2, Chunk> activeChunks;
 	std::set<glm::vec2> dirtyChunks;
 

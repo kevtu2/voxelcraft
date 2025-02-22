@@ -3,12 +3,12 @@
 World::World()
 	: renderDistance(12)
 {
-	currentChunk = new Chunk(0, 0, 0);
+	spawnChunk = std::unique_ptr<Chunk>(new Chunk(0, 0, 0));
 }
 
 World::~World()
 {
-	delete currentChunk;
+	
 }
 
 // TODO: Change this so that player camera is not contained inside of application.
@@ -16,8 +16,8 @@ World::~World()
 void World::UpdateChunks(const Camera& player)
 {
 	// Calculate current reference Chunk X-Z position.
-	int playerChunkPosX = (int) (player.GetCameraPosition() / CHUNK_X);
-	int playerChunkPosZ = (int) (player.GetCameraPosition() / CHUNK_Z);
+	int playerChunkPosX = (int) (player.GetCameraPosition().x / CHUNK_X);
+	int playerChunkPosZ = (int) (player.GetCameraPosition().z / CHUNK_Z);
 
 	dirtyChunks.clear();
 
@@ -38,8 +38,7 @@ void World::UpdateChunks(const Camera& player)
 			if (!activeChunks.contains(chunkPos))
 			{
 				Chunk currentChunk = new Chunk(x, 0, z);
-				std::pair<glm::vec2, Chunk> chunkPair = std::pair(chunkPos, currentChunk);
-				activeChunks.insert(chunkPair);
+				activeChunks.insert( {chunkPos, std::move(currentChunk)} );
 			}
 			// This prevents visible chunks that are already generated from deletion
 			else if (activeChunks.contains(chunkPos))
