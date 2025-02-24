@@ -4,7 +4,8 @@ World::World()
 	: renderDistance(12)
 {
 	spawnChunk = std::unique_ptr<Chunk>(new Chunk(0, 0, 0));
-	activeChunks.emplace(glm::vec2(0, 0, 0), std::move(spawnChunk));
+	activeChunks.emplace(glm::vec2(0, 0), std::move(spawnChunk));
+
 }
 
 World::~World()
@@ -15,7 +16,6 @@ World::~World()
 // TODO: Change this so that player camera is not contained inside of application.
 void World::UpdateChunks(const Camera& player)
 {
-
 	// Calculate current reference Chunk X-Z position.
 	int playerChunkPosX = (int) (player.GetCameraPosition().x / CHUNK_X);
 	int playerChunkPosZ = (int) (player.GetCameraPosition().z / CHUNK_Z);
@@ -47,6 +47,14 @@ void World::UpdateChunks(const Camera& player)
 				dirtyChunks.erase(chunkPos);
 			}
 		}
+	}
+}
+
+void World::DrawChunks()
+{
+	for (auto& pair : activeChunks)
+	{
+		pair.second->GenerateChunkVertexData();
 	}
 }
 

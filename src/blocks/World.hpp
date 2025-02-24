@@ -3,6 +3,7 @@
 #include <set>
 #include <glm/glm.hpp>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "Chunk.hpp"
 #include "../graphics/Camera.hpp"
@@ -15,7 +16,15 @@ class World
 		std::size_t operator()(const glm::vec2& c) const
 		{
 			// XOR hashes of x and z in chunkPos
-			return hash<int>()(c.x) ^ (hash<int>()(c.y) << 1);
+			return std::hash<int>()(c.x) ^ (std::hash<int>()(c.y) << 1);
+		}
+	};
+
+	struct Vec2Equals
+	{
+		bool operator()(const glm::vec2& lhs, const glm::vec2& rhs) const
+		{
+			return lhs.x == rhs.x && lhs.y == rhs.y;
 		}
 	};
 
@@ -24,8 +33,8 @@ private:
 
 	// Chunk data
 	std::unique_ptr<Chunk> spawnChunk;
-	std::unordered_map<glm::vec2, Chunk, Vec2Hasher> activeChunks;
-	std::set<glm::vec2> dirtyChunks;
+	std::unordered_map<glm::vec2, std::unique_ptr<Chunk>, Vec2Hasher, Vec2Equals> activeChunks;
+	std::unordered_set<glm::vec2, Vec2Hasher, Vec2Equals> dirtyChunks;
 
 
 public:
@@ -33,6 +42,7 @@ public:
 	~World();
 
 	void UpdateChunks(const Camera& player);
+	void DrawChunks();
 
 	void setRenderDistance(unsigned int renderDistance);
 	unsigned int getRenderDistance() const { return renderDistance; }
