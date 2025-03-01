@@ -54,7 +54,7 @@ void World::DrawChunks()
 {
 	for (auto& pair : activeChunks)
 	{
-		pair.second->GenerateChunkVertexData();
+		pair.second->DrawArrays();
 	}
 }
 

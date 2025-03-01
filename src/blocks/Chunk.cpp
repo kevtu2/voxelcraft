@@ -8,6 +8,7 @@ Chunk::Chunk()
 	glGenVertexArrays(1, &chunkVAO_ID);
 	position = glm::vec3(0, 0, 0);
 	chunkMesh = new ChunkMesh();
+	GenerateChunkVertexData();
 }
 
 Chunk::Chunk(int x, int y, int z) : Chunk()
@@ -97,7 +98,7 @@ void Chunk::GenerateChunkVertexData()
 			}
 		}
 	}
+	std::cout << "Successfully generated chunk data" << std::endl;
 	BufferData();
-	DrawArrays();
 }
 
