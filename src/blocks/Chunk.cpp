@@ -71,7 +71,7 @@ void Chunk::GenerateChunkVertexData()
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
-				glm::vec3 worldPosition(x + position.x, y, z + position.z);
+				glm::vec3 worldPosition(x + (position.x * CHUNK_X), y, z + (position.z * CHUNK_Z));
 				BlockType currentBlock = GetBlock(x, y, z);
 
 				// Do not draw anything if the block is AIR
@@ -98,7 +98,6 @@ void Chunk::GenerateChunkVertexData()
 			}
 		}
 	}
-	std::cout << "Successfully generated chunk data" << std::endl;
 	BufferData();
 }
 

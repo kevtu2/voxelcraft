@@ -29,7 +29,7 @@ class World
 	};
 
 private:
-	unsigned int renderDistance;
+	int renderDistance;
 
 	// Chunk data
 	std::unique_ptr<Chunk> spawnChunk;

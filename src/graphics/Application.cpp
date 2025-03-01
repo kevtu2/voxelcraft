@@ -126,7 +126,6 @@ void Application::Run()
 	chunk->GenerateChunkVertexData();*/
 
 	World* world = new World();
-	world->UpdateChunks(camera);
 
 	while (!glfwWindowShouldClose(window))
 	{
