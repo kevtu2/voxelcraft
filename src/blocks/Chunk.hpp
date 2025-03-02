@@ -20,12 +20,12 @@
 class Chunk
 {
 private:
+	// Chunk world position
+	glm::vec3 position;
+
 	unsigned int chunkVBO_ID;
 	unsigned int chunkVAO_ID;
 	unsigned int chunkIBO_ID;
-
-	// Chunk world position
-	glm::vec3 position;
 
 	// Contains which blocks to generate
 	// TODO: Implement terrain generator with this
