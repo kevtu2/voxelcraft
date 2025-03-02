@@ -12,14 +12,13 @@ The project is built with C++ and OpenGL. I wanted to use this as an opportunity
   - [ ] Block placement/destruction
   - [ ] Gameplay aspects such as a health bar, inventory, etc.
  
-## Getting Started
-I don't really plan on figuring out a cross-platform installation for this project, however it should work with the given CMake configuration if you know what you're doing. Here is the installation guide for Windows.
+## How to Play
+I don't really plan on figuring out a cross-platform installation for this project, however it should work with the given CMake configuration if you know what you're doing. Here is the installation guide for Windows and Linux.
 
 ### Prerequisites
 * CMake
-* Visual Studio 2022 (Recommended)
 
-### Installation
+### Installation Guide For Windows
 1. Recursively clone the repository
 ```markdown
 git clone --recurse-submodules https://github.com/kevtu2/voxelcraft.git
@@ -28,10 +27,36 @@ git clone --recurse-submodules https://github.com/kevtu2/voxelcraft.git
 ```markdown
 cd voxelcraft
 ```
-3. Run desired CMake build. For Visual Studio 2022:
+3. Run desired CMake build.
+For Visual Studio 2022:
 ```markdown
 cmake -B build -G "Visual Studio 17 2022"
 ```
 4. Inside the build directory that was generated, open the .sln file
-5. After building the project solution, the project can be ran/debugged inside of Visual Studio. 
+
+5. After building the project solution, the project can be ran/debugged inside of Visual Studio.
+
+###  Installation Guide For Linux
+1. Recursively clone the repository
+```markdown
+git clone --recurse-submodules https://github.com/kevtu2/voxelcraft.git
+```
+2. Go into the working directory
+```markdown
+cd voxelcraft
+```
+3. Run desired CMake build.
+For Linux:
+```markdown
+cmake -B build
+```
+4. Go into the build directory
+```markdown
+cd build
+```
+5. If successful, you can run make inside build to compile the program and run the executable.
+```markdown
+make
+./voxelcraft # run the game
+```
 
