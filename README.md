@@ -57,6 +57,6 @@ cd build
 5. If successful, you can run make inside build to compile the program and run the executable.
 ```markdown
 make
-./voxelcraft # run the game
+./voxelcraft
 ```
 
