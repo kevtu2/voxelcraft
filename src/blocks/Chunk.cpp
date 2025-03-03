@@ -11,11 +11,14 @@ Chunk::Chunk()
 	GenerateChunkVertexData();
 }
 
-Chunk::Chunk(int x, int y, int z) : Chunk()
+Chunk::Chunk(int x, int y, int z)
+	: position(glm::vec3(x, y, z))
 {
-	position.x = x;
-	position.y = y;
-	position.z = z;
+	glGenBuffers(1, &chunkVBO_ID);
+	glGenBuffers(1, &chunkIBO_ID);
+	glGenVertexArrays(1, &chunkVAO_ID);
+	chunkMesh = new ChunkMesh();
+	GenerateChunkVertexData();
 }
 
 
