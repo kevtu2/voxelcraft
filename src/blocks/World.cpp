@@ -3,9 +3,6 @@
 World::World()
 	: renderDistance(12)
 {
-	/*spawnChunk = std::unique_ptr<Chunk>(new Chunk(0, 0, 0));
-	activeChunks.emplace(glm::vec2(0, 0), std::move(spawnChunk));*/
-
 	// Generate new world chunks
 	for (int x = -renderDistance; x <= renderDistance; ++x)
 	{
