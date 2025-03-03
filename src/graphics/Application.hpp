@@ -4,9 +4,6 @@
 #include <iostream>
 
 #include "Shader.hpp"
-#include "VertexBuffer.hpp"
-#include "IndexBuffer.hpp"
-#include "VertexArray.hpp"
 #include "Renderer.hpp"
 #include "Camera.hpp"
 #include "blocks/Texture.hpp"
