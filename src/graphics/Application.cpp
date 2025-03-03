@@ -14,7 +14,7 @@ static void GLCheckError()
 	}
 }
 
-Application::Application(int width, int height)
+Application::Application()
 	: deltaTime(0.0f),
 	lastTime(0.0f),
 	firstMouseInput(true),
@@ -28,6 +28,11 @@ Application::Application(int width, int height)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create the main application window
+	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* modes = glfwGetVideoMode(primaryMonitor);
+	int width, height;
+	glfwGetMonitorPhysicalSize(primaryMonitor, &width, &height);
+
 	window = glfwCreateWindow(width, height, "voxelworx", NULL, NULL);
 	if (window == NULL)
 	{
@@ -56,8 +61,6 @@ Application::Application(int width, int height)
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-
-	
 }
 
 void Application::CalculateNewMousePosition()
@@ -119,8 +122,10 @@ void Application::Run()
 
 	Texture textureAtlas("../textures/blocks.png");
 
-	Chunk* chunk = new Chunk();
-	chunk->GenerateChunkVertexData();
+	/*Chunk* chunk = new Chunk();
+	chunk->GenerateChunkVertexData();*/
+
+	World* world = new World();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -135,12 +140,10 @@ void Application::Run()
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera.GetViewMatrix());
 
-		Renderer::DrawChunk(chunk, shaderProgram, textureAtlas);
+		Renderer::DrawChunk(world, shaderProgram, textureAtlas, camera);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
-	delete chunk;
-
+	delete world;
 }

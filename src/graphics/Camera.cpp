@@ -1,8 +1,8 @@
 #include "Camera.hpp"
 
 Camera::Camera()
-	: position(glm::vec3(0.0f, 64.0f, 0.0f)),
-	lookDirection(glm::vec3(0.0f, 0.0f, -1.0f)),
+	: position(glm::vec3(0.0f, 110.0f, 0.0f)),
+	lookDirection(glm::vec3(-1.0f, 0.0f, 0.0f)),
 	cameraSpeed(3.5f),
 	cameraSensitivity(5.0f),
 	yaw(-90.0f),

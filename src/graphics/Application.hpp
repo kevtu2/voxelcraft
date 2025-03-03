@@ -31,10 +31,8 @@ private:
 
 	void CalculateNewMousePosition();
 
-
 public:
-	Application(int width, int height);
+	Application();
 	~Application();
 	void Run();
-
 };
