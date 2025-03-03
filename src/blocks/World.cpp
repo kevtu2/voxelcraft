@@ -58,6 +58,12 @@ void World::UpdateChunks(const Camera& player)
 			}
 		}
 	}
+	
+	// Delete chunks outside render distance
+	for (auto& chunkKey : dirtyChunks)
+	{
+		activeChunks.erase(chunkKey);
+	}
 }
 
 void World::DrawChunks()
