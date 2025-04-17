@@ -20,7 +20,7 @@ Application::Application()
 	int width, height;
 	glfwGetMonitorPhysicalSize(primaryMonitor, &width, &height);
 
-	window = glfwCreateWindow(width, height, "voxelworx", NULL, NULL);
+	window = glfwCreateWindow(width, height, "voxelcraft", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cerr << "Failed to create a GLFW window" << std::endl;
