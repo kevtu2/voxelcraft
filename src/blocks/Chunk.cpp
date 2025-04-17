@@ -81,16 +81,16 @@ void Chunk::GenerateChunkVertexData()
 				if (currentBlock == BlockType::AIR) continue;
 
 				// Check surrounding blocks and draw faces only if the adjacent block is transparent
-				if (z == 0 || Block::IsTransparent(currentBlock))
+				if (/*z == 0 ||*/ Block::IsTransparent(currentBlock))
 					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
 
-				if (z == CHUNK_Z - 1 || Block::IsTransparent(currentBlock))
+				if (/*z == CHUNK_Z - 1 ||*/ Block::IsTransparent(currentBlock))
 					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
 
-				if (x == CHUNK_X - 1 || Block::IsTransparent(currentBlock))
+				if (/*x == CHUNK_X - 1 ||*/ Block::IsTransparent(currentBlock))
 					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
 
-				if (x == 0 || Block::IsTransparent(currentBlock))
+				if (/*x == 0 ||*/ Block::IsTransparent(currentBlock))
 					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
 
 				if (y == surfaceY || Block::IsTransparent(currentBlock))
