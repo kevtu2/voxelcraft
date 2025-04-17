@@ -1,19 +1,6 @@
 #include "Application.hpp"
 #include <filesystem>
 
-static void GLClearError()
-{
-	while (glGetError() != GL_NO_ERROR);
-}
-
-static void GLCheckError()
-{
-	while (GLenum error = glGetError())
-	{
-		std::cout << "[OpenGL Error] (" << error << ")" << std::endl;
-	}
-}
-
 Application::Application()
 	: deltaTime(0.0f),
 	lastTime(0.0f),
@@ -111,7 +98,6 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-
 	Shader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 	shaderProgram.UseProgram();
 	shaderProgram.SetUniformMatrix4f("projection", camera.GetProjectionMatrix());
@@ -122,12 +108,7 @@ void Application::Run()
 
 	Texture textureAtlas("../textures/blocks.png");
 
-	/*Chunk* chunk = new Chunk();
-	chunk->GenerateChunkVertexData();*/
-
 	std::shared_ptr<World> world(new World());
-
-	//World* world = new World();
 
 	while (!glfwWindowShouldClose(window))
 	{
