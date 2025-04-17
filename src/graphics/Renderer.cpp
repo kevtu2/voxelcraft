@@ -1,6 +1,6 @@
 #include "Renderer.hpp"
 
-void Renderer::DrawChunk(World* world, const Shader& shaderProgram, const Texture& texture, const Camera& player)
+void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgram, const Texture& texture, const Camera& player)
 {
 	shaderProgram.UseProgram();
 	texture.Bind();

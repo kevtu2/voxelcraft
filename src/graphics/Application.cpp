@@ -125,7 +125,9 @@ void Application::Run()
 	/*Chunk* chunk = new Chunk();
 	chunk->GenerateChunkVertexData();*/
 
-	World* world = new World();
+	std::shared_ptr<World> world(new World());
+
+	//World* world = new World();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -145,5 +147,4 @@ void Application::Run()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	delete world;
 }
