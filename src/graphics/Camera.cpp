@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-Camera::Camera()
+Camera::Camera(int width, int height)
 	: position(glm::vec3(0.0f, 110.0f, 0.0f)),
 	lookDirection(glm::vec3(-1.0f, 0.0f, 0.0f)),
 	cameraSpeed(3.5f),
@@ -13,7 +13,8 @@ Camera::Camera()
 	cameraUp = glm::cross(lookDirection, cameraRight);
 
 	projection = glm::mat4(1.0f);
-	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+	projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
 }
 
 glm::mat4 Camera::GetViewMatrix() const

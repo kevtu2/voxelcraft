@@ -10,9 +10,9 @@
 #include "../blocks/Block.hpp"
 #include "../blocks/ChunkMesh.hpp"
 
-#define CHUNK_X 2
+#define CHUNK_X 1
 #define CHUNK_Y 384
-#define CHUNK_Z 2
+#define CHUNK_Z 1
 
 #define surfaceY 100
 

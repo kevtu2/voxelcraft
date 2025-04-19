@@ -13,7 +13,11 @@ class Application
 {
 private:
 	GLFWwindow* window;
-	Camera camera;
+	std::shared_ptr<Camera> camera;
+
+	// Window properties
+	int width;
+	int height;
 
 	// Application runtime properties
 	float deltaTime;

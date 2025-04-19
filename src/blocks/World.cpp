@@ -1,7 +1,7 @@
 #include "World.hpp"
 
 World::World()
-	: renderDistance(12)
+	: renderDistance(2)
 {
 	// Generate new world chunks
 	for (int x = -renderDistance; x <= renderDistance; ++x)
