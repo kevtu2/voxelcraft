@@ -16,9 +16,10 @@ Application::Application()
 
 	// Create the main application window
 	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
-	const GLFWvidmode* modes = glfwGetVideoMode(primaryMonitor);
-	int width, height;
-	glfwGetMonitorPhysicalSize(primaryMonitor, &width, &height);
+	const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
+	int width = mode->width;
+	int height = mode->height;
+	std::cout << width << " " << height << std::endl;
 
 	window = glfwCreateWindow(width, height, "voxelcraft", NULL, NULL);
 	if (window == NULL)
