@@ -1,12 +1,12 @@
 #include "World.hpp"
 
 World::World()
-	: renderDistance(2)
+	: renderDistance(12)
 {
 	// Generate new world chunks
-	for (int x = -renderDistance; x <= renderDistance; ++x)
+	for (int x = -renderDistance; x < renderDistance; ++x)
 	{
-		for (int z = -renderDistance; z <= renderDistance; ++z)
+		for (int z = -renderDistance; z < renderDistance; ++z)
 		{
 			glm::vec2 chunkPos = glm::vec2(x, z);
 			std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z);

@@ -12,7 +12,7 @@ Chunk::Chunk()
 }
 
 Chunk::Chunk(int x, int y, int z)
-	: position(glm::vec3(x, y, z))
+	: position(glm::vec3(x * CHUNK_X, y, z * CHUNK_Z))
 {
 	glGenBuffers(1, &chunkVBO_ID);
 	glGenBuffers(1, &chunkIBO_ID);
@@ -74,7 +74,7 @@ void Chunk::GenerateChunkVertexData()
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
-				glm::vec3 worldPosition(x + (position.x * CHUNK_X), y, z + (position.z * CHUNK_Z));
+				glm::vec3 worldPosition(position.x + x, y, position.z + z);
 				BlockType currentBlock = GetBlock(x, y, z);
 
 				// Do not draw anything if the block is AIR
