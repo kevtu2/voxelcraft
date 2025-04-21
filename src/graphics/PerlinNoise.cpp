@@ -2,9 +2,22 @@
 
 glm::vec2 PerlinNoise::RandomGradient(int x, int y)
 {
-	srand(time(0));
-	glm::vec2 retVector(sin(rand()), cos(rand()));
-	return retVector;
+	const unsigned w = 8 * sizeof(unsigned);
+	const unsigned s = w / 2;
+	unsigned a = x, b = y;
+	a *= 3284157443;
+
+	b ^= a << s | a >> w - s;
+	b *= 1911520717;
+
+	a ^= b << s | b >> w - s;
+	a *= 2048419325;
+	float random = a * (3.14159265 / ~(~0u >> 1)); // in [0, 2*Pi]
+
+	// Create the vector from the angle
+	glm::vec2 retVec(sin(random), cos(random));
+
+	return retVec;
 }
 
 float PerlinNoise::PerlinInterpolate(float x, float y, float weight)

@@ -9,12 +9,14 @@
 #include "../blocks/BlockGeneration.hpp"
 #include "../blocks/Block.hpp"
 #include "../blocks/ChunkMesh.hpp"
+#include "../graphics/PerlinNoise.hpp"
 
-#define CHUNK_X 16
+#define CHUNK_X 8
 #define CHUNK_Y 384
-#define CHUNK_Z 16
-
+#define CHUNK_Z 8
 #define surfaceY 100
+#define PERLIN_OCTAVES 8
+#define PERLIN_GRID_SIZE 400
 
 
 class Chunk

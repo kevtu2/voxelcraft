@@ -63,19 +63,32 @@ BlockType Chunk::GetBlock(int x, int y, int z)
 {
 	if (y < surfaceY) return BlockType::STONE;
 	if (y == surfaceY) return BlockType::GRASS;
-	if (y > surfaceY) return BlockType::AIR;
+	if (y > surfaceY) return BlockType::AIR; 
 }
 
 void Chunk::GenerateChunkVertexData()
 {
+	PerlinNoise pNoise;
 	for (size_t x = 0; x < CHUNK_X; ++x)
 	{
 		for (size_t y = 0; y < CHUNK_Y; ++y)
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
-				glm::vec3 worldPosition(position.x + x, y, position.z + z);
-				BlockType currentBlock = GetBlock(x, y, z);
+				float yValue = 0;
+				float freq = 1;
+				float amp = 1;
+				for (int i = 0; i < PERLIN_OCTAVES; ++i)
+				{
+					yValue += pNoise.SamplePerlin(x * freq / PERLIN_GRID_SIZE, z * freq / PERLIN_GRID_SIZE);
+					freq *= 2;
+					amp /= 2;
+				}
+				if (yValue > CHUNK_Y) yValue = CHUNK_Y;
+				if (yValue < 0.f) yValue = 0.f;
+
+				glm::vec3 worldPosition(position.x + x, (int)yValue, position.z + z);
+				BlockType currentBlock = GetBlock(x, (int)yValue, z);
 
 				// Do not draw anything if the block is AIR
 				if (currentBlock == BlockType::AIR) continue;
