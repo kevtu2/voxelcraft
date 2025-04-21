@@ -36,6 +36,8 @@ float PerlinNoise::SamplePerlin(float x, float y)
 	float botInterp = PerlinInterpolate(g_BotL, g_BotR, xWeight);
 
 	float ret = PerlinInterpolate(topInterp, botInterp, yWeight);
+
+	return ret;
 }
 
 float PerlinNoise::PerlinDot(int gridX, int gridY, float x, float y)
