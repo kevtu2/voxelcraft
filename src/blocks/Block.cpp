@@ -78,7 +78,7 @@ bool Block::IsTransparent(BlockType blockType)
 	}
 }
 
-BlockType Block::GetBlockTypeFromID(std::byte blockID) const
+BlockType Block::GetBlockTypeFromID(std::byte blockID)
 {
 	unsigned char intValue = std::to_integer<unsigned char>(blockID);
 

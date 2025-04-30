@@ -42,5 +42,5 @@ public:
     unsigned int GetTexturesUsed() const { return texturesUsed; }
 
     static bool IsTransparent(BlockType blockType);
-    static BlockType GetBlockTypeFromID(std::byte blockID) const;
+    static BlockType GetBlockTypeFromID(std::byte blockID);
 };

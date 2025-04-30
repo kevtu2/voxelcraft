@@ -1,4 +1,5 @@
 #include "Chunk.hpp"
+#include "World.hpp"
 
 
 Chunk::Chunk()
@@ -118,7 +119,7 @@ void Chunk::GenerateBlockData()
 	}
 }
 
-void Chunk::GenerateChunkMesh(const auto& activeChunks)
+void Chunk::GenerateChunkMesh(const std::unordered_map<glm::vec2, std::unique_ptr<Chunk>, Vec2Hasher, Vec2Equals>& activeChunks)
 {
 	for (size_t x = 0; x < CHUNK_X; ++x)
 	{
@@ -135,7 +136,7 @@ void Chunk::GenerateChunkMesh(const auto& activeChunks)
 					// Check chunk in -ve x direction
 					if (activeChunks.contains(glm::vec2(x - 1, z)))
 					{
-						BlockType block = activeChunks.at(glm::vec(x - 1, z))->GetBlock(CHUNK_X, y, z);
+						BlockType block = activeChunks.at(glm::vec2(x - 1, z))->GetBlock(CHUNK_X, y, z);
 						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
 					}
 					// If chunk isn't loaded in, assume it is opaque.
@@ -151,7 +152,7 @@ void Chunk::GenerateChunkMesh(const auto& activeChunks)
 					// Check chunk in +ve x direction
 					if (activeChunks.contains(glm::vec2(x + 1, z)))
 					{
-						BlockType block = activeChunks.at(glm::vec(x + 1, z))->GetBlock(0, y, z);
+						BlockType block = activeChunks.at(glm::vec2(x + 1, z))->GetBlock(0, y, z);
 						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
 					}
 				}
@@ -166,7 +167,7 @@ void Chunk::GenerateChunkMesh(const auto& activeChunks)
 					// Check chunk in -ve z direction	
 					if (activeChunks.contains(glm::vec2(x, z - 1)))
 					{
-						BlockType block = activeChunks.at(glm::vec(x, z - 1))->GetBlock(x, y, CHUNK_Z);
+						BlockType block = activeChunks.at(glm::vec2(x, z - 1))->GetBlock(x, y, CHUNK_Z);
 						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
 					}
 				}
@@ -181,7 +182,7 @@ void Chunk::GenerateChunkMesh(const auto& activeChunks)
 					// Check chunk in +ve z direction
 					if (activeChunks.contains(glm::vec2(x, z + 1)))
 					{
-						BlockType block = activeChunks.at(glm::vec(x, z - 1))->GetBlock(x, y, 0);
+						BlockType block = activeChunks.at(glm::vec2(x, z - 1))->GetBlock(x, y, 0);
 						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
 					}
 				}
