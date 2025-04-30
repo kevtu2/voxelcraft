@@ -93,9 +93,12 @@ void Chunk::GenerateChunkVertexData()
 
 				glm::vec3 worldPosition(position.x + x, rand(), position.z + z);
 				BlockType currentBlock = GetBlock(x, y, z);
+				BlockType bpx = getBlock()
 
 				// Do not draw anything if the block is AIR
 				if (currentBlock == BlockType::AIR) continue;
+
+			
 
 				// Check surrounding blocks and draw faces only if the adjacent block is transparent
 				if (/*z == 0 ||*/ Block::IsTransparent(currentBlock))
@@ -121,3 +124,10 @@ void Chunk::GenerateChunkVertexData()
 	BufferData();
 }
 
+
+BlockType Chunk::GetBlock(int x, int y, int z) const
+{
+	unsigned int index = x + (y * CHUNK_Y) * (z * CHUNK_Y * CHUNK_Z);
+	std::byte blockID = blocks.at(index);
+	return Block::GetBlockTypeFromID(blockID);
+}

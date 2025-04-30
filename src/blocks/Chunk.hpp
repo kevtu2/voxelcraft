@@ -29,11 +29,10 @@ private:
 	unsigned int chunkVAO_ID;
 	unsigned int chunkIBO_ID;
 
-	// Contains which blocks to generate
-	// TODO: Implement terrain generator with this
-	// BlockType chunkData[CHUNK_X][CHUNK_Y][CHUNK_Z];
-
 	unsigned int vertexCount = 0;
+
+	// Use to identify which blocks are contained in the chunk
+	std::vector<std::byte> blocks;
 
 public:
 	Chunk();
@@ -53,4 +52,6 @@ public:
 	BlockType GetBlock(int x, int y, int z);
 	
 	glm::vec3 GetWorldPosition() const { return position; }
+
+	BlockType GetBlock(int x, int y, int z) const;
 };

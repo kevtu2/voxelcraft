@@ -78,3 +78,12 @@ bool Block::IsTransparent(BlockType blockType)
 	}
 }
 
+BlockType Block::GetBlockTypeFromID(std::byte blockID) const
+{
+	unsigned char intValue = std::to_integer<unsigned char>(blockID);
+
+	if (intValue >= 0 && intValue <= 7)
+		return static_cast<BlockType>(intValue);
+	return AIR;
+}
+

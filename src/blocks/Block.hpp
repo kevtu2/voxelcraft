@@ -17,12 +17,12 @@ enum BlockType
 
 enum Face
 {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST,
-    UP,
-    DOWN
+    NORTH, // -z
+    SOUTH, // +z
+    EAST,  // +x
+    WEST,  // -x
+    UP,    // +y
+    DOWN   // -y
 };
 
 class Block 
@@ -42,4 +42,5 @@ public:
     unsigned int GetTexturesUsed() const { return texturesUsed; }
 
     static bool IsTransparent(BlockType blockType);
+    static BlockType GetBlockTypeFromID(std::byte blockID) const;
 };
