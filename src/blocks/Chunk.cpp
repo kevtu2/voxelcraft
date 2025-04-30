@@ -10,6 +10,7 @@ Chunk::Chunk()
 	position = glm::vec3(0, 0, 0);
 	chunkMesh = new ChunkMesh();
 	blocks.reserve(CHUNK_BLOCK_COUNT);
+	GenerateBlockData();
 }
 
 Chunk::Chunk(int x, int y, int z)
@@ -20,6 +21,7 @@ Chunk::Chunk(int x, int y, int z)
 	glGenVertexArrays(1, &chunkVAO_ID);
 	chunkMesh = new ChunkMesh();
 	blocks.reserve(CHUNK_BLOCK_COUNT);
+	GenerateBlockData();
 }
 
 
@@ -119,7 +121,7 @@ void Chunk::GenerateBlockData()
 	}
 }
 
-void Chunk::GenerateChunkMesh(const std::unordered_map<glm::vec2, std::unique_ptr<Chunk>, Vec2Hasher, Vec2Equals>& activeChunks)
+void Chunk::GenerateChunkMesh(World* world) const
 {
 	for (size_t x = 0; x < CHUNK_X; ++x)
 	{
@@ -133,13 +135,8 @@ void Chunk::GenerateChunkMesh(const std::unordered_map<glm::vec2, std::unique_pt
 				// Chunk boundary checks
 				if (x == 0)
 				{
-					// Check chunk in -ve x direction
-					if (activeChunks.contains(glm::vec2(x - 1, z)))
-					{
-						BlockType block = activeChunks.at(glm::vec2(x - 1, z))->GetBlock(CHUNK_X, y, z);
-						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
-					}
-					// If chunk isn't loaded in, assume it is opaque.
+					BlockType block = world->FindBlockFromChunk(glm::vec2(x - 1, z), CHUNK_X, y, z);
+					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
 				}
 				else
 				{
@@ -149,12 +146,8 @@ void Chunk::GenerateChunkMesh(const std::unordered_map<glm::vec2, std::unique_pt
 
 				if (x == CHUNK_X - 1)
 				{
-					// Check chunk in +ve x direction
-					if (activeChunks.contains(glm::vec2(x + 1, z)))
-					{
-						BlockType block = activeChunks.at(glm::vec2(x + 1, z))->GetBlock(0, y, z);
-						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
-					}
+					BlockType block = world->FindBlockFromChunk(glm::vec2(x + 1, z), 0, y, z);
+					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
 				}
 				else
 				{
@@ -164,12 +157,8 @@ void Chunk::GenerateChunkMesh(const std::unordered_map<glm::vec2, std::unique_pt
 
 				if (z == 0)
 				{
-					// Check chunk in -ve z direction	
-					if (activeChunks.contains(glm::vec2(x, z - 1)))
-					{
-						BlockType block = activeChunks.at(glm::vec2(x, z - 1))->GetBlock(x, y, CHUNK_Z);
-						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
-					}
+					BlockType block = world->FindBlockFromChunk(glm::vec2(x, z - 1), x, y, CHUNK_Z);
+					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
 				}
 				else
 				{
@@ -179,12 +168,8 @@ void Chunk::GenerateChunkMesh(const std::unordered_map<glm::vec2, std::unique_pt
 
 				if (z == CHUNK_Z - 1)
 				{
-					// Check chunk in +ve z direction
-					if (activeChunks.contains(glm::vec2(x, z + 1)))
-					{
-						BlockType block = activeChunks.at(glm::vec2(x, z - 1))->GetBlock(x, y, 0);
-						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
-					}
+					BlockType block = world->FindBlockFromChunk(glm::vec2(x, z + 1), x, y, 0);
+					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
 				}
 				else
 				{
@@ -220,12 +205,10 @@ void Chunk::GenerateChunkMesh(const std::unordered_map<glm::vec2, std::unique_pt
 
 BlockType Chunk::GetBlock(int x, int y, int z) const
 {
-	unsigned int index = x + (y * CHUNK_Y) * (z * CHUNK_Y * CHUNK_Z);
+	unsigned int index = x + (y * CHUNK_Y) + (z * CHUNK_Y * CHUNK_Z);
 	std::byte blockID = blocks.at(index);
 	return Block::GetBlockTypeFromID(blockID);
 }
-
-
 
 /*float yValue = 0;
 float freq = 1;

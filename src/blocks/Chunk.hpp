@@ -10,8 +10,6 @@
 #include "../blocks/Block.hpp"
 #include "../blocks/ChunkMesh.hpp"
 #include "../graphics/PerlinNoise.hpp"
-#include "../blocks/World.hpp"
-#include "../blocks/Vec2Hashes.hpp"
 
 #define CHUNK_X 8
 #define CHUNK_Y 384
@@ -21,6 +19,7 @@
 #define PERLIN_OCTAVES 8
 #define PERLIN_GRID_SIZE 400
 
+class World;
 
 class Chunk
 {
@@ -56,5 +55,5 @@ public:
 	BlockType GetBlock(int x, int y, int z) const;
 
 	void GenerateBlockData();
-	void GenerateChunkMesh(const std::unordered_map<glm::vec2, std::unique_ptr<Chunk>, Vec2Hasher, Vec2Equals>& activeChunks);
+	void GenerateChunkMesh(World* world) const;
 };

@@ -1,4 +1,6 @@
 #include "World.hpp"
+#include "../blocks/World.hpp"
+
 
 World::World()
 	: renderDistance(12)
@@ -67,8 +69,17 @@ void World::GenerateChunks()
 {
 	for (auto& pair : activeChunks)
 	{
-		pair.second->GenerateChunkMesh(activeChunks);
+		pair.second->GenerateChunkMesh(this);
 	}
+}
+
+BlockType World::FindBlockFromChunk(const glm::vec2& position, int x, int y, int z) const
+{
+	if (activeChunks.contains(position))
+	{
+		return activeChunks.at(position)->GetBlock(x, y, z);
+	}
+	return BlockType::AIR;
 }
 
 void World::DrawChunks()
