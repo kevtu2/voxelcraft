@@ -34,7 +34,7 @@ private:
 	unsigned int vertexCount = 0;
 
 	// Use to identify which blocks are contained in the chunk
-	std::vector<std::byte> blocks;
+	std::vector<unsigned char> blocks;
 
 public:
 	Chunk();

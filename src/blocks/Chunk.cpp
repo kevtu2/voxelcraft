@@ -113,9 +113,9 @@ void Chunk::GenerateBlockData()
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
-				if (y < surfaceY)  blocks.push_back(static_cast<std::byte>(BlockType::STONE));
-				else if (y == surfaceY) blocks.push_back(static_cast<std::byte>(BlockType::GRASS));
-				else if (y > 100)  blocks.push_back(static_cast<std::byte>(BlockType::AIR));
+				if (y < surfaceY)  blocks.push_back(static_cast<unsigned char>(BlockType::STONE));
+				else if (y == surfaceY) blocks.push_back(static_cast<unsigned char>(BlockType::GRASS));
+				else if (y > 100)  blocks.push_back(static_cast<unsigned char>(BlockType::AIR));
 			}
 		}
 	}
@@ -131,6 +131,8 @@ void Chunk::GenerateChunkMesh(World* world) const
 			{
 				BlockType currentBlock = GetBlock(x, y, z);
 				glm::vec3 worldPosition(position.x + x, y, position.z + z);
+
+				if (Block::IsTransparent(currentBlock)) continue;
 
 				// Chunk boundary checks
 				if (x == 0)
@@ -205,8 +207,8 @@ void Chunk::GenerateChunkMesh(World* world) const
 
 BlockType Chunk::GetBlock(int x, int y, int z) const
 {
-	unsigned int index = x + (y * CHUNK_Y) + (z * CHUNK_Y * CHUNK_Z);
-	std::byte blockID = blocks.at(index);
+	unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_Z);
+	unsigned char blockID = blocks.at(index);
 	return Block::GetBlockTypeFromID(blockID);
 }
 
