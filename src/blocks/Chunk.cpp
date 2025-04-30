@@ -8,7 +8,7 @@ Chunk::Chunk()
 	glGenVertexArrays(1, &chunkVAO_ID);
 	position = glm::vec3(0, 0, 0);
 	chunkMesh = new ChunkMesh();
-	GenerateChunkVertexData();
+	blocks.reserve(CHUNK_BLOCK_COUNT);
 }
 
 Chunk::Chunk(int x, int y, int z)
@@ -18,7 +18,7 @@ Chunk::Chunk(int x, int y, int z)
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
 	chunkMesh = new ChunkMesh();
-	GenerateChunkVertexData();
+	blocks.reserve(CHUNK_BLOCK_COUNT);
 }
 
 
@@ -48,7 +48,6 @@ void Chunk::BufferData() const
 	glEnableVertexAttribArray(1);
 
 	glBindVertexArray(0);
-
 }
 
 void Chunk::DrawArrays() const
@@ -58,72 +57,165 @@ void Chunk::DrawArrays() const
 	glBindVertexArray(0);
 }
 
+//void Chunk::GenerateChunkVertexData()
+//{
+//	for (size_t x = 0; x < CHUNK_X; ++x)
+//	{
+//		for (size_t y = 0; y < CHUNK_Y; ++y)
+//		{
+//			for (size_t z = 0; z < CHUNK_Z; ++z)
+//			{
+//				int yValue = rand();
+//				if (yValue > surfaceY) yValue = surfaceY;
+//				if (yValue < 0.f) yValue = 0.f;
+//
+//				glm::vec3 worldPosition(position.x + x, rand(), position.z + z);
+//				BlockType currentBlock = GetBlock(x, y, z);
+//				BlockType bpx = getBlock()
+//
+//				// Do not draw anything if the block is AIR
+//				if (currentBlock == BlockType::AIR) continue;
+//
+//			
+//
+//				// Check surrounding blocks and draw faces only if the adjacent block is transparent
+//				if (/*z == 0 ||*/ Block::IsTransparent(currentBlock))
+//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
+//
+//				if (/*z == CHUNK_Z - 1 ||*/ Block::IsTransparent(currentBlock))
+//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
+//
+//				if (/*x == CHUNK_X - 1 ||*/ Block::IsTransparent(currentBlock))
+//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
+//
+//				if (/*x == 0 ||*/ Block::IsTransparent(currentBlock))
+//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
+//
+//				if (y == surfaceY || Block::IsTransparent(currentBlock))
+//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, UP);
+//
+//				if (y == 0 || Block::IsTransparent(currentBlock))
+//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, DOWN);
+//			}
+//		}
+//	}
+//	BufferData();
+//}
 
-BlockType Chunk::GetBlock(int x, int y, int z)
+void Chunk::GenerateBlockData()
 {
-	if (y < surfaceY) return BlockType::STONE;
-	if (y == surfaceY) return BlockType::GRASS;
-	if (y > surfaceY) return BlockType::AIR; 
-}
-
-void Chunk::GenerateChunkVertexData()
-{
-	//PerlinNoise pNoise;
 	for (size_t x = 0; x < CHUNK_X; ++x)
 	{
 		for (size_t y = 0; y < CHUNK_Y; ++y)
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
-				/*float yValue = 0;
-				float freq = 1;
-				float amp = 1;
-				for (int i = 0; i < PERLIN_OCTAVES; ++i)
-				{
-					yValue += pNoise.SamplePerlin(x * freq / PERLIN_GRID_SIZE, z * freq / PERLIN_GRID_SIZE);
-					freq *= 2;
-					amp /= 2;
-				}
-				if (yValue > CHUNK_Y) yValue = CHUNK_Y;
-				if (yValue < 0.f) yValue = 0.f;*/
+				if (y < surfaceY)  blocks.push_back(static_cast<std::byte>(BlockType::STONE));
+				else if (y == surfaceY) blocks.push_back(static_cast<std::byte>(BlockType::GRASS));
+				else if (y > 100)  blocks.push_back(static_cast<std::byte>(BlockType::AIR));
+			}
+		}
+	}
+}
 
-				int yValue = rand();
-				if (yValue > surfaceY) yValue = surfaceY;
-				if (yValue < 0.f) yValue = 0.f;
-
-				glm::vec3 worldPosition(position.x + x, rand(), position.z + z);
+void Chunk::GenerateChunkMesh(const auto& activeChunks)
+{
+	for (size_t x = 0; x < CHUNK_X; ++x)
+	{
+		for (size_t y = 0; y < CHUNK_Y; ++y)
+		{
+			for (size_t z = 0; z < CHUNK_Z; ++z)
+			{
 				BlockType currentBlock = GetBlock(x, y, z);
-				BlockType bpx = getBlock()
+				glm::vec3 worldPosition(position.x + x, y, position.z + z);
 
-				// Do not draw anything if the block is AIR
-				if (currentBlock == BlockType::AIR) continue;
+				// Chunk boundary checks
+				if (x == 0)
+				{
+					// Check chunk in -ve x direction
+					if (activeChunks.contains(glm::vec2(x - 1, z)))
+					{
+						BlockType block = activeChunks.at(glm::vec(x - 1, z))->GetBlock(CHUNK_X, y, z);
+						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
+					}
+					// If chunk isn't loaded in, assume it is opaque.
+				}
+				else
+				{
+					BlockType bnx = GetBlock(x - 1, y, z);
+					if (Block::IsTransparent(bnx)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
+				}
 
-			
+				if (x == CHUNK_X - 1)
+				{
+					// Check chunk in +ve x direction
+					if (activeChunks.contains(glm::vec2(x + 1, z)))
+					{
+						BlockType block = activeChunks.at(glm::vec(x + 1, z))->GetBlock(0, y, z);
+						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
+					}
+				}
+				else
+				{
+					BlockType bpx = GetBlock(x + 1, y, z);
+					if (Block::IsTransparent(bpx)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
+				}
 
-				// Check surrounding blocks and draw faces only if the adjacent block is transparent
-				if (/*z == 0 ||*/ Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
+				if (z == 0)
+				{
+					// Check chunk in -ve z direction	
+					if (activeChunks.contains(glm::vec2(x, z - 1)))
+					{
+						BlockType block = activeChunks.at(glm::vec(x, z - 1))->GetBlock(x, y, CHUNK_Z);
+						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
+					}
+				}
+				else
+				{
+					BlockType npz = GetBlock(x, y, z - 1);
+					if (Block::IsTransparent(npz)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
+				}
 
-				if (/*z == CHUNK_Z - 1 ||*/ Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
+				if (z == CHUNK_Z - 1)
+				{
+					// Check chunk in +ve z direction
+					if (activeChunks.contains(glm::vec2(x, z + 1)))
+					{
+						BlockType block = activeChunks.at(glm::vec(x, z - 1))->GetBlock(x, y, 0);
+						if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
+					}
+				}
+				else
+				{
+					BlockType bpz = GetBlock(x, y, z + 1);
+					if (Block::IsTransparent(bpz)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
+				}
 
-				if (/*x == CHUNK_X - 1 ||*/ Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
-
-				if (/*x == 0 ||*/ Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
-
-				if (y == surfaceY || Block::IsTransparent(currentBlock))
+				// Other checks
+				if (y == CHUNK_Y - 1)
+				{
 					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, UP);
+				}
+				else
+				{
+					BlockType bpy = GetBlock(x, y + 1, z);
+					if (Block::IsTransparent(bpy)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, UP);
+				}
 
-				if (y == 0 || Block::IsTransparent(currentBlock))
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, DOWN);
+				if (y == 0)
+				{
+					continue;
+				}
+				else
+				{
+					BlockType bny = GetBlock(x, y - 1, z);
+					if (Block::IsTransparent(bny)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, DOWN);
+				}
 			}
 		}
 	}
 	BufferData();
 }
-
 
 BlockType Chunk::GetBlock(int x, int y, int z) const
 {
@@ -131,3 +223,17 @@ BlockType Chunk::GetBlock(int x, int y, int z) const
 	std::byte blockID = blocks.at(index);
 	return Block::GetBlockTypeFromID(blockID);
 }
+
+
+
+/*float yValue = 0;
+float freq = 1;
+float amp = 1;
+for (int i = 0; i < PERLIN_OCTAVES; ++i)
+{
+	yValue += pNoise.SamplePerlin(x * freq / PERLIN_GRID_SIZE, z * freq / PERLIN_GRID_SIZE);
+	freq *= 2;
+	amp /= 2;
+}
+if (yValue > CHUNK_Y) yValue = CHUNK_Y;
+if (yValue < 0.f) yValue = 0.f;*/

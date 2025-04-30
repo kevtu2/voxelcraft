@@ -63,6 +63,14 @@ void World::UpdateChunks(const Camera& player)
 	}
 }
 
+void World::GenerateChunks()
+{
+	for (auto& pair : activeChunks)
+	{
+		pair.second->GenerateChunkMesh(activeChunks);
+	}
+}
+
 void World::DrawChunks()
 {
 	for (auto& pair : activeChunks)

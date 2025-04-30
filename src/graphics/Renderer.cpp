@@ -11,5 +11,6 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgr
 	{
 		world->UpdateChunks(player);
 	}
+	world->GenerateChunks();
 	world->DrawChunks();
 }

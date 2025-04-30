@@ -42,6 +42,7 @@ public:
 	~World();
 
 	void UpdateChunks(const Camera& player);
+	void GenerateChunks();
 	void DrawChunks();
 
 	void setRenderDistance(unsigned int renderDistance);
