@@ -31,26 +31,24 @@ Chunk::~Chunk()
 }
 
 
-Chunk::Chunk(Chunk&& o)
+Chunk::Chunk(Chunk&& o) noexcept
 	: position(std::move(o.position)),
 	chunkVBO_ID(o.chunkVBO_ID),
 	chunkVAO_ID(o.chunkVAO_ID),
 	chunkIBO_ID(o.chunkIBO_ID),
 	vertexCount(o.vertexCount),
-	blocks(o.blocks),
+	blocks(std::move(o.blocks)),
 	chunkMesh(std::move(o.chunkMesh))
 {
-	o.position = glm::vec2();
 	o.chunkVBO_ID = 0;
 	o.chunkVAO_ID = 0;
 	o.chunkIBO_ID = 0;
 	o.vertexCount = 0;
-	o.blocks = nullptr;
 }
 
-Chunk& Chunk::operator=(Chunk&& o)
+Chunk& Chunk::operator=(Chunk&& o) noexcept
 {
-	if (this == &o) return this*;
+	if (this == &o) return *this;
 	else
 	{
 		position = std::move(o.position);
@@ -58,14 +56,13 @@ Chunk& Chunk::operator=(Chunk&& o)
 		chunkVAO_ID = o.chunkVAO_ID;
 		chunkIBO_ID = o.chunkIBO_ID;
 		vertexCount = o.vertexCount;
-		blocks = o.blocks;
+		blocks = std::move(o.blocks);
 		chunkMesh = std::move(o.chunkMesh);
 		
 		o.chunkVBO_ID = 0;
 		o.chunkVAO_ID = 0;
 		o.chunkIBO_ID = 0;
 		o.vertexCount = 0;
-		o.blocks = nullptr;
 	}
 	return *this;
 }
@@ -114,7 +111,7 @@ void Chunk::GenerateBlockData()
 	}
 }
 
-void Chunk::GenerateChunkMesh(World* world) const
+void Chunk::GenerateChunkMesh(World* world)
 {
 	for (int x = 0; x < CHUNK_X; ++x)
 	{
@@ -131,56 +128,56 @@ void Chunk::GenerateChunkMesh(World* world) const
 				if (x == 0)
 				{
 					BlockType block = world->FindBlockFromChunk(glm::vec2(x - 1, z), CHUNK_X - 1, y, z);
-					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
+					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, WEST);
 				}
 				else
 				{
 					BlockType bnx = GetBlock(x - 1, y, z);
-					if (Block::IsTransparent(bnx)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
+					if (Block::IsTransparent(bnx)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, WEST);
 				}
 
 				if (x == CHUNK_X - 1)
 				{
 					BlockType block = world->FindBlockFromChunk(glm::vec2(x + 1, z), 0, y, z);
-					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
+					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, EAST);
 				}
 				else
 				{
 					BlockType bpx = GetBlock(x + 1, y, z);
-					if (Block::IsTransparent(bpx)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
+					if (Block::IsTransparent(bpx)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, EAST);
 				}
 
 				if (z == 0)
 				{
 					BlockType block = world->FindBlockFromChunk(glm::vec2(x, z - 1), x, y, CHUNK_Z - 1);
-					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
+					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, NORTH);
 				}
 				else
 				{
 					BlockType npz = GetBlock(x, y, z - 1);
-					if (Block::IsTransparent(npz)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
+					if (Block::IsTransparent(npz)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, NORTH);
 				}
 
 				if (z == CHUNK_Z - 1)
 				{
 					BlockType block = world->FindBlockFromChunk(glm::vec2(x, z + 1), x, y, 0);
-					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
+					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, SOUTH);
 				}
 				else
 				{
 					BlockType bpz = GetBlock(x, y, z + 1);
-					if (Block::IsTransparent(bpz)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
+					if (Block::IsTransparent(bpz)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, SOUTH);
 				}
 
 				// Other checks
 				if (y == CHUNK_Y - 1)
 				{
-					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, UP);
+					BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, UP);
 				}
 				else
 				{
 					BlockType bpy = GetBlock(x, y + 1, z);
-					if (Block::IsTransparent(bpy)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, UP);
+					if (Block::IsTransparent(bpy)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, UP);
 				}
 
 				if (y == 0)
@@ -190,12 +187,13 @@ void Chunk::GenerateChunkMesh(World* world) const
 				else
 				{
 					BlockType bny = GetBlock(x, y - 1, z);
-					if (Block::IsTransparent(bny)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, DOWN);
+					if (Block::IsTransparent(bny)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, DOWN);
 				}
 			}
 		}
 	}
 	BufferData();
+	chunkReady = true;
 }
 
 BlockType Chunk::GetBlock(int x, int y, int z) const

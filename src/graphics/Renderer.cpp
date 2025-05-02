@@ -10,7 +10,7 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgr
 	if (((int)abs(x) % CHUNK_X == 0) || ((int)abs(z) % CHUNK_Z == 0))
 	{
 		world->UpdateChunks(player);
+		world->GenerateChunks();
 	}
-	world->GenerateChunks();
 	world->DrawChunks();
 }

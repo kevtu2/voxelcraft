@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <vector>
+#include <array>
 #include <iostream>
 #include <cstdlib>
 
@@ -34,7 +35,9 @@ private:
 	unsigned int vertexCount = 0;
 
 	// Use to identify which blocks are contained in the chunk
-	unsigned char blocks[CHUNK_BLOCK_COUNT];
+	std::array<unsigned char, CHUNK_BLOCK_COUNT> blocks;
+
+	bool chunkReady = false;
 
 public:
 	Chunk();
@@ -43,6 +46,12 @@ public:
 	~Chunk();
 
 	std::unique_ptr<ChunkMesh> chunkMesh;
+	
+	Chunk(Chunk&& o) noexcept;
+	Chunk& operator=(Chunk&& o) noexcept;
+
+	Chunk(const Chunk&) = delete;
+	Chunk& operator=(const Chunk&) = delete;
 
 	void BufferData() const;
 
@@ -55,5 +64,7 @@ public:
 	BlockType GetBlock(int x, int y, int z) const;
 
 	void GenerateBlockData();
-	void GenerateChunkMesh(World* world) const;
+	void GenerateChunkMesh(World* world);
+
+	bool IsReady() const { return chunkReady; }
 };

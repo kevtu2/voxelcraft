@@ -1,6 +1,6 @@
 #include "BlockGeneration.hpp"
 
-void BlockGeneration::GenerateFace(std::unique_ptr<ChunkMesh> chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face)
+void BlockGeneration::GenerateFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face)
 {
  	Block block(type);
 	auto texCoords = block.GetTextureCoords();
