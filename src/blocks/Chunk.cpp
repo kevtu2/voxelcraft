@@ -9,7 +9,6 @@ Chunk::Chunk()
 	glGenVertexArrays(1, &chunkVAO_ID);
 	position = glm::vec3(0, 0, 0);
 	chunkMesh = new ChunkMesh();
-	blocks.reserve(CHUNK_BLOCK_COUNT);
 	GenerateBlockData();
 }
 
@@ -20,7 +19,6 @@ Chunk::Chunk(int x, int y, int z)
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
 	chunkMesh = new ChunkMesh();
-	blocks.reserve(CHUNK_BLOCK_COUNT);
 	GenerateBlockData();
 }
 
@@ -60,50 +58,6 @@ void Chunk::DrawArrays() const
 	glBindVertexArray(0);
 }
 
-//void Chunk::GenerateChunkVertexData()
-//{
-//	for (size_t x = 0; x < CHUNK_X; ++x)
-//	{
-//		for (size_t y = 0; y < CHUNK_Y; ++y)
-//		{
-//			for (size_t z = 0; z < CHUNK_Z; ++z)
-//			{
-//				int yValue = rand();
-//				if (yValue > surfaceY) yValue = surfaceY;
-//				if (yValue < 0.f) yValue = 0.f;
-//
-//				glm::vec3 worldPosition(position.x + x, rand(), position.z + z);
-//				BlockType currentBlock = GetBlock(x, y, z);
-//				BlockType bpx = getBlock()
-//
-//				// Do not draw anything if the block is AIR
-//				if (currentBlock == BlockType::AIR) continue;
-//
-//			
-//
-//				// Check surrounding blocks and draw faces only if the adjacent block is transparent
-//				if (/*z == 0 ||*/ Block::IsTransparent(currentBlock))
-//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
-//
-//				if (/*z == CHUNK_Z - 1 ||*/ Block::IsTransparent(currentBlock))
-//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, SOUTH);
-//
-//				if (/*x == CHUNK_X - 1 ||*/ Block::IsTransparent(currentBlock))
-//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, EAST);
-//
-//				if (/*x == 0 ||*/ Block::IsTransparent(currentBlock))
-//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
-//
-//				if (y == surfaceY || Block::IsTransparent(currentBlock))
-//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, UP);
-//
-//				if (y == 0 || Block::IsTransparent(currentBlock))
-//					BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, DOWN);
-//			}
-//		}
-//	}
-//	BufferData();
-//}
 
 void Chunk::GenerateBlockData()
 {
@@ -113,9 +67,10 @@ void Chunk::GenerateBlockData()
 		{
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
-				if (y < surfaceY)  blocks.push_back(static_cast<unsigned char>(BlockType::STONE));
-				else if (y == surfaceY) blocks.push_back(static_cast<unsigned char>(BlockType::GRASS));
-				else if (y > 100)  blocks.push_back(static_cast<unsigned char>(BlockType::AIR));
+				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
+				if (y < surfaceY)  blocks[index] = static_cast<unsigned char>(BlockType::STONE);
+				else if (y == surfaceY)  blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
+				else if (y > 100)   blocks[index] = static_cast<unsigned char>(BlockType::AIR);
 			}
 		}
 	}
@@ -123,21 +78,21 @@ void Chunk::GenerateBlockData()
 
 void Chunk::GenerateChunkMesh(World* world) const
 {
-	for (size_t x = 0; x < CHUNK_X; ++x)
+	for (int x = 0; x < CHUNK_X; ++x)
 	{
-		for (size_t y = 0; y < CHUNK_Y; ++y)
+		for (int y = 0; y < CHUNK_Y; ++y)
 		{
-			for (size_t z = 0; z < CHUNK_Z; ++z)
+			for (int z = 0; z < CHUNK_Z; ++z)
 			{
 				BlockType currentBlock = GetBlock(x, y, z);
 				glm::vec3 worldPosition(position.x + x, y, position.z + z);
 
-				if (Block::IsTransparent(currentBlock)) continue;
+				if (currentBlock == BlockType::AIR) continue;
 
 				// Chunk boundary checks
 				if (x == 0)
 				{
-					BlockType block = world->FindBlockFromChunk(glm::vec2(x - 1, z), CHUNK_X, y, z);
+					BlockType block = world->FindBlockFromChunk(glm::vec2(x - 1, z), CHUNK_X - 1, y, z);
 					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, WEST);
 				}
 				else
@@ -159,7 +114,7 @@ void Chunk::GenerateChunkMesh(World* world) const
 
 				if (z == 0)
 				{
-					BlockType block = world->FindBlockFromChunk(glm::vec2(x, z - 1), x, y, CHUNK_Z);
+					BlockType block = world->FindBlockFromChunk(glm::vec2(x, z - 1), x, y, CHUNK_Z - 1);
 					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh, currentBlock, worldPosition, NORTH);
 				}
 				else
@@ -208,7 +163,7 @@ void Chunk::GenerateChunkMesh(World* world) const
 BlockType Chunk::GetBlock(int x, int y, int z) const
 {
 	unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_Z);
-	unsigned char blockID = blocks.at(index);
+	unsigned char blockID = blocks[index];
 	return Block::GetBlockTypeFromID(blockID);
 }
 

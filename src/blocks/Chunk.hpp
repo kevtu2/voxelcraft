@@ -11,9 +11,9 @@
 #include "../blocks/ChunkMesh.hpp"
 #include "../graphics/PerlinNoise.hpp"
 
-#define CHUNK_X 8
+#define CHUNK_X 2
 #define CHUNK_Y 384
-#define CHUNK_Z 8
+#define CHUNK_Z 2
 #define CHUNK_BLOCK_COUNT CHUNK_X * CHUNK_Y * CHUNK_Z
 #define surfaceY 100
 #define PERLIN_OCTAVES 8
@@ -34,7 +34,7 @@ private:
 	unsigned int vertexCount = 0;
 
 	// Use to identify which blocks are contained in the chunk
-	std::vector<unsigned char> blocks;
+	unsigned char blocks[CHUNK_BLOCK_COUNT];
 
 public:
 	Chunk();
