@@ -42,7 +42,7 @@ public:
 
 	~Chunk();
 
-	ChunkMesh* chunkMesh;
+	std::unique_ptr<ChunkMesh> chunkMesh;
 
 	void BufferData() const;
 

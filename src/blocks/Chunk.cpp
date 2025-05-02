@@ -8,7 +8,7 @@ Chunk::Chunk()
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
 	position = glm::vec3(0, 0, 0);
-	chunkMesh = new ChunkMesh();
+	chunkMesh = std::make_unique<ChunkMesh>();
 	GenerateBlockData();
 }
 
@@ -18,7 +18,7 @@ Chunk::Chunk(int x, int y, int z)
 	glGenBuffers(1, &chunkVBO_ID);
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
-	chunkMesh = new ChunkMesh();
+	chunkMesh = std::make_unique<ChunkMesh>();
 	GenerateBlockData();
 }
 
@@ -28,9 +28,47 @@ Chunk::~Chunk()
 	glDeleteBuffers(1, &chunkVBO_ID);
 	glDeleteBuffers(1, &chunkIBO_ID);
 	glDeleteVertexArrays(1, &chunkVAO_ID);
-	delete chunkMesh;
 }
 
+
+Chunk::Chunk(Chunk&& o)
+	: position(std::move(o.position)),
+	chunkVBO_ID(o.chunkVBO_ID),
+	chunkVAO_ID(o.chunkVAO_ID),
+	chunkIBO_ID(o.chunkIBO_ID),
+	vertexCount(o.vertexCount),
+	blocks(o.blocks),
+	chunkMesh(std::move(o.chunkMesh))
+{
+	o.position = glm::vec2();
+	o.chunkVBO_ID = 0;
+	o.chunkVAO_ID = 0;
+	o.chunkIBO_ID = 0;
+	o.vertexCount = 0;
+	o.blocks = nullptr;
+}
+
+Chunk& Chunk::operator=(Chunk&& o)
+{
+	if (this == &o) return this*;
+	else
+	{
+		position = std::move(o.position);
+		chunkVBO_ID = o.chunkVBO_ID;
+		chunkVAO_ID = o.chunkVAO_ID;
+		chunkIBO_ID = o.chunkIBO_ID;
+		vertexCount = o.vertexCount;
+		blocks = o.blocks;
+		chunkMesh = std::move(o.chunkMesh);
+		
+		o.chunkVBO_ID = 0;
+		o.chunkVAO_ID = 0;
+		o.chunkIBO_ID = 0;
+		o.vertexCount = 0;
+		o.blocks = nullptr;
+	}
+	return *this;
+}
 
 void Chunk::BufferData() const
 {
