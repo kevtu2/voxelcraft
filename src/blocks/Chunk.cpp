@@ -128,7 +128,7 @@ void Chunk::GenerateChunkMesh(World* world)
 				// Chunk boundary checks
 				if (x == 0)
 				{
-					BlockType block = world->FindBlockFromChunk(glm::vec2(x - 1, z), CHUNK_X - 1, y, z);
+					BlockType block = world->FindBlockFromChunk(glm::vec2(position.x - 1, position.z), CHUNK_X - 1, y, z);
 					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, WEST);
 				}
 				else
@@ -139,7 +139,7 @@ void Chunk::GenerateChunkMesh(World* world)
 
 				if (x == CHUNK_X - 1)
 				{
-					BlockType block = world->FindBlockFromChunk(glm::vec2(x + 1, z), 0, y, z);
+					BlockType block = world->FindBlockFromChunk(glm::vec2(position.x + 1, position.z), 0, y, z);
 					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, EAST);
 				}
 				else
@@ -150,7 +150,7 @@ void Chunk::GenerateChunkMesh(World* world)
 
 				if (z == 0)
 				{
-					BlockType block = world->FindBlockFromChunk(glm::vec2(x, z - 1), x, y, CHUNK_Z - 1);
+					BlockType block = world->FindBlockFromChunk(glm::vec2(position.x, position.z - 1), x, y, CHUNK_Z - 1);
 					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, NORTH);
 				}
 				else
@@ -161,7 +161,7 @@ void Chunk::GenerateChunkMesh(World* world)
 
 				if (z == CHUNK_Z - 1)
 				{
-					BlockType block = world->FindBlockFromChunk(glm::vec2(x, z + 1), x, y, 0);
+					BlockType block = world->FindBlockFromChunk(glm::vec2(position.x, position.z + 1), x, y, 0);
 					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, SOUTH);
 				}
 				else
