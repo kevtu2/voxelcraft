@@ -3,7 +3,7 @@
 
 
 World::World()
-	: renderDistance(12)
+	: renderDistance(6)
 {
 	// Generate new world chunks
 	for (int x = -renderDistance; x < renderDistance; ++x)
