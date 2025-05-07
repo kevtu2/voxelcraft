@@ -113,6 +113,7 @@ void Chunk::GenerateBlockData()
 
 void Chunk::GenerateChunkMesh(World* world)
 {
+	chunkMesh->Clear();
 	for (int x = 0; x < CHUNK_X; ++x)
 	{
 		for (int y = 0; y < CHUNK_Y; ++y)

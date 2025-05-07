@@ -1,5 +1,12 @@
 #include "ChunkMesh.hpp"
 
+void ChunkMesh::Clear()
+{
+	chunkVertexData.clear();
+	chunkIndexData.clear();
+	vertexCount = 0;
+}
+
 void ChunkMesh::PrintChunkVertex() const
 {
 	for (const Vertex& vertex : chunkVertexData)
