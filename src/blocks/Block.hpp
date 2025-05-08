@@ -2,6 +2,13 @@
 #include <vector>
 #include "../graphics/Vertex.hpp"
 
+// Bitmasks for face culling
+#define CULL_POS_Z  1
+#define CULL_NEG_Z  2
+#define CULL_POS_X  4
+#define CULL_NEG_X  8
+#define CULL_POS_Y  16
+#define CULL_NEG_Y  32
 
 enum BlockType
 {
@@ -17,12 +24,12 @@ enum BlockType
 
 enum Face
 {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST,
-    UP,
-    DOWN
+    SOUTH, // +z
+    NORTH, // -z
+    EAST,  // +x
+    WEST,  // -x
+    UP,    // +y
+    DOWN   // -y
 };
 
 class Block 
@@ -42,4 +49,5 @@ public:
     unsigned int GetTexturesUsed() const { return texturesUsed; }
 
     static bool IsTransparent(BlockType blockType);
+    static BlockType GetBlockTypeFromID(unsigned char blockID);
 };

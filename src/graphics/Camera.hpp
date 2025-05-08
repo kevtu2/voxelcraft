@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <GLFW/glfw3.h>
 
 enum CameraMovement
 {
@@ -23,7 +24,7 @@ private:
 	glm::mat4 projection;
 
 public:
-	Camera();
+	Camera(int width, int height);
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix() const { return projection; }
 

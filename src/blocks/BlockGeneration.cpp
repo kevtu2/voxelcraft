@@ -5,7 +5,7 @@ void BlockGeneration::GenerateFace(ChunkMesh* chunkMesh, BlockType type, const g
  	Block block(type);
 	auto texCoords = block.GetTextureCoords();
 	unsigned int texturesUsed = block.GetTexturesUsed();
-	unsigned int faceIndex = static_cast<unsigned int>(face); // Quite a tragic solution but I'll just keep it
+	unsigned int faceIndex = static_cast<unsigned int>(face);
 
 	// Generate 6 necessary vertices for one face
 	// FIXME: We only need to generate 8 unique vertices then we can create indices from the CUBE_INDICES/FACE_INDICES

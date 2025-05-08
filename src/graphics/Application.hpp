@@ -4,9 +4,6 @@
 #include <iostream>
 
 #include "Shader.hpp"
-#include "VertexBuffer.hpp"
-#include "IndexBuffer.hpp"
-#include "VertexArray.hpp"
 #include "Renderer.hpp"
 #include "Camera.hpp"
 #include "blocks/Texture.hpp"
@@ -16,7 +13,11 @@ class Application
 {
 private:
 	GLFWwindow* window;
-	Camera camera;
+	std::shared_ptr<Camera> camera;
+
+	// Window properties
+	int width;
+	int height;
 
 	// Application runtime properties
 	float deltaTime;

@@ -8,6 +8,7 @@
 #include "Chunk.hpp"
 #include "../graphics/Camera.hpp"
 
+
 class World
 {
 	// Define hasher for glm::vec2 used for unordered_map (activeChunks)
@@ -27,7 +28,6 @@ class World
 			return lhs.x == rhs.x && lhs.y == rhs.y;
 		}
 	};
-
 private:
 	int renderDistance;
 
@@ -42,7 +42,9 @@ public:
 	~World();
 
 	void UpdateChunks(const Camera& player);
+	void GenerateChunks();
 	void DrawChunks();
+	BlockType FindBlock(int x, int y, int z) const;
 
 	void setRenderDistance(unsigned int renderDistance);
 	unsigned int getRenderDistance() const { return renderDistance; }

@@ -13,6 +13,7 @@ public:
 	std::vector<unsigned int> chunkIndexData;
 	unsigned int vertexCount = 0;
 
+	void Clear();
 	void PrintChunkVertex() const;
 	void PrintChunkIndices() const;
 };

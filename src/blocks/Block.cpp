@@ -78,3 +78,10 @@ bool Block::IsTransparent(BlockType blockType)
 	}
 }
 
+BlockType Block::GetBlockTypeFromID(unsigned char blockID)
+{
+	if (blockID >= 0 && blockID <= 7)
+		return static_cast<BlockType>(blockID);
+	return AIR;
+}
+
