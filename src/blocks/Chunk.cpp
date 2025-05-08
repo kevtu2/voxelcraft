@@ -121,8 +121,10 @@ void Chunk::GenerateChunkMesh(World* world)
 			for (int z = 0; z < CHUNK_Z; ++z)
 			{
 				glm::vec3 blockWorldPos = glm::vec3((position.x * CHUNK_X) + x, y, (position.z * CHUNK_Z) + z);
+				//std::cout << "Actual chunkpos: " << position.x << ", " << position.z << std::endl;
 				const BlockType currentBlock = GetBlock(x, y, z);
 				if (currentBlock == AIR) continue;
+				
 
 				const BlockType southBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z + 1);
 				const BlockType northBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z - 1);
@@ -130,6 +132,14 @@ void Chunk::GenerateChunkMesh(World* world)
 				const BlockType westBlock  = world->FindBlock(blockWorldPos.x - 1, blockWorldPos.y, blockWorldPos.z);
 				const BlockType upBlock    = world->FindBlock(blockWorldPos.x, blockWorldPos.y + 1, blockWorldPos.z);
 				const BlockType downBlock  = world->FindBlock(blockWorldPos.x, blockWorldPos.y - 1, blockWorldPos.z);
+
+				/*std::cout << "Current Block: " << blockWorldPos.x << ", " << blockWorldPos.y << ", " << blockWorldPos.z << std::endl;
+				std::cout << "  South Block: " << blockWorldPos.x << ", " << blockWorldPos.y << ", " << (blockWorldPos.z + 1) << std::endl;
+				std::cout << "  North Block: " << blockWorldPos.x << ", " << blockWorldPos.y << ", " << (blockWorldPos.z - 1) << std::endl;
+				std::cout << "   East Block: " << (blockWorldPos.x + 1) << ", " << blockWorldPos.y << ", " << blockWorldPos.z << std::endl;
+				std::cout << "   West Block: " << (blockWorldPos.x - 1) << ", " << blockWorldPos.y << ", " << blockWorldPos.z << std::endl;
+				std::cout << "     Up Block: " << blockWorldPos.x << ", " << (blockWorldPos.y + 1) << ", " << blockWorldPos.z << std::endl;
+				std::cout << "   Down Block: " << blockWorldPos.x << ", " << (blockWorldPos.y - 1) << ", " << blockWorldPos.z << std::endl;*/
 
 				unsigned char cullingFlag = 0;
 				cullingFlag |= Block::IsTransparent(southBlock) ? 0 : CULL_POS_Z;
@@ -139,12 +149,12 @@ void Chunk::GenerateChunkMesh(World* world)
 				cullingFlag |= Block::IsTransparent(upBlock)	? 0 : CULL_POS_Y;
 				cullingFlag |= Block::IsTransparent(downBlock)	? 0 : CULL_NEG_Y;
 
-				if ((cullingFlag & CULL_POS_Z) == CULL_POS_Z) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, SOUTH);
-				if ((cullingFlag & CULL_NEG_Z) == CULL_NEG_Z) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, NORTH);
-				if ((cullingFlag & CULL_POS_X) == CULL_POS_X) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, EAST);
-				if ((cullingFlag & CULL_NEG_X) == CULL_NEG_X) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, WEST);
-				if ((cullingFlag & CULL_POS_Y) == CULL_POS_Y) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, UP);
-				if ((cullingFlag & CULL_NEG_Y) == CULL_NEG_Y) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, DOWN);
+				if ((cullingFlag & CULL_POS_Z) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, SOUTH);
+				if ((cullingFlag & CULL_NEG_Z) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, NORTH);
+				if ((cullingFlag & CULL_POS_X) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, EAST);
+				if ((cullingFlag & CULL_NEG_X) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, WEST);
+				if ((cullingFlag & CULL_POS_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, UP);
+				if ((cullingFlag & CULL_NEG_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, DOWN);
 			}
 		}
 	}
@@ -158,6 +168,8 @@ BlockType Chunk::GetBlock(int x, int y, int z) const
 	int localY = (y % CHUNK_Y + CHUNK_Y) % CHUNK_Y;
 	int localZ = (z % CHUNK_Z + CHUNK_Z) % CHUNK_Z;
 	unsigned int index = localX + (localY * CHUNK_X) + (localZ * CHUNK_X * CHUNK_Y);
+	//std::cout << "Local Position: ("
+		//<< localX << ", " << localY << ", " << localZ << ")" << std::endl;
 	unsigned char blockID = blocks[index];
 	return Block::GetBlockTypeFromID(blockID);
 }
