@@ -154,7 +154,10 @@ void Chunk::GenerateChunkMesh(World* world)
 
 BlockType Chunk::GetBlock(int x, int y, int z) const
 {
-	unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_Z);
+	int localX = (x % CHUNK_X + CHUNK_X) % CHUNK_X;
+	int localY = (y % CHUNK_Y + CHUNK_Y) % CHUNK_Y;
+	int localZ = (z % CHUNK_Z + CHUNK_Z) % CHUNK_Z;
+	unsigned int index = localX + (localY * CHUNK_X) + (localZ * CHUNK_Y * CHUNK_Z);
 	unsigned char blockID = blocks[index];
 	return Block::GetBlockTypeFromID(blockID);
 }
