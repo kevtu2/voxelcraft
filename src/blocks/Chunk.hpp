@@ -12,9 +12,9 @@
 #include "../blocks/ChunkMesh.hpp"
 #include "../graphics/PerlinNoise.hpp"
 
-#define CHUNK_X 2
+#define CHUNK_X 16
 #define CHUNK_Y 384
-#define CHUNK_Z 2
+#define CHUNK_Z 16
 #define CHUNK_BLOCK_COUNT CHUNK_X * CHUNK_Y * CHUNK_Z
 #define surfaceY 100
 #define PERLIN_OCTAVES 8
