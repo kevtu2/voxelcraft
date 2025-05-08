@@ -2,6 +2,13 @@
 #include <vector>
 #include "../graphics/Vertex.hpp"
 
+// Bitmasks for face culling
+#define CULL_POS_Z  1
+#define CULL_NEG_Z  2
+#define CULL_POS_X  4
+#define CULL_NEG_X  8
+#define CULL_POS_Y  16
+#define CULL_NEG_Y  32
 
 enum BlockType
 {

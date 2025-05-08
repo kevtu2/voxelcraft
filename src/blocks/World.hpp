@@ -44,7 +44,7 @@ public:
 	void UpdateChunks(const Camera& player);
 	void GenerateChunks();
 	void DrawChunks();
-	BlockType FindBlockFromChunk(const glm::vec2& position, int x, int y, int z) const;
+	BlockType FindBlock(int x, int y, int z) const;
 
 	void setRenderDistance(unsigned int renderDistance);
 	unsigned int getRenderDistance() const { return renderDistance; }

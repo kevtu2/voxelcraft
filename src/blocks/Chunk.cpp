@@ -120,76 +120,31 @@ void Chunk::GenerateChunkMesh(World* world)
 		{
 			for (int z = 0; z < CHUNK_Z; ++z)
 			{
-				BlockType currentBlock = GetBlock(x, y, z);
-				glm::vec3 worldPosition((position.x * CHUNK_X) + x, y, (position.z * CHUNK_Z) + z);
+				glm::vec3 blockWorldPos = glm::vec3((position.x * CHUNK_X) + x, y, (position.z * CHUNK_Z) + z);
+				const BlockType currentBlock = GetBlock(x, y, z);
+				if (currentBlock == AIR) continue;
 
-				if (currentBlock == BlockType::AIR) continue;
+				const BlockType southBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z + 1);
+				const BlockType northBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z - 1);
+				const BlockType eastBlock  = world->FindBlock(blockWorldPos.x + 1, blockWorldPos.y, blockWorldPos.z);
+				const BlockType westBlock  = world->FindBlock(blockWorldPos.x - 1, blockWorldPos.y, blockWorldPos.z);
+				const BlockType upBlock    = world->FindBlock(blockWorldPos.x, blockWorldPos.y + 1, blockWorldPos.z);
+				const BlockType downBlock  = world->FindBlock(blockWorldPos.x, blockWorldPos.y - 1, blockWorldPos.z);
 
-				// Chunk boundary checks
-				if (x == 0)
-				{
-					BlockType block = world->FindBlockFromChunk(glm::vec2(position.x - 1, position.z), CHUNK_X - 1, y, z);
-					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, WEST);
-				}
-				else
-				{
-					BlockType bnx = GetBlock(x - 1, y, z);
-					if (Block::IsTransparent(bnx)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, WEST);
-				}
+				unsigned char cullingFlag = 0;
+				cullingFlag |= Block::IsTransparent(southBlock) ? 0 : CULL_POS_Z;
+				cullingFlag |= Block::IsTransparent(northBlock) ? 0 : CULL_NEG_Z;
+				cullingFlag |= Block::IsTransparent(eastBlock)	? 0 : CULL_POS_X;
+				cullingFlag |= Block::IsTransparent(westBlock)	? 0 : CULL_NEG_X;
+				cullingFlag |= Block::IsTransparent(upBlock)	? 0 : CULL_POS_Y;
+				cullingFlag |= Block::IsTransparent(downBlock)	? 0 : CULL_NEG_Y;
 
-				if (x == CHUNK_X - 1)
-				{
-					BlockType block = world->FindBlockFromChunk(glm::vec2(position.x + 1, position.z), 0, y, z);
-					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, EAST);
-				}
-				else
-				{
-					BlockType bpx = GetBlock(x + 1, y, z);
-					if (Block::IsTransparent(bpx)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, EAST);
-				}
-
-				if (z == 0)
-				{
-					BlockType block = world->FindBlockFromChunk(glm::vec2(position.x, position.z - 1), x, y, CHUNK_Z - 1);
-					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, NORTH);
-				}
-				else
-				{
-					BlockType npz = GetBlock(x, y, z - 1);
-					if (Block::IsTransparent(npz)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, NORTH);
-				}
-
-				if (z == CHUNK_Z - 1)
-				{
-					BlockType block = world->FindBlockFromChunk(glm::vec2(position.x, position.z + 1), x, y, 0);
-					if (Block::IsTransparent(block)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, SOUTH);
-				}
-				else
-				{
-					BlockType bpz = GetBlock(x, y, z + 1);
-					if (Block::IsTransparent(bpz)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, SOUTH);
-				}
-
-				// Other checks
-				if (y == CHUNK_Y - 1)
-				{
-					BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, UP);
-				}
-				else
-				{
-					BlockType bpy = GetBlock(x, y + 1, z);
-					if (Block::IsTransparent(bpy)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, UP);
-				}
-
-				if (y == 0)
-				{
-					continue;
-				}
-				else
-				{
-					BlockType bny = GetBlock(x, y - 1, z);
-					if (Block::IsTransparent(bny)) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, worldPosition, DOWN);
-				}
+				if ((cullingFlag & CULL_POS_Z) == CULL_POS_Z) BlockGeneration::GenerateFace(chunkMesh.get(), southBlock, blockWorldPos, SOUTH);
+				if ((cullingFlag & CULL_NEG_Z) == CULL_NEG_Z) BlockGeneration::GenerateFace(chunkMesh.get(), northBlock, blockWorldPos, NORTH);
+				if ((cullingFlag & CULL_POS_X) == CULL_POS_X) BlockGeneration::GenerateFace(chunkMesh.get(), eastBlock,  blockWorldPos, EAST);
+				if ((cullingFlag & CULL_NEG_X) == CULL_NEG_X) BlockGeneration::GenerateFace(chunkMesh.get(), westBlock,  blockWorldPos, WEST);
+				if ((cullingFlag & CULL_POS_Y) == CULL_POS_Y) BlockGeneration::GenerateFace(chunkMesh.get(), upBlock,	 blockWorldPos, UP);
+				if ((cullingFlag & CULL_NEG_Y) == CULL_NEG_Y) BlockGeneration::GenerateFace(chunkMesh.get(), downBlock,  blockWorldPos, DOWN);
 			}
 		}
 	}

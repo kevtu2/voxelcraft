@@ -69,18 +69,16 @@ void World::GenerateChunks()
 {
 	for (auto& pair : activeChunks)
 	{
-		if (!pair.second->IsReady())
-		{
-			pair.second->GenerateChunkMesh(this);
-		}
+		pair.second->GenerateChunkMesh(this);
 	}
 }
 
-BlockType World::FindBlockFromChunk(const glm::vec2& position, int x, int y, int z) const
+BlockType World::FindBlock(int x, int y, int z) const
 {
-	if (activeChunks.contains(position))
+	glm::vec2 chunkWorldPos = glm::vec2(floor(x / CHUNK_X), floor(z / CHUNK_Z));
+	if (activeChunks.contains(chunkWorldPos))
 	{
-		return activeChunks.at(position)->GetBlock(x, y, z);
+		return activeChunks.at(chunkWorldPos)->GetBlock(x, y, z);
 	}
 	return BlockType::AIR;
 }
