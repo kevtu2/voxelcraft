@@ -139,12 +139,12 @@ void Chunk::GenerateChunkMesh(World* world)
 				cullingFlag |= Block::IsTransparent(upBlock)	? 0 : CULL_POS_Y;
 				cullingFlag |= Block::IsTransparent(downBlock)	? 0 : CULL_NEG_Y;
 
-				if ((cullingFlag & CULL_POS_Z) == CULL_POS_Z) BlockGeneration::GenerateFace(chunkMesh.get(), southBlock, blockWorldPos, SOUTH);
-				if ((cullingFlag & CULL_NEG_Z) == CULL_NEG_Z) BlockGeneration::GenerateFace(chunkMesh.get(), northBlock, blockWorldPos, NORTH);
-				if ((cullingFlag & CULL_POS_X) == CULL_POS_X) BlockGeneration::GenerateFace(chunkMesh.get(), eastBlock,  blockWorldPos, EAST);
-				if ((cullingFlag & CULL_NEG_X) == CULL_NEG_X) BlockGeneration::GenerateFace(chunkMesh.get(), westBlock,  blockWorldPos, WEST);
-				if ((cullingFlag & CULL_POS_Y) == CULL_POS_Y) BlockGeneration::GenerateFace(chunkMesh.get(), upBlock,	 blockWorldPos, UP);
-				if ((cullingFlag & CULL_NEG_Y) == CULL_NEG_Y) BlockGeneration::GenerateFace(chunkMesh.get(), downBlock,  blockWorldPos, DOWN);
+				if ((cullingFlag & CULL_POS_Z) == CULL_POS_Z) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, SOUTH);
+				if ((cullingFlag & CULL_NEG_Z) == CULL_NEG_Z) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, NORTH);
+				if ((cullingFlag & CULL_POS_X) == CULL_POS_X) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, EAST);
+				if ((cullingFlag & CULL_NEG_X) == CULL_NEG_X) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, WEST);
+				if ((cullingFlag & CULL_POS_Y) == CULL_POS_Y) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, UP);
+				if ((cullingFlag & CULL_NEG_Y) == CULL_NEG_Y) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, DOWN);
 			}
 		}
 	}
@@ -157,7 +157,7 @@ BlockType Chunk::GetBlock(int x, int y, int z) const
 	int localX = (x % CHUNK_X + CHUNK_X) % CHUNK_X;
 	int localY = (y % CHUNK_Y + CHUNK_Y) % CHUNK_Y;
 	int localZ = (z % CHUNK_Z + CHUNK_Z) % CHUNK_Z;
-	unsigned int index = localX + (localY * CHUNK_X) + (localZ * CHUNK_Y * CHUNK_Z);
+	unsigned int index = localX + (localY * CHUNK_X) + (localZ * CHUNK_X * CHUNK_Y);
 	unsigned char blockID = blocks[index];
 	return Block::GetBlockTypeFromID(blockID);
 }
