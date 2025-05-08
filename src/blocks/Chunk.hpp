@@ -37,7 +37,6 @@ private:
 	// Use to identify which blocks are contained in the chunk
 	std::array<unsigned char, CHUNK_BLOCK_COUNT> blocks;
 
-	bool chunkReady = false;
 
 public:
 	Chunk();
@@ -67,4 +66,7 @@ public:
 	void GenerateChunkMesh(World* world);
 
 	bool IsReady() const { return chunkReady; }
+
+	bool chunkReady = false;
+
 };

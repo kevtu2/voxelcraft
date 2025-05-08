@@ -49,6 +49,26 @@ void World::UpdateChunks(const Camera& player)
 			{
 				std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z);
 				activeChunks.emplace(chunkPos, std::move(currentChunk));
+
+				if (activeChunks.contains(chunkPos + glm::vec2(-1, 0)))
+				{
+					activeChunks.at(chunkPos + glm::vec2(-1, 0))->chunkReady = false;
+				}
+
+				if (activeChunks.contains(chunkPos + glm::vec2(1, 0)))
+				{
+					activeChunks.at(chunkPos + glm::vec2(1, 0))->chunkReady = false;
+				}
+
+				if (activeChunks.contains(chunkPos + glm::vec2(0, -1)))
+				{
+					activeChunks.at(chunkPos + glm::vec2(0, -1))->chunkReady = false;
+				}
+
+				if (activeChunks.contains(chunkPos + glm::vec2(0, 1)))
+				{
+					activeChunks.at(chunkPos + glm::vec2(0, 1))->chunkReady = false;
+				}
 			}
 			// This prevents visible chunks that are already generated from deletion
 			else if (activeChunks.contains(chunkPos))
@@ -69,7 +89,10 @@ void World::GenerateChunks()
 {
 	for (auto& pair : activeChunks)
 	{
-		pair.second->GenerateChunkMesh(this);
+		if (!pair.second->chunkReady)
+		{
+			pair.second->GenerateChunkMesh(this);
+		}
 	}
 }
 

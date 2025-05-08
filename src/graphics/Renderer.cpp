@@ -7,7 +7,7 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgr
 	float x = player.GetCameraPosition().x;
 	float z = player.GetCameraPosition().z;
 	// Multiply CHUNK_XorZ by a factor to prevent chunk loading everytime a new chunk is entered :(
-	if (((int)abs(x) % CHUNK_X == 0) || ((int)abs(z) % CHUNK_Z == 0))
+	if (((int)abs(x) % (CHUNK_X * world->getRenderDistance()) == 0) || ((int)abs(z) % (CHUNK_Z * world->getRenderDistance()) == 0))
 	{
 		world->UpdateChunks(player);
 		world->GenerateChunks();
