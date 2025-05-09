@@ -96,6 +96,7 @@ void Chunk::DrawArrays() const
 
 void Chunk::GenerateBlockData()
 {
+	PerlinNoise perlin;
 	for (size_t x = 0; x < CHUNK_X; ++x)
 	{
 		for (size_t y = 0; y < CHUNK_Y; ++y)
@@ -103,9 +104,11 @@ void Chunk::GenerateBlockData()
 			for (size_t z = 0; z < CHUNK_Z; ++z)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
-				if (y < surfaceY)  blocks[index] = static_cast<unsigned char>(BlockType::STONE);
+				if (y < surfaceY)		 blocks[index] = static_cast<unsigned char>(BlockType::STONE);
 				else if (y == surfaceY)  blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
-				else if (y > 100)   blocks[index] = static_cast<unsigned char>(BlockType::AIR);
+				else if (y > 100)		 blocks[index] = static_cast<unsigned char>(BlockType::AIR);
+
+				//if (y == 101 && x == 1 && z == 1) blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
 			}
 		}
 	}
@@ -161,15 +164,3 @@ BlockType Chunk::GetBlock(int x, int y, int z) const
 	unsigned char blockID = blocks[index];
 	return Block::GetBlockTypeFromID(blockID);
 }
-
-/*float yValue = 0;
-float freq = 1;
-float amp = 1;
-for (int i = 0; i < PERLIN_OCTAVES; ++i)
-{
-	yValue += pNoise.SamplePerlin(x * freq / PERLIN_GRID_SIZE, z * freq / PERLIN_GRID_SIZE);
-	freq *= 2;
-	amp /= 2;
-}
-if (yValue > CHUNK_Y) yValue = CHUNK_Y;
-if (yValue < 0.f) yValue = 0.f;*/
