@@ -61,7 +61,7 @@ public:
 
 	BlockType GetBlock(int x, int y, int z) const;
 
-	void GenerateBlockData();
+	void GenerateBlockData(World* world);
 	void GenerateChunkMesh(World* world);
 
 	bool IsReady() const { return chunkReady; }

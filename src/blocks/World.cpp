@@ -12,12 +12,13 @@ World::World()
 		{
 			glm::vec2 chunkPos = glm::vec2(x, z);
 			std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z);
+			currentChunk->GenerateBlockData(this);
 			activeChunks.emplace(chunkPos, std::move(currentChunk));
 		}
 	}
 	perlinNoise = FastNoiseLite();
 	perlinNoise.SetSeed(rand());
-	perlinNoise.SetFrequency(0.002f);
+	perlinNoise.SetFrequency(0.1f);
 	perlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 }
 
