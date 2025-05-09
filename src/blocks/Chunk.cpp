@@ -96,7 +96,6 @@ void Chunk::DrawArrays() const
 
 void Chunk::GenerateBlockData()
 {
-	PerlinNoise perlin;
 	for (size_t x = 0; x < CHUNK_X; ++x)
 	{
 		for (size_t y = 0; y < CHUNK_Y; ++y)

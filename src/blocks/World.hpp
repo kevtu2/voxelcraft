@@ -7,6 +7,7 @@
 
 #include "Chunk.hpp"
 #include "../graphics/Camera.hpp"
+#include "../FastNoiseLite/FastNoiseLite.hpp"
 
 
 class World
@@ -36,6 +37,7 @@ private:
 	std::unordered_map<glm::vec2, std::unique_ptr<Chunk>, Vec2Hasher, Vec2Equals> activeChunks;
 	std::unordered_set<glm::vec2, Vec2Hasher, Vec2Equals> dirtyChunks;
 
+	FastNoiseLite PerlinNoise;
 
 public:
 	World();
@@ -45,6 +47,7 @@ public:
 	void GenerateChunks();
 	void DrawChunks();
 	BlockType FindBlock(int x, int y, int z) const;
+	float GetNoise(int x, int y);
 
 	void setRenderDistance(unsigned int renderDistance);
 	unsigned int getRenderDistance() const { return renderDistance; }

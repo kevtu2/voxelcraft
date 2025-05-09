@@ -10,7 +10,6 @@
 #include "../blocks/BlockGeneration.hpp"
 #include "../blocks/Block.hpp"
 #include "../blocks/ChunkMesh.hpp"
-#include "../graphics/PerlinNoise.hpp"
 
 #define CHUNK_X 8
 #define CHUNK_Y 150
