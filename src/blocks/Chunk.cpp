@@ -98,17 +98,15 @@ void Chunk::GenerateBlockData(World* world)
 	{
 		for (int z = 0; z < CHUNK_Z; ++z)
 		{
-			glm::vec3 blockWorldPos = glm::vec3((position.x * CHUNK_X) + x, 0, (position.z * CHUNK_Z) + z);
-			int height = floor((world->GetNoise(blockWorldPos.x, blockWorldPos.z) * 0.5 + 0.5) * surfaceY);
-
+			int height = floor((world->GetNoise(position.x * CHUNK_X + x, position.z * CHUNK_Z + z) * 0.5 + 0.5) * surfaceY);
 			for (int y = 0; y <= height; ++y)
 			{
 				if (y < 0) y = 0;
 				else if (y > CHUNK_Y - 1) y = CHUNK_Y - 1;
 
-				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
+				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_X * CHUNK_Y);
 				if (y < surfaceY)		 blocks[index] = static_cast<unsigned char>(BlockType::STONE);
-				else if (y == surfaceY)  blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
+				else if (y == height)  blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
 				else if (y > 100)		 blocks[index] = static_cast<unsigned char>(BlockType::AIR);
 
 				//std::cout << "(" << x << ", " << y << ", " << z << ")" << std::endl;
@@ -117,7 +115,10 @@ void Chunk::GenerateBlockData(World* world)
 			}
 		}
 	}
-
+	for (int i = 0; i < blocks.size(); ++i)
+	{
+		if (blocks[i] == 205) blocks[i] = BlockType::AIR;
+	}
 }
 
 void Chunk::GenerateChunkMesh(World* world)
@@ -127,13 +128,13 @@ void Chunk::GenerateChunkMesh(World* world)
 	{
 		for (int z = 0; z < CHUNK_Z; ++z)
 		{
-			int height = floor((world->GetNoise(position.x * CHUNK_X, position.z * CHUNK_Z) * 0.5 + 0.5) * surfaceY);
+			int height = floor((world->GetNoise(position.x * CHUNK_X + x, position.z * CHUNK_Z + z) * 0.5 + 0.5) * surfaceY);
 
 			for (int y = 0; y <= height; ++y)
 			{
 				glm::vec3 blockWorldPos = glm::vec3((position.x * CHUNK_X) + x, y, (position.z * CHUNK_Z) + z);
 
-				const BlockType currentBlock = GetBlock(x, y, z);
+				const BlockType currentBlock = GetBlock(blockWorldPos.x, y, blockWorldPos.z);
 				//std::cout << "Block of type " << static_cast<int>(currentBlock) << " at:" << blockWorldPos.x << ", " << blockWorldPos.y << ", " << blockWorldPos.z << std::endl;
 				if (currentBlock == AIR) continue;
 
