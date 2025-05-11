@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 
 Camera::Camera(int width, int height)
-	: position(glm::vec3(0.0f, 5.f, 0.0f)),
+	: position(glm::vec3(0.0f, 100.f, 0.0f)),
 	lookDirection(glm::vec3(-1.0f, 0.0f, 0.0f)),
 	cameraSpeed(3.5f),
 	cameraSensitivity(5.0f),

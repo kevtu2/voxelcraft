@@ -17,8 +17,8 @@ World::World()
 		}
 	}
 	perlinNoise = FastNoiseLite();
-	perlinNoise.SetSeed(rand());
-	perlinNoise.SetFrequency(0.1f);
+	perlinNoise.SetSeed(1337);
+	perlinNoise.SetFrequency(0.01f);
 	perlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 }
 
