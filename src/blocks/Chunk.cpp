@@ -137,20 +137,20 @@ void Chunk::GenerateChunkMesh(World* world)
 				//std::cout << "Block of type " << static_cast<int>(currentBlock) << " at:" << blockWorldPos.x << ", " << blockWorldPos.y << ", " << blockWorldPos.z << std::endl;
 				if (currentBlock == AIR) continue;
 
-				const BlockType southBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z + 1);
-				const BlockType northBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z - 1);
-				const BlockType eastBlock = world->FindBlock(blockWorldPos.x + 1, blockWorldPos.y, blockWorldPos.z);
-				const BlockType westBlock = world->FindBlock(blockWorldPos.x - 1, blockWorldPos.y, blockWorldPos.z);
-				const BlockType upBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y + 1, blockWorldPos.z);
-				const BlockType downBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y - 1, blockWorldPos.z);
+				const BlockType southBlock	= world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z + 1);
+				const BlockType northBlock	= world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z - 1);
+				const BlockType eastBlock	= world->FindBlock(blockWorldPos.x + 1, blockWorldPos.y, blockWorldPos.z);
+				const BlockType westBlock	= world->FindBlock(blockWorldPos.x - 1, blockWorldPos.y, blockWorldPos.z);
+				const BlockType upBlock		= world->FindBlock(blockWorldPos.x, blockWorldPos.y + 1, blockWorldPos.z);
+				const BlockType downBlock	= world->FindBlock(blockWorldPos.x, blockWorldPos.y - 1, blockWorldPos.z);
 
 				unsigned char cullingFlag = 0;
 				cullingFlag |= Block::IsTransparent(southBlock) ? 0 : CULL_POS_Z;
 				cullingFlag |= Block::IsTransparent(northBlock) ? 0 : CULL_NEG_Z;
-				cullingFlag |= Block::IsTransparent(eastBlock) ? 0 : CULL_POS_X;
-				cullingFlag |= Block::IsTransparent(westBlock) ? 0 : CULL_NEG_X;
-				cullingFlag |= Block::IsTransparent(upBlock) ? 0 : CULL_POS_Y;
-				cullingFlag |= Block::IsTransparent(downBlock) ? 0 : CULL_NEG_Y;
+				cullingFlag |= Block::IsTransparent(eastBlock)	? 0 : CULL_POS_X;
+				cullingFlag |= Block::IsTransparent(westBlock)	? 0 : CULL_NEG_X;
+				cullingFlag |= Block::IsTransparent(upBlock)	? 0 : CULL_POS_Y;
+				cullingFlag |= Block::IsTransparent(downBlock)	? 0 : CULL_NEG_Y;
 
 				if ((cullingFlag & CULL_POS_Z) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, SOUTH);
 				if ((cullingFlag & CULL_NEG_Z) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, NORTH);
