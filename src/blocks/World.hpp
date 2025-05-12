@@ -39,6 +39,9 @@ private:
 
 	FastNoiseLite perlinNoise;
 
+	// Division helper
+	int DivFloor(int x, int y) const;
+
 public:
 	World();
 	~World();
@@ -51,5 +54,4 @@ public:
 
 	void setRenderDistance(unsigned int renderDistance);
 	unsigned int getRenderDistance() const { return renderDistance; }
-
 };

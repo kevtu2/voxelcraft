@@ -101,17 +101,9 @@ void Chunk::GenerateBlockData(World* world)
 			int height = floor((world->GetNoise(position.x * CHUNK_X + x, position.z * CHUNK_Z + z) * 0.5 + 0.5) * surfaceY);
 			for (int y = 0; y <= height; ++y)
 			{
-				if (y < 0) y = 0;
-				else if (y > CHUNK_Y - 1) y = CHUNK_Y - 1;
-
+				if (y > CHUNK_Y - 1) y = CHUNK_Y - 1;
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_X * CHUNK_Y);
-				if (y < surfaceY)		 blocks[index] = static_cast<unsigned char>(BlockType::STONE);
-				else if (y == height)  blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
-				else if (y > 100)		 blocks[index] = static_cast<unsigned char>(BlockType::AIR);
-
-				//std::cout << "(" << x << ", " << y << ", " << z << ")" << std::endl;
-
-				//if (y == 101 && x == 1 && z == 1) blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
+				blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
 			}
 		}
 	}
@@ -135,7 +127,6 @@ void Chunk::GenerateChunkMesh(World* world)
 				glm::vec3 blockWorldPos = glm::vec3((position.x * CHUNK_X) + x, y, (position.z * CHUNK_Z) + z);
 
 				const BlockType currentBlock = GetBlock(blockWorldPos.x, y, blockWorldPos.z);
-				//std::cout << "Block of type " << static_cast<int>(currentBlock) << " at:" << blockWorldPos.x << ", " << blockWorldPos.y << ", " << blockWorldPos.z << std::endl;
 				if (currentBlock == AIR) continue;
 
 				const BlockType southBlock	= world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z + 1);
@@ -168,9 +159,12 @@ void Chunk::GenerateChunkMesh(World* world)
 
 BlockType Chunk::GetBlock(int x, int y, int z) const
 {
-	int localX = (x % CHUNK_X + CHUNK_X) % CHUNK_X;
-	int localY = (y % CHUNK_Y + CHUNK_Y) % CHUNK_Y;
-	int localZ = (z % CHUNK_Z + CHUNK_Z) % CHUNK_Z;
+	if (y < 0) return BlockType::AIR;
+	else if (y > CHUNK_Y - 1) return BlockType::AIR;
+	int localX = x - (position.x * CHUNK_X);
+	int localY = y;
+	if (localY > CHUNK_Y - 1) localY = CHUNK_Y - 1;
+	int localZ = z - (position.z * CHUNK_Z);
 	unsigned int index = localX + (localY * CHUNK_X) + (localZ * CHUNK_X * CHUNK_Y);
 	unsigned char blockID = blocks[index];
 	return Block::GetBlockTypeFromID(blockID);
