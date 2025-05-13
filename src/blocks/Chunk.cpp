@@ -163,7 +163,7 @@ BlockType Chunk::GetBlock(int x, int y, int z) const
 	unsigned int index = localX + (localY * CHUNK_X) + (localZ * CHUNK_X * CHUNK_Y);
 	unsigned char blockID = blocks[index];
 
-	if (blockID == 205) return static_cast<unsigned char>(BlockType::AIR);
+	if (blockID == 205) return BlockType::AIR;
 
 	return Block::GetBlockTypeFromID(blockID);
 }
