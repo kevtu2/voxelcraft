@@ -5,6 +5,11 @@
 World::World()
 	: renderDistance(6)
 {
+	perlinNoise = FastNoiseLite();
+	perlinNoise.SetSeed(1337);
+	perlinNoise.SetFrequency(0.01f);
+	perlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+
 	// Generate new world chunks
 	for (int x = -renderDistance; x < renderDistance; ++x)
 	{
@@ -16,10 +21,6 @@ World::World()
 			activeChunks.emplace(chunkPos, std::move(currentChunk));
 		}
 	}
-	perlinNoise = FastNoiseLite();
-	perlinNoise.SetSeed(1337);
-	perlinNoise.SetFrequency(0.01f);
-	perlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 }
 
 World::~World()
@@ -100,8 +101,6 @@ void World::GenerateChunks()
 		}
 	}
 }
-
-
 
 BlockType World::FindBlock(int x, int y, int z) const
 {

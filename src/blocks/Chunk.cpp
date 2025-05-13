@@ -98,13 +98,23 @@ void Chunk::GenerateBlockData(World* world)
 	{
 		for (int z = 0; z < CHUNK_Z; ++z)
 		{
-			int height = floor((world->GetNoise(position.x * CHUNK_X + x, position.z * CHUNK_Z + z) * 0.5 + 0.5) * surfaceY);
+			float rawNoise = world->GetNoise(position.x * CHUNK_X + x, position.z * CHUNK_Z + z); // -1 to 1
+			float normalized = (rawNoise * 0.5f + 0.5f); // 0 to 1
+			int height = static_cast<int>(normalized * surfaceY);
+
+
+
 			for (int y = 0; y <= height; ++y)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_X * CHUNK_Y);
 				blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
 			}
 		}
+	}
+
+	for (int i = 0; i < blocks.size(); ++i)
+	{
+		if (blocks[i] == 205) blocks[i] = BlockType::AIR;
 	}
 }
 
@@ -115,7 +125,9 @@ void Chunk::GenerateChunkMesh(World* world)
 	{
 		for (int z = 0; z < CHUNK_Z; ++z)
 		{
-			int height = floor((world->GetNoise(position.x * CHUNK_X + x, position.z * CHUNK_Z + z) * 0.5 + 0.5) * surfaceY);
+			float rawNoise = world->GetNoise(position.x * CHUNK_X + x, position.z * CHUNK_Z + z); // -1 to 1
+			float normalized = (rawNoise * 0.5f + 0.5f); // 0 to 1
+			int height = static_cast<int>(normalized * surfaceY);
 
 			for (int y = 0; y <= height; ++y)
 			{
@@ -162,8 +174,6 @@ BlockType Chunk::GetBlock(int x, int y, int z) const
 	int localZ = z - (position.z * CHUNK_Z);
 	unsigned int index = localX + (localY * CHUNK_X) + (localZ * CHUNK_X * CHUNK_Y);
 	unsigned char blockID = blocks[index];
-
-	if (blockID == 205) return BlockType::AIR;
 
 	return Block::GetBlockTypeFromID(blockID);
 }
