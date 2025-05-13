@@ -12,7 +12,7 @@
 #include "../blocks/ChunkMesh.hpp"
 
 #define CHUNK_X 8
-#define CHUNK_Y 150
+#define CHUNK_Y 384
 #define CHUNK_Z 8
 #define CHUNK_BLOCK_COUNT CHUNK_X * CHUNK_Y * CHUNK_Z
 #define surfaceY 100

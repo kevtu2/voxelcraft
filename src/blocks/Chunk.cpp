@@ -101,15 +101,10 @@ void Chunk::GenerateBlockData(World* world)
 			int height = floor((world->GetNoise(position.x * CHUNK_X + x, position.z * CHUNK_Z + z) * 0.5 + 0.5) * surfaceY);
 			for (int y = 0; y <= height; ++y)
 			{
-				if (y > CHUNK_Y - 1) y = CHUNK_Y - 1;
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_X * CHUNK_Y);
 				blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
 			}
 		}
-	}
-	for (int i = 0; i < blocks.size(); ++i)
-	{
-		if (blocks[i] == 205) blocks[i] = BlockType::AIR;
 	}
 }
 
@@ -161,11 +156,14 @@ BlockType Chunk::GetBlock(int x, int y, int z) const
 {
 	if (y < 0) return BlockType::AIR;
 	else if (y > CHUNK_Y - 1) return BlockType::AIR;
+
 	int localX = x - (position.x * CHUNK_X);
 	int localY = y;
-	if (localY > CHUNK_Y - 1) localY = CHUNK_Y - 1;
 	int localZ = z - (position.z * CHUNK_Z);
 	unsigned int index = localX + (localY * CHUNK_X) + (localZ * CHUNK_X * CHUNK_Y);
 	unsigned char blockID = blocks[index];
+
+	if (blockID == 205) return static_cast<unsigned char>(BlockType::AIR);
+
 	return Block::GetBlockTypeFromID(blockID);
 }
