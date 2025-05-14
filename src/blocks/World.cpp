@@ -112,7 +112,7 @@ BlockType World::FindBlock(int x, int y, int z) const
 	{
 		return activeChunks.at(chunkWorldPos)->GetBlock(x, y, z);
 	}
-	return BlockType::STONE; // Prevent it from generating the face if chunk doesn't exist yet.
+	return BlockType::AIR; // Prevent it from generating the face if chunk doesn't exist yet.
 }
 
 float World::GetNoise(int x, int y)

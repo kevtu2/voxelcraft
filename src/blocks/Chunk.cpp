@@ -9,6 +9,7 @@ Chunk::Chunk()
 	glGenVertexArrays(1, &chunkVAO_ID);
 	position = glm::vec3(0, 0, 0);
 	chunkMesh = std::make_unique<ChunkMesh>();
+	blocks.fill(static_cast<unsigned char>(BlockType::AIR));
 }
 
 Chunk::Chunk(int x, int y, int z)
@@ -18,6 +19,7 @@ Chunk::Chunk(int x, int y, int z)
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
 	chunkMesh = std::make_unique<ChunkMesh>();
+	blocks.fill(static_cast<unsigned char>(BlockType::AIR));
 }
 
 
@@ -102,19 +104,12 @@ void Chunk::GenerateBlockData(World* world)
 			float normalized = (rawNoise * 0.5f + 0.5f); // 0 to 1
 			int height = static_cast<int>(normalized * surfaceY);
 
-
-
 			for (int y = 0; y <= height; ++y)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_X * CHUNK_Y);
 				blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
 			}
 		}
-	}
-
-	for (int i = 0; i < blocks.size(); ++i)
-	{
-		if (blocks[i] == 205) blocks[i] = BlockType::AIR;
 	}
 }
 
@@ -133,7 +128,7 @@ void Chunk::GenerateChunkMesh(World* world)
 			{
 				glm::vec3 blockWorldPos = glm::vec3((position.x * CHUNK_X) + x, y, (position.z * CHUNK_Z) + z);
 
-				const BlockType currentBlock = GetBlock(blockWorldPos.x, y, blockWorldPos.z);
+				const BlockType currentBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z);
 				if (currentBlock == AIR) continue;
 
 				const BlockType southBlock	= world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z + 1);
@@ -164,6 +159,11 @@ void Chunk::GenerateChunkMesh(World* world)
 	chunkReady = true;
 }
 
+// Assuming world block position
+// TODO: This doesn't get the correct local block position since we change the chunk position and try to reapply the formula
+// I need to re check the logic for World::FindBlock and Chunk::GetBlock. The current logic does not correctly identify the block especially for the blocks
+// on the boundaries of chunks. For example, if block.z = 0, then checking the block in the -z direction should look at the block at z = CHUNK_Z of the chunk
+// in the -z direction.
 BlockType Chunk::GetBlock(int x, int y, int z) const
 {
 	if (y < 0) return BlockType::AIR;
