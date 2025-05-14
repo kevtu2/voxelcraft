@@ -5,15 +5,16 @@
 #include <array>
 #include <iostream>
 #include <cstdlib>
+#include "../FastNoiseLite/FastNoiseLite.hpp"
 
 #include "../graphics/Vertex.hpp"
 #include "../blocks/BlockGeneration.hpp"
 #include "../blocks/Block.hpp"
 #include "../blocks/ChunkMesh.hpp"
 
-#define CHUNK_X 8
+#define CHUNK_X 16
 #define CHUNK_Y 384
-#define CHUNK_Z 8
+#define CHUNK_Z 16
 #define CHUNK_BLOCK_COUNT CHUNK_X * CHUNK_Y * CHUNK_Z
 #define surfaceY 100
 #define PERLIN_OCTAVES 8
@@ -35,11 +36,12 @@ private:
 
 	// Use to identify which blocks are contained in the chunk
 	std::array<unsigned char, CHUNK_BLOCK_COUNT> blocks;
-
+	
+	FastNoiseLite perlinNoise;
 
 public:
 	Chunk();
-	Chunk(int x, int y, int z);
+	Chunk(int x, int y, int z, FastNoiseLite noise);
 
 	~Chunk();
 
@@ -61,13 +63,11 @@ public:
 
 	BlockType GetBlock(int x, int y, int z) const;
 
-	void GenerateBlockData(World* world);
+	void GenerateBlockData();
 	void GenerateChunkMesh(World* world);
 
 	bool IsReady() const { return chunkReady; }
 
 	bool chunkReady = false;
-
-
 
 };

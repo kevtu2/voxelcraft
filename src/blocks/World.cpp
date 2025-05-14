@@ -16,8 +16,7 @@ World::World()
 		for (int z = -renderDistance; z < renderDistance; ++z)
 		{
 			glm::vec2 chunkPos = glm::vec2(x, z);
-			std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z);
-			currentChunk->GenerateBlockData(this);
+			std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z, perlinNoise);
 			activeChunks.emplace(chunkPos, std::move(currentChunk));
 		}
 	}
@@ -25,15 +24,15 @@ World::World()
 
 World::~World()
 {
-	
+
 }
 
 // TODO: Change this so that player camera is not contained inside of application.
 void World::UpdateChunks(const Camera& player)
 {
- 	// Calculate current reference Chunk X-Z position.
-	int playerChunkPosX = (int) (player.GetCameraPosition().x / CHUNK_X);
-	int playerChunkPosZ = (int) (player.GetCameraPosition().z / CHUNK_Z);
+	// Calculate current reference Chunk X-Z position.
+	int playerChunkPosX = (int)(player.GetCameraPosition().x / CHUNK_X);
+	int playerChunkPosZ = (int)(player.GetCameraPosition().z / CHUNK_Z);
 
 	dirtyChunks.clear();
 
@@ -53,7 +52,7 @@ void World::UpdateChunks(const Camera& player)
 			// This generates chunks that aren't generated already.
 			if (!activeChunks.contains(chunkPos))
 			{
-				std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z);
+				std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z, perlinNoise);
 				activeChunks.emplace(chunkPos, std::move(currentChunk));
 
 				if (activeChunks.contains(chunkPos + glm::vec2(-1, 0)))
@@ -83,7 +82,7 @@ void World::UpdateChunks(const Camera& player)
 			}
 		}
 	}
-	
+
 	// Delete chunks outside render distance
 	for (auto& chunkKey : dirtyChunks)
 	{
@@ -115,13 +114,6 @@ BlockType World::FindBlock(int x, int y, int z) const
 	return BlockType::AIR; // Prevent it from generating the face if chunk doesn't exist yet.
 }
 
-float World::GetNoise(int x, int y)
-{
-	float xFloat = static_cast<float>(x);
-	float yFloat = static_cast<float>(y);
-	return perlinNoise.GetNoise(xFloat, yFloat);
-}
-
 void World::DrawChunks()
 {
 	for (auto& pair : activeChunks)
@@ -132,7 +124,7 @@ void World::DrawChunks()
 
 void World::setRenderDistance(unsigned int renderDistance)
 {
-	if (renderDistance > 32) 
+	if (renderDistance > 32)
 	{
 		this->renderDistance = 32;
 	}
