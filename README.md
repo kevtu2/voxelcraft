@@ -7,7 +7,7 @@ The project is built with C++ and OpenGL. I wanted to use this as an opportunity
 * Currently, I have yet to extensively work on the project, so right now it only renders a small 16x384x16 chunk (length x height x width).
 * I am planning on adding the features that are seen in the original game, such as:
   - [x] Chunk loading
-  - [ ] Terrain & world generation
+  - [x] Terrain & world generation
   - [ ] Block placement/destruction
   - [ ] Gameplay aspects such as a health bar, inventory, etc.
  
