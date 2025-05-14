@@ -15,7 +15,7 @@ World::World()
 	{
 		for (int z = -renderDistance; z < renderDistance; ++z)
 		{
-			glm::vec2 chunkPos = glm::vec2(x, z);
+			glm::ivec2 chunkPos = glm::ivec2(x, z);
 			std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z, perlinNoise);
 			activeChunks.emplace(chunkPos, std::move(currentChunk));
 		}
@@ -47,7 +47,7 @@ void World::UpdateChunks(const Camera& player)
 	{
 		for (int z = playerChunkPosZ - renderDistance; z <= playerChunkPosZ + renderDistance; ++z)
 		{
-			glm::vec2 chunkPos = glm::vec2(x, z);
+			glm::ivec2 chunkPos = glm::vec2(x, z);
 
 			// This generates chunks that aren't generated already.
 			if (!activeChunks.contains(chunkPos))
@@ -55,24 +55,24 @@ void World::UpdateChunks(const Camera& player)
 				std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z, perlinNoise);
 				activeChunks.emplace(chunkPos, std::move(currentChunk));
 
-				if (activeChunks.contains(chunkPos + glm::vec2(-1, 0)))
+				if (activeChunks.contains(chunkPos + glm::ivec2(-1, 0)))
 				{
-					activeChunks.at(chunkPos + glm::vec2(-1, 0))->chunkReady = false;
+					activeChunks.at(chunkPos + glm::ivec2(-1, 0))->chunkReady = false;
 				}
 
-				if (activeChunks.contains(chunkPos + glm::vec2(1, 0)))
+				if (activeChunks.contains(chunkPos + glm::ivec2(1, 0)))
 				{
-					activeChunks.at(chunkPos + glm::vec2(1, 0))->chunkReady = false;
+					activeChunks.at(chunkPos + glm::ivec2(1, 0))->chunkReady = false;
 				}
 
-				if (activeChunks.contains(chunkPos + glm::vec2(0, -1)))
+				if (activeChunks.contains(chunkPos + glm::ivec2(0, -1)))
 				{
-					activeChunks.at(chunkPos + glm::vec2(0, -1))->chunkReady = false;
+					activeChunks.at(chunkPos + glm::ivec2(0, -1))->chunkReady = false;
 				}
 
-				if (activeChunks.contains(chunkPos + glm::vec2(0, 1)))
+				if (activeChunks.contains(chunkPos + glm::ivec2(0, 1)))
 				{
-					activeChunks.at(chunkPos + glm::vec2(0, 1))->chunkReady = false;
+					activeChunks.at(chunkPos + glm::ivec2(0, 1))->chunkReady = false;
 				}
 			}
 			// This prevents visible chunks that are already generated from deletion
@@ -106,7 +106,7 @@ BlockType World::FindBlock(int x, int y, int z) const
 	int chunkX = DivFloor(x, CHUNK_X);
 	int chunkZ = DivFloor(z, CHUNK_Z);
 
-	glm::vec2 chunkWorldPos = glm::vec2(chunkX, chunkZ);
+	glm::vec2 chunkWorldPos = glm::ivec2(chunkX, chunkZ);
 	if (activeChunks.contains(chunkWorldPos))
 	{
 		return activeChunks.at(chunkWorldPos)->GetBlock(x, y, z);

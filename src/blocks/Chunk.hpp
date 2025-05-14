@@ -26,7 +26,7 @@ class Chunk
 {
 private:
 	// Chunk world position
-	glm::vec3 position;
+	glm::ivec3 position;
 
 	unsigned int chunkVBO_ID;
 	unsigned int chunkVAO_ID;
@@ -59,7 +59,7 @@ public:
 
 	//void GenerateChunkVertexData();
 	
-	glm::vec3 GetWorldPosition() const { return position; }
+	glm::ivec3 GetWorldPosition() const { return position; }
 
 	BlockType GetBlock(int x, int y, int z) const;
 
