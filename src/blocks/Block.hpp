@@ -24,8 +24,8 @@ enum BlockType
 
 enum Face
 {
-    SOUTH, // +z
-    NORTH, // -z
+    NORTH, // +z
+    SOUTH, // -z
     EAST,  // +x
     WEST,  // -x
     UP,    // +y

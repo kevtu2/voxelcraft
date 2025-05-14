@@ -50,7 +50,7 @@ void Block::AssignBlockInfo(BlockType blockType)
 	case LEAVES:
 		textureCoords = { 4, 14 };
 		texturesUsed = 1;
-		transparent = true;
+		transparent = false;
 		break;
 	}
 }

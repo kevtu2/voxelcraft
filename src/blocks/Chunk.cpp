@@ -7,13 +7,14 @@ Chunk::Chunk()
 	glGenBuffers(1, &chunkVBO_ID);
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
-	position = glm::vec3(0, 0, 0);
+	position = glm::ivec3(0, 0, 0);
 	chunkMesh = std::make_unique<ChunkMesh>();
 	GenerateBlockData();
 }
 
-Chunk::Chunk(int x, int y, int z)
-	: position(glm::vec3(x, y, z))
+Chunk::Chunk(int x, int y, int z, FastNoiseLite noise)
+	: position(glm::ivec3(x, y, z)),
+	perlinNoise(noise)
 {
 	glGenBuffers(1, &chunkVBO_ID);
 	glGenBuffers(1, &chunkIBO_ID);
@@ -58,7 +59,7 @@ Chunk& Chunk::operator=(Chunk&& o) noexcept
 		vertexCount = o.vertexCount;
 		blocks = std::move(o.blocks);
 		chunkMesh = std::move(o.chunkMesh);
-		
+
 		o.chunkVBO_ID = 0;
 		o.chunkVAO_ID = 0;
 		o.chunkIBO_ID = 0;
@@ -80,7 +81,7 @@ void Chunk::BufferData() const
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
 	glBindVertexArray(0);
@@ -96,18 +97,27 @@ void Chunk::DrawArrays() const
 
 void Chunk::GenerateBlockData()
 {
-	for (size_t x = 0; x < CHUNK_X; ++x)
+	for (int x = 0; x < CHUNK_X; ++x)
 	{
-		for (size_t y = 0; y < CHUNK_Y; ++y)
+		for (int z = 0; z < CHUNK_Z; ++z)
 		{
-			for (size_t z = 0; z < CHUNK_Z; ++z)
+			float globalX = static_cast<float>(position.x * CHUNK_X + x);
+			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
+			float noiseVal = perlinNoise.GetNoise(globalX, globalZ);
+			float normalizedVal = noiseVal * 0.5f + 0.5f;
+			int height = static_cast<int>(normalizedVal * surfaceY);
+		
+			for (int y = 0; y <= height; ++y)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
-				if (y < surfaceY)  blocks[index] = static_cast<unsigned char>(BlockType::STONE);
-				else if (y == surfaceY)  blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
-				else if (y > 100)   blocks[index] = static_cast<unsigned char>(BlockType::AIR);
+				blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
 			}
 		}
+	}
+
+	for (int i = 0; i < blocks.size(); ++i)
+	{
+		if (blocks[i] == 205) blocks[i] = BlockType::AIR;
 	}
 }
 
@@ -116,20 +126,26 @@ void Chunk::GenerateChunkMesh(World* world)
 	chunkMesh->Clear();
 	for (int x = 0; x < CHUNK_X; ++x)
 	{
-		for (int y = 0; y < CHUNK_Y; ++y)
+		for (int z = 0; z < CHUNK_Z; ++z)
 		{
-			for (int z = 0; z < CHUNK_Z; ++z)
+			float globalX = static_cast<float>(position.x * CHUNK_X + x);
+			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
+			float noiseVal = perlinNoise.GetNoise(globalX, globalZ);
+			float normalizedVal = noiseVal * 0.5f + 0.5f;
+			int height = static_cast<int>(normalizedVal * surfaceY);
+
+			for (int y = 0; y <= height; ++y)
 			{
-				glm::vec3 blockWorldPos = glm::vec3((position.x * CHUNK_X) + x, y, (position.z * CHUNK_Z) + z);
-				const BlockType currentBlock = GetBlock(x, y, z);
+				glm::ivec3 blockWorldPos = glm::ivec3((position.x * CHUNK_X) + x, y, (position.z * CHUNK_Z) + z);
+				const BlockType currentBlock = GetBlock(blockWorldPos.x, y, blockWorldPos.z);
 				if (currentBlock == AIR) continue;
-				
-				const BlockType southBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z + 1);
-				const BlockType northBlock = world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z - 1);
-				const BlockType eastBlock  = world->FindBlock(blockWorldPos.x + 1, blockWorldPos.y, blockWorldPos.z);
-				const BlockType westBlock  = world->FindBlock(blockWorldPos.x - 1, blockWorldPos.y, blockWorldPos.z);
-				const BlockType upBlock    = world->FindBlock(blockWorldPos.x, blockWorldPos.y + 1, blockWorldPos.z);
-				const BlockType downBlock  = world->FindBlock(blockWorldPos.x, blockWorldPos.y - 1, blockWorldPos.z);
+
+				const BlockType southBlock	= world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z + 1);
+				const BlockType northBlock	= world->FindBlock(blockWorldPos.x, blockWorldPos.y, blockWorldPos.z - 1);
+				const BlockType eastBlock	= world->FindBlock(blockWorldPos.x + 1, blockWorldPos.y, blockWorldPos.z);
+				const BlockType westBlock	= world->FindBlock(blockWorldPos.x - 1, blockWorldPos.y, blockWorldPos.z);
+				const BlockType upBlock		= world->FindBlock(blockWorldPos.x, blockWorldPos.y + 1, blockWorldPos.z);
+				const BlockType downBlock	= world->FindBlock(blockWorldPos.x, blockWorldPos.y - 1, blockWorldPos.z);
 
 				unsigned char cullingFlag = 0;
 				cullingFlag |= Block::IsTransparent(southBlock) ? 0 : CULL_POS_Z;
@@ -146,6 +162,7 @@ void Chunk::GenerateChunkMesh(World* world)
 				if ((cullingFlag & CULL_POS_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, UP);
 				if ((cullingFlag & CULL_NEG_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, DOWN);
 			}
+
 		}
 	}
 	BufferData();
@@ -154,22 +171,14 @@ void Chunk::GenerateChunkMesh(World* world)
 
 BlockType Chunk::GetBlock(int x, int y, int z) const
 {
-	int localX = (x % CHUNK_X + CHUNK_X) % CHUNK_X;
-	int localY = (y % CHUNK_Y + CHUNK_Y) % CHUNK_Y;
-	int localZ = (z % CHUNK_Z + CHUNK_Z) % CHUNK_Z;
+	if (y < 0) return BlockType::AIR;
+	else if (y > CHUNK_Y - 1) return BlockType::AIR;
+
+	int localX = x - (position.x * CHUNK_X);
+	int localY = y;
+	int localZ = z - (position.z * CHUNK_Z);
 	unsigned int index = localX + (localY * CHUNK_X) + (localZ * CHUNK_X * CHUNK_Y);
 	unsigned char blockID = blocks[index];
+
 	return Block::GetBlockTypeFromID(blockID);
 }
-
-/*float yValue = 0;
-float freq = 1;
-float amp = 1;
-for (int i = 0; i < PERLIN_OCTAVES; ++i)
-{
-	yValue += pNoise.SamplePerlin(x * freq / PERLIN_GRID_SIZE, z * freq / PERLIN_GRID_SIZE);
-	freq *= 2;
-	amp /= 2;
-}
-if (yValue > CHUNK_Y) yValue = CHUNK_Y;
-if (yValue < 0.f) yValue = 0.f;*/

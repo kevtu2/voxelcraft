@@ -5,12 +5,12 @@
 #include <array>
 #include <iostream>
 #include <cstdlib>
+#include "../FastNoiseLite/FastNoiseLite.hpp"
 
 #include "../graphics/Vertex.hpp"
 #include "../blocks/BlockGeneration.hpp"
 #include "../blocks/Block.hpp"
 #include "../blocks/ChunkMesh.hpp"
-#include "../graphics/PerlinNoise.hpp"
 
 #define CHUNK_X 16
 #define CHUNK_Y 384
@@ -26,7 +26,7 @@ class Chunk
 {
 private:
 	// Chunk world position
-	glm::vec3 position;
+	glm::ivec3 position;
 
 	unsigned int chunkVBO_ID;
 	unsigned int chunkVAO_ID;
@@ -36,11 +36,12 @@ private:
 
 	// Use to identify which blocks are contained in the chunk
 	std::array<unsigned char, CHUNK_BLOCK_COUNT> blocks;
-
+	
+	FastNoiseLite perlinNoise;
 
 public:
 	Chunk();
-	Chunk(int x, int y, int z);
+	Chunk(int x, int y, int z, FastNoiseLite noise);
 
 	~Chunk();
 
@@ -58,7 +59,7 @@ public:
 
 	//void GenerateChunkVertexData();
 	
-	glm::vec3 GetWorldPosition() const { return position; }
+	glm::ivec3 GetWorldPosition() const { return position; }
 
 	BlockType GetBlock(int x, int y, int z) const;
 
