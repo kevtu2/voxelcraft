@@ -108,6 +108,10 @@ void Application::Run()
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
 	shaderProgram.SetUniformMatrix4f("model", model);
 
+	// Lighting
+	shaderProgram.SetUniformVec3f("objectColor", 1.0f, 0.5f, 0.31f);
+	shaderProgram.SetUniformVec3f("lightColor", 1.0f, 1.0f, 1.0f);
+
 	Texture textureAtlas("../textures/blocks.png");
 
 	std::shared_ptr<World> world(new World());
