@@ -26,4 +26,5 @@ public:
 	
 	void SetUniformMatrix4f(const char* name, const glm::mat4 value);
 	void SetUniformVec2f(const char* name, const glm::vec2 value);
+	void SetUniformVec3f(const char* name, const glm::vec3 value);
 };
