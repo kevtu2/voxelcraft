@@ -14,7 +14,7 @@ Camera::Camera(int width, int height)
 
 	projection = glm::mat4(1.0f);
 	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
-	projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 150.0f);
 }
 
 glm::mat4 Camera::GetViewMatrix() const
