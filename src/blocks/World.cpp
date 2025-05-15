@@ -6,7 +6,7 @@ World::World()
 	: renderDistance(12)
 {
 	perlinNoise = FastNoiseLite();
-	perlinNoise.SetSeed(1337);
+	perlinNoise.SetSeed(rand());
 	perlinNoise.SetFrequency(0.01f);
 	perlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 
@@ -47,7 +47,7 @@ void World::UpdateChunks(const Camera& player)
 	{
 		for (int z = playerChunkPosZ - renderDistance; z <= playerChunkPosZ + renderDistance; ++z)
 		{
-			glm::ivec2 chunkPos = glm::vec2(x, z);
+			glm::ivec2 chunkPos = glm::ivec2(x, z);
 
 			// This generates chunks that aren't generated already.
 			if (!activeChunks.contains(chunkPos))
@@ -56,24 +56,17 @@ void World::UpdateChunks(const Camera& player)
 				activeChunks.emplace(chunkPos, std::move(currentChunk));
 
 				if (activeChunks.contains(chunkPos + glm::ivec2(-1, 0)))
-				{
 					activeChunks.at(chunkPos + glm::ivec2(-1, 0))->chunkReady = false;
-				}
 
 				if (activeChunks.contains(chunkPos + glm::ivec2(1, 0)))
-				{
 					activeChunks.at(chunkPos + glm::ivec2(1, 0))->chunkReady = false;
-				}
 
 				if (activeChunks.contains(chunkPos + glm::ivec2(0, -1)))
-				{
 					activeChunks.at(chunkPos + glm::ivec2(0, -1))->chunkReady = false;
-				}
 
 				if (activeChunks.contains(chunkPos + glm::ivec2(0, 1)))
-				{
 					activeChunks.at(chunkPos + glm::ivec2(0, 1))->chunkReady = false;
-				}
+
 			}
 			// This prevents visible chunks that are already generated from deletion
 			else if (activeChunks.contains(chunkPos))
