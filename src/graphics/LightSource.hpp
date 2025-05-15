@@ -6,7 +6,10 @@ class LightSource
 {
 public:
 	LightSource();
+	~LightSource();
 
 private:
 	unsigned int lightVAO;
+	unsigned int lightVBO;
+
 };
