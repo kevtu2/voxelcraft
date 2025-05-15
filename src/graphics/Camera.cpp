@@ -4,7 +4,7 @@ Camera::Camera(int width, int height)
 	: position(glm::vec3(0.0f, 100.f, 0.0f)),
 	lookDirection(glm::vec3(-1.0f, 0.0f, 0.0f)),
 	cameraSpeed(15.5f),
-	cameraSensitivity(5.0f),
+	cameraSensitivity(0.1f),
 	yaw(-90.0f),
 	pitch(0.0f)
 {
@@ -47,8 +47,8 @@ void Camera::HandleInputControls(CameraMovement move, float deltaTime)
 
 void Camera::UpdateCameraLookAt(float deltaTime, double xPos, double yPos)
 {
-	xPos = xPos * cameraSensitivity * deltaTime;
-	yPos = yPos * cameraSensitivity * deltaTime;
+	xPos = xPos * cameraSensitivity;
+	yPos = yPos * cameraSensitivity;
 
 	yaw += xPos;
 	pitch += yPos;
