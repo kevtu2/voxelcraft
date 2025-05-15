@@ -3,7 +3,7 @@
 
 
 World::World()
-	: renderDistance(6)
+	: renderDistance(12)
 {
 	perlinNoise = FastNoiseLite();
 	perlinNoise.SetSeed(1337);
