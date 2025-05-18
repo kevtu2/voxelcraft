@@ -9,7 +9,9 @@ uniform sampler2D Texture;
 
 uniform vec3 lightColor;
 uniform vec3 lightPosition;
+uniform vec3 cameraPosition;
 uniform float ambientIntensity;
+uniform float specularIntensity;
 
 void main()
 {
@@ -24,7 +26,11 @@ void main()
 	vec3 diffuse = diffuseStrength * lightColor;
 
 	// Specular
-	vec3 specular;
+	vec3 cameraSource = normalize(cameraPosition);
+	vec3 reflection = normalize(reflect(-lightPosition, Normals));
+	float specularStrength = max(0.0, dot(cameraSource, reflection));
+	specularStrength = pow(specularStrength, specularIntensity);
+	vec3 specular = specularStrength * lightColor;
 
 	vec3 lighting = ambient + diffuse + specular;
 

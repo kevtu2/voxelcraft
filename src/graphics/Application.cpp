@@ -111,6 +111,7 @@ void Application::Run()
 	// Lighting
 	shaderProgram.SetUniformVec3f("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 	shaderProgram.SetUniform1f("ambientIntensity", AMBIENT);
+	shaderProgram.SetUniform1f("specularIntensity", SPECULAR);
 	shaderProgram.SetUniformVec3f("lightPosition", glm::vec3(0.f, 250.f, 0.f));
 
 	Texture textureAtlas("../textures/blocks.png");
@@ -129,6 +130,7 @@ void Application::Run()
 		ProcessInput();
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera->GetViewMatrix());
+		shaderProgram.SetUniformVec3f("cameraPosition", camera->GetCameraPosition());
 
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *camera.get());
 
