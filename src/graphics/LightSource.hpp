@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 
 #define AMBIENT 0.125f
-#define SPECULAR 16.f
+#define SPECULAR 2.f
 
 class LightSource
 {

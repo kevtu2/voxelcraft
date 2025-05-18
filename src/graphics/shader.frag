@@ -19,7 +19,7 @@ void main()
 	vec3 objectTexture = texture(Texture, TexCoord).xyz;
 	vec3 objectColor = lightColor * objectTexture;
 	
-	vec3 lightVector = lightPosition - Coords;
+	vec3 lightVector = normalize(lightPosition - Coords);
 
 	// Ambient
 	vec3 ambient = lightColor * ambientIntensity;
@@ -29,7 +29,7 @@ void main()
 	vec3 diffuse = diffuseStrength * lightColor;
 
 	// Specular
-	vec3 cameraSource = normalize(cameraPosition);
+	vec3 cameraSource = normalize(cameraPosition - Coords);
 	vec3 reflection = normalize(reflect(-lightVector, Normals));
 	float specularStrength = max(0.0, dot(cameraSource, reflection));
 	specularStrength = pow(specularStrength, specularIntensity);
