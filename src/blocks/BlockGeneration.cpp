@@ -7,10 +7,7 @@ void BlockGeneration::GenerateFace(ChunkMesh* chunkMesh, BlockType type, const g
 	unsigned int texturesUsed = block.GetTexturesUsed();
 	unsigned int faceIndex = static_cast<unsigned int>(face);
 
-	// Generate 6 necessary vertices for one face
-	// FIXME: We only need to generate 8 unique vertices then we can create indices from the CUBE_INDICES/FACE_INDICES
-	// to properly draw the cube faces via glDrawElements(). So actually, we would only generate 4 vertices for each of the
-	// cube's faces (6 * 4 = 24) vertices total. Then we let indices handle the rest of the drawing.
+	// Generate 4 necessary vertices for one face
 	for (int i = 0; i < 4; ++i)
 	{
 		// Determine block positions from cube data
@@ -51,7 +48,13 @@ void BlockGeneration::GenerateFace(ChunkMesh* chunkMesh, BlockType type, const g
 			UV = glm::vec2(u, v);
 		}
 		
-		Vertex vertex(positions, UV);
+		// Get cube normals
+		float n_x = CUBE_NORMALS[faceIndex];
+		float n_y = CUBE_NORMALS[faceIndex + 1];
+		float n_z = CUBE_NORMALS[faceIndex + 2];
+		glm::vec3 normals = glm::vec3(n_x, n_y, n_z);
+
+		Vertex vertex(positions, UV, normals);
 		chunkMesh->chunkVertexData.push_back(vertex);
 	}
 

@@ -3,11 +3,12 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#include "Shader.hpp"
+#include "VoxelShader.hpp"
 #include "Renderer.hpp"
 #include "Camera.hpp"
 #include "blocks/Texture.hpp"
 #include "blocks/Chunk.hpp"
+#include "graphics/LightSource.hpp"
 
 class Application
 {

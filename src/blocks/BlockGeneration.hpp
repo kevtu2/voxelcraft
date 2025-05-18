@@ -35,6 +35,17 @@ namespace BlockGeneration
         5, 4, 0, 5, 0, 1, // bottom (-y)
     };
 
+
+    static constexpr float CUBE_NORMALS[] =
+    {
+        0, 0, -1, // north (-z)
+        0, 0,  1, // south (+z)
+        1, 0,  0, // east (+x)
+       -1, 0,  0, // west (-x)
+        0, 1,  0, // top (+y)
+        0, -1, 0, // bottom (-y)
+    };
+
     static constexpr unsigned int CUBE_UNIQUE_INDICES[] = { 1, 0, 5, 2 };
 
 
