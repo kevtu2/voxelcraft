@@ -1,5 +1,6 @@
 #version 330 core
 
+in vec3 Coords;
 in vec2 TexCoord;
 in vec3 Normals;
 
@@ -17,17 +18,19 @@ void main()
 {
 	vec3 objectTexture = texture(Texture, TexCoord).xyz;
 	vec3 objectColor = lightColor * objectTexture;
+	
+	vec3 lightVector = lightPosition - Coords;
 
 	// Ambient
 	vec3 ambient = lightColor * ambientIntensity;
 
 	// Diffuse
-	float diffuseStrength = max(0.0, dot(lightPosition, Normals));
+	float diffuseStrength = max(0.0, dot(lightVector, Normals));
 	vec3 diffuse = diffuseStrength * lightColor;
 
 	// Specular
 	vec3 cameraSource = normalize(cameraPosition);
-	vec3 reflection = normalize(reflect(-lightPosition, Normals));
+	vec3 reflection = normalize(reflect(-lightVector, Normals));
 	float specularStrength = max(0.0, dot(cameraSource, reflection));
 	specularStrength = pow(specularStrength, specularIntensity);
 	vec3 specular = specularStrength * lightColor;

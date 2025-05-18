@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-#define AMBIENT 1.f
+#define AMBIENT 0.125f
 #define SPECULAR 16.f
 
 class LightSource
