@@ -7,5 +7,16 @@ LightSource::LightSource() :
 	
 }
 
+void LightSource::SetLightColor(const glm::vec3& color)
+{
+	lightColor = color;
+}
+
+void LightSource::SetLightPosition(const glm::vec3& position)
+{
+	lightPosition.x = position.x;
+	lightPosition.z = position.z;
+}
+
 
 

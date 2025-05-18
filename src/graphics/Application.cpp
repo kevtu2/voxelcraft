@@ -100,7 +100,7 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	Shader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
+	VoxelShader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 	shaderProgram.UseProgram();
 	shaderProgram.SetUniformMatrix4f("projection", camera->GetProjectionMatrix());
 
@@ -108,11 +108,7 @@ void Application::Run()
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
 	shaderProgram.SetUniformMatrix4f("model", model);
 
-	// Lighting
-	shaderProgram.SetUniformVec3f("lightColor", glm::vec3(0.5f, 0.5f, 0.5f));
-	shaderProgram.SetUniform1f("ambientIntensity", AMBIENT);
-	shaderProgram.SetUniform1f("specularIntensity", SPECULAR);
-	shaderProgram.SetUniformVec3f("lightPosition", glm::vec3(0.f, 250.f, 0.f));
+	LightSource light;
 
 	Texture textureAtlas("../textures/blocks.png");
 
@@ -131,8 +127,12 @@ void Application::Run()
 		CalculateNewMousePosition();
 		shaderProgram.SetUniformMatrix4f("view", camera->GetViewMatrix());
 		shaderProgram.SetUniformVec3f("cameraPosition", camera->GetCameraPosition());
-
+		
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *camera.get());
+
+		glm::vec3 cameraPos = camera->GetCameraPosition();
+		light.SetLightPosition(cameraPos);
+		shaderProgram.UseLightSource(light);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

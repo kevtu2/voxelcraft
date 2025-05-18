@@ -11,6 +11,8 @@ public:
 	LightSource();
 	glm::vec3 GetLightColor() const { return lightColor; }
 	glm::vec3 GetLightPosition() const { return lightPosition; }
+	void SetLightColor(const glm::vec3& color);
+	void SetLightPosition(const glm::vec3& position);
 
 private:
 	glm::vec3 lightColor;
