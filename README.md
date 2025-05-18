@@ -8,7 +8,7 @@ The project is built with C++ and OpenGL. I wanted to use this as an opportunity
 * I am planning on adding more features in the future such as:
   - [x] Chunk loading
   - [x] Terrain & world generation
-  - [ ] Lighting (in progress)
+  - [x] Lighting
   - [ ] Player & block collisions
   - [ ] ImGui integration for metrics
   - [ ] Day and night cycle
