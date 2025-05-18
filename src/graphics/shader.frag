@@ -10,6 +10,6 @@ uniform float ambientIntensity;
 void main()
 {
 	vec3 objectTexture = texture(Texture, TexCoord).xyz;
-	FragColor = vec4(lightColor * objectTexture, 1.0);
+	FragColor = vec4(lightColor * objectTexture * ambientIntensity, 1.0);
 }
 	
