@@ -110,6 +110,8 @@ void Application::Run()
 
 	// Lighting
 	shaderProgram.SetUniformVec3f("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	shaderProgram.SetUniform1f("ambientIntensity", AMBIENT);
+	shaderProgram.SetUniformVec3f("lightPosition", glm::vec3(0.f, 250.f, 0.f));
 
 	Texture textureAtlas("../textures/blocks.png");
 

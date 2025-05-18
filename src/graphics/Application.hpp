@@ -8,6 +8,7 @@
 #include "Camera.hpp"
 #include "blocks/Texture.hpp"
 #include "blocks/Chunk.hpp"
+#include "graphics/LightSource.hpp"
 
 class Application
 {
