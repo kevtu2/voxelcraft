@@ -48,7 +48,13 @@ void BlockGeneration::GenerateFace(ChunkMesh* chunkMesh, BlockType type, const g
 			UV = glm::vec2(u, v);
 		}
 		
-		Vertex vertex(positions, UV);
+		// Get cube normals
+		float n_x = CUBE_NORMALS[faceIndex];
+		float n_y = CUBE_NORMALS[faceIndex + 1];
+		float n_z = CUBE_NORMALS[faceIndex + 2];
+		glm::vec3 normals = glm::vec3(n_x, n_y, n_z);
+
+		Vertex vertex(positions, UV, normals);
 		chunkMesh->chunkVertexData.push_back(vertex);
 	}
 
