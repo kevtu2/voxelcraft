@@ -107,3 +107,14 @@ void Shader::SetUniformVec3f(const char* name, const glm::vec3 value)
 	}
 	glUniform3fv(location, 1, glm::value_ptr(value));
 }
+
+void Shader::SetUniform1f(const char* name, const float value)
+{
+	int location = glGetUniformLocation(programID, name);
+	if (location == -1)
+	{
+		std::cerr << "Uniform with name '" << name << "'" << " not found." << std::endl;
+		exit(-1);
+	}
+	glUniform1f(location, value);
+}

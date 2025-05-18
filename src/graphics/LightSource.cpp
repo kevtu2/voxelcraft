@@ -17,3 +17,4 @@ LightSource::~LightSource()
 	glDeleteVertexArrays(1, &lightVAO);
 	glDeleteBuffers(1, &lightVBO);
 }
+
