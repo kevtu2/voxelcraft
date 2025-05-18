@@ -9,10 +9,10 @@ class LightSource
 {
 public:
 	LightSource();
-	~LightSource();
+	glm::vec3 GetLightColor() const { return lightColor; }
+	glm::vec3 GetLightPosition() const { return lightPosition; }
 
 private:
-	unsigned int lightVAO;
-	unsigned int lightVBO;
-
+	glm::vec3 lightColor;
+	glm::vec3 lightPosition;
 };

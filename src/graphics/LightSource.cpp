@@ -1,20 +1,11 @@
 #include "LightSource.hpp"
 
-LightSource::LightSource()
+LightSource::LightSource() :
+	lightColor(glm::vec3(0.5f, 0.5f, 0.5f)),
+	lightPosition(glm::vec3(0.f, 250.f, 0.f))
 {
-	glGenVertexArrays(1, &lightVAO);
-	glBindVertexArray(lightVAO);
-
-	glGenBuffers(1, &lightVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, lightVBO);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	
 }
 
-LightSource::~LightSource()
-{
-	glDeleteVertexArrays(1, &lightVAO);
-	glDeleteBuffers(1, &lightVBO);
-}
+
 
