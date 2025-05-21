@@ -116,7 +116,8 @@ void Chunk::GenerateBlockData()
 			for (int y = 0; y <= height; ++y)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
-				blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
+				if (y == height) blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
+				else blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
 			}
 		}
 	}
