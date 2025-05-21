@@ -3,6 +3,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <GLFW/glfw3.h>
 
+#include "AABB.hpp"
+
 enum CameraMovement
 {
 	C_FORWARD, C_BACKWARD, C_RIGHT, C_LEFT, C_UP, C_DOWN
@@ -22,6 +24,8 @@ private:
 	float pitch;
 
 	glm::mat4 projection;
+
+	AABB aabb;
 
 public:
 	Player(int width, int height);

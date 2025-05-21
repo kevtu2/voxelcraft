@@ -6,7 +6,8 @@ Player::Player(int width, int height)
 	cameraSpeed(15.5f),
 	cameraSensitivity(0.1f),
 	yaw(-90.0f),
-	pitch(0.0f)
+	pitch(0.0f),
+	aabb(AABB(position, 1))
 {
 	glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	cameraRight = glm::normalize(glm::cross(lookDirection, worldUp));
@@ -43,6 +44,7 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 		position += cameraRight * cameraSpeed * deltaTime;
 		break;
 	}
+	aabb.UpdatePosition(position);
 }
 
 void Player::UpdatePlayerLookAt(float deltaTime, double xPos, double yPos)
