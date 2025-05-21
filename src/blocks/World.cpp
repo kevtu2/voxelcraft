@@ -28,11 +28,11 @@ World::~World()
 }
 
 // TODO: Change this so that player camera is not contained inside of application.
-void World::UpdateChunks(const Camera& player)
+void World::UpdateChunks(const Player& player)
 {
 	// Calculate current reference Chunk X-Z position.
-	int playerChunkPosX = (int)(player.GetCameraPosition().x / CHUNK_X);
-	int playerChunkPosZ = (int)(player.GetCameraPosition().z / CHUNK_Z);
+	int playerChunkPosX = (int)(player.GetPlayerPosition().x / CHUNK_X);
+	int playerChunkPosZ = (int)(player.GetPlayerPosition().z / CHUNK_Z);
 
 	dirtyChunks.clear();
 

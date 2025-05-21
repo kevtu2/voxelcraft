@@ -1,11 +1,11 @@
 #include "Renderer.hpp"
 
-void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgram, const Texture& texture, const Camera& player)
+void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgram, const Texture& texture, const Player& player)
 {
 	shaderProgram.UseProgram();
 	texture.Bind();
-	float x = player.GetCameraPosition().x;
-	float z = player.GetCameraPosition().z;
+	float x = player.GetPlayerPosition().x;
+	float z = player.GetPlayerPosition().z;
 	// Multiply CHUNK_XorZ by a factor to prevent chunk loading everytime a new chunk is entered :(
 	if (((int)abs(x) % (CHUNK_X * world->getRenderDistance()) == 0) || ((int)abs(z) % (CHUNK_Z * world->getRenderDistance()) == 0))
 	{

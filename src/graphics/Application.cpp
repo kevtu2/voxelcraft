@@ -49,7 +49,7 @@ Application::Application()
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
-	camera = std::make_shared<Camera>(width, height);
+	player = std::make_shared<Player>(width, height);
 }
 
 void Application::CalculateNewMousePosition()
@@ -68,7 +68,7 @@ void Application::CalculateNewMousePosition()
 	lastX = xPos;
 	lastY = yPos;
 
-	camera->UpdateCameraLookAt(deltaTime, xOffset, yOffset);
+	player->UpdatePlayerLookAt(deltaTime, xOffset, yOffset);
 }
 
 Application::~Application()
@@ -86,23 +86,23 @@ void Application::ProcessInput()
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera->HandleInputControls(C_FORWARD, deltaTime);
+		player->HandleInputControls(C_FORWARD, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera->HandleInputControls(C_LEFT, deltaTime);
+		player->HandleInputControls(C_LEFT, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera->HandleInputControls(C_BACKWARD, deltaTime);
+		player->HandleInputControls(C_BACKWARD, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera->HandleInputControls(C_RIGHT, deltaTime);
+		player->HandleInputControls(C_RIGHT, deltaTime);
 }
 
 void Application::Run()
 {
 	VoxelShader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 	shaderProgram.UseProgram();
-	shaderProgram.SetUniformMatrix4f("projection", camera->GetProjectionMatrix());
+	shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
@@ -125,12 +125,12 @@ void Application::Run()
 
 		ProcessInput();
 		CalculateNewMousePosition();
-		shaderProgram.SetUniformMatrix4f("view", camera->GetViewMatrix());
-		shaderProgram.SetUniformVec3f("cameraPosition", camera->GetCameraPosition());
+		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
+		shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
 		
-		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *camera.get());
+		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 
-		glm::vec3 cameraPos = camera->GetCameraPosition();
+		glm::vec3 cameraPos = player->GetPlayerPosition();
 		light.SetLightPosition(cameraPos);
 		shaderProgram.UseLightSource(light);
 

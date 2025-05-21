@@ -1,6 +1,6 @@
-#include "Camera.hpp"
+#include "Player.hpp"
 
-Camera::Camera(int width, int height)
+Player::Player(int width, int height)
 	: position(glm::vec3(0.0f, 100.f, 0.0f)),
 	lookDirection(glm::vec3(-1.0f, 0.0f, 0.0f)),
 	cameraSpeed(15.5f),
@@ -17,14 +17,14 @@ Camera::Camera(int width, int height)
 	projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 512.0f);
 }
 
-glm::mat4 Camera::GetViewMatrix() const
+glm::mat4 Player::GetViewMatrix() const
 {
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 	return glm::lookAt(position, position + lookDirection, up);
 }
 
 
-void Camera::HandleInputControls(CameraMovement move, float deltaTime)
+void Player::HandleInputControls(CameraMovement move, float deltaTime)
 {
 	switch (move) {
 	case C_FORWARD:
@@ -45,7 +45,7 @@ void Camera::HandleInputControls(CameraMovement move, float deltaTime)
 	}
 }
 
-void Camera::UpdateCameraLookAt(float deltaTime, double xPos, double yPos)
+void Player::UpdatePlayerLookAt(float deltaTime, double xPos, double yPos)
 {
 	xPos = xPos * cameraSensitivity;
 	yPos = yPos * cameraSensitivity;

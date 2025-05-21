@@ -7,7 +7,7 @@
 #include "../FastNoiseLite/FastNoiseLite.hpp"
 
 #include "Chunk.hpp"
-#include "../graphics/Camera.hpp"
+#include "../graphics/Player.hpp"
 
 
 class World
@@ -43,7 +43,7 @@ public:
 	World();
 	~World();
 
-	void UpdateChunks(const Camera& player);
+	void UpdateChunks(const Player& player);
 	void GenerateChunks();
 	void DrawChunks();
 	BlockType FindBlock(int x, int y, int z) const;
