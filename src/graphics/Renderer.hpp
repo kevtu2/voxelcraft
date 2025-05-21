@@ -11,4 +11,6 @@
 namespace Renderer
 {
 	void DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgram, const Texture& texture, const Player& player);
+
+	void CheckCollisions(Player& player, std::shared_ptr<World> world);
 };

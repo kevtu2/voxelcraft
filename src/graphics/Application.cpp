@@ -129,6 +129,8 @@ void Application::Run()
 		shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
 		
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
+		
+		Renderer::CheckCollisions(player, world);
 
 		glm::vec3 cameraPos = player->GetPlayerPosition();
 		light.SetLightPosition(cameraPos);
