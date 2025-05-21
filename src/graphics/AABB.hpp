@@ -4,11 +4,11 @@
 struct AABB
 {
 private:
-	glm::ivec3 position;
+	glm::vec3 position;
 	unsigned int size;
 public:
-	AABB(const glm::ivec3& position, unsigned int size);
+	AABB(const glm::vec3& position, unsigned int size);
 	
-	glm::ivec3 GetPosition() const { return position; }
+	glm::vec3 GetPosition() const { return position; }
 
 };
