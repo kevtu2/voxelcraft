@@ -15,7 +15,7 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgr
 	world->DrawChunks();
 }
 
-void Renderer::CheckCollisions(Player& player, std::shared_ptr<World> world)
+void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world)
 {
 
 }
