@@ -35,7 +35,7 @@ public:
 
 	void HandleInputControls(CameraMovement move, float deltaTime);
 	void UpdatePlayerLookAt(float deltaTime, double xPos, double yPos);
-	void ResetPosAfterCollision();
+	void ResetPosAfterCollision(const glm::vec3 position);
 
 	glm::vec3 GetPlayerPosition() const { return position; }
 };

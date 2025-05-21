@@ -77,8 +77,3 @@ void Player::UpdatePlayerLookAt(float deltaTime, double xPos, double yPos)
 	cameraUp = glm::normalize(glm::cross(cameraRight, lookDirection));
 }
 
-void Player::ResetPosAfterCollision()
-{
-	position = lastPosition;
-	aabb.UpdatePosition(position);
-}
