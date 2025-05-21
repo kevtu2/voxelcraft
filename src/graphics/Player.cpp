@@ -2,6 +2,7 @@
 
 Player::Player(int width, int height)
 	: position(glm::vec3(0.0f, 100.f, 0.0f)),
+	lastPosition(position),
 	lookDirection(glm::vec3(-1.0f, 0.0f, 0.0f)),
 	cameraSpeed(15.5f),
 	cameraSensitivity(0.1f),
@@ -27,6 +28,8 @@ glm::mat4 Player::GetViewMatrix() const
 
 void Player::HandleInputControls(CameraMovement move, float deltaTime)
 {
+	lastPosition = position;
+
 	switch (move) {
 	case C_FORWARD:
 		position += lookDirection * cameraSpeed * deltaTime;
@@ -72,4 +75,10 @@ void Player::UpdatePlayerLookAt(float deltaTime, double xPos, double yPos)
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 	cameraRight = glm::normalize(glm::cross(lookDirection, up));
 	cameraUp = glm::normalize(glm::cross(cameraRight, lookDirection));
+}
+
+void Player::ResetPosAfterCollision()
+{
+	position = lastPosition;
+	aabb.UpdatePosition(position);
 }
