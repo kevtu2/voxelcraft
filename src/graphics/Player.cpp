@@ -7,8 +7,7 @@ Player::Player(int width, int height)
 	cameraSpeed(15.5f),
 	cameraSensitivity(0.1f),
 	yaw(-90.0f),
-	pitch(0.0f),
-	aabb(AABB(position, 1))
+	pitch(0.0f)
 {
 	glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	cameraRight = glm::normalize(glm::cross(lookDirection, worldUp));
@@ -17,6 +16,9 @@ Player::Player(int width, int height)
 	projection = glm::mat4(1.0f);
 	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
 	projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 512.0f);
+
+	glm::vec3 aabbPos = position + glm::vec3(-0.5, 0, -0.5); // Centre the collision box
+	aabb = AABB(aabbPos, 2, 1); // height = 2, width = 1 (block)
 }
 
 glm::mat4 Player::GetViewMatrix() const
@@ -75,5 +77,11 @@ void Player::UpdatePlayerLookAt(float deltaTime, double xPos, double yPos)
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 	cameraRight = glm::normalize(glm::cross(lookDirection, up));
 	cameraUp = glm::normalize(glm::cross(cameraRight, lookDirection));
+}
+
+void Player::ResetPosAfterCollision(const glm::vec3 position)
+{
+	this->position = position;
+	aabb.UpdatePosition(position + glm::vec3(-0.5, 0, -0.5));
 }
 

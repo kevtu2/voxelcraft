@@ -2,7 +2,15 @@
 
 AABB::AABB(const glm::vec3& position, unsigned int size) :
 	position(position),
-	size(size)
+	height(size),
+	width(size)
+{
+}
+
+AABB::AABB(const glm::vec3& position, unsigned int height, unsigned int width) :
+	position(position),
+	height(height),
+	width(width)
 {
 }
 
