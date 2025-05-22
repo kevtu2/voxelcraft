@@ -15,4 +15,5 @@ namespace Renderer
 
 	void CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world);
 	bool CalculateCollisions(const AABB& box, const glm::vec3& block);
+	void DoCollisions(std::shared_ptr<Player> player, const glm::vec3& block);
 };

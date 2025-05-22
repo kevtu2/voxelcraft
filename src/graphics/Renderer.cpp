@@ -22,12 +22,30 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	glm::vec3 currentBlock = glm::vec3(floor(playerPos.x), floor(playerPos.y), floor(playerPos.z));
 
 	// use direction vector instead
-	BlockType north = world->FindBlock(currentBlock.x, currentBlock.y, currentBlock.z + 1);
-	BlockType south = world->FindBlock(currentBlock.x, currentBlock.y, currentBlock.z - 1);
-	BlockType east	= world->FindBlock(currentBlock.x + 1, currentBlock.y, currentBlock.z);
-	BlockType west	= world->FindBlock(currentBlock.x - 1, currentBlock.y, currentBlock.z);
-	BlockType up	= world->FindBlock(currentBlock.x, currentBlock.y + 1, currentBlock.z);
-	BlockType down	= world->FindBlock(currentBlock.x, currentBlock.y - 1, currentBlock.z);
+	BlockType north = world->FindBlock(currentBlock + glm::vec3(0, 0, 1));
+	if (CalculateCollisions(aabb, currentBlock + glm::vec3(0, 0, 1)) && north != AIR)
+		DoCollisions(player, currentBlock + glm::vec3(0, 0, 1));
+
+	BlockType south = world->FindBlock(currentBlock + glm::vec3(0, 0, -1));
+	if (CalculateCollisions(aabb, currentBlock + glm::vec3(0, 0, -1)) && south != AIR)
+		DoCollisions(player, currentBlock + glm::vec3(0, 0, -1));
+
+	BlockType east	= world->FindBlock(currentBlock + glm::vec3(1, 0, 0));
+	if (CalculateCollisions(aabb, currentBlock + glm::vec3(1, 0, 0)) && east != AIR)
+		DoCollisions(player, currentBlock + glm::vec3(1, 0, 0));
+
+	BlockType west	= world->FindBlock(currentBlock + glm::vec3(-1, 0, 0));
+	if (CalculateCollisions(aabb, currentBlock + glm::vec3(-1, 0, 0)) && west != AIR)
+		DoCollisions(player, currentBlock + glm::vec3(-1, 0, 0));
+
+	BlockType up	= world->FindBlock(currentBlock + glm::vec3(0, 1, 0));
+	if (CalculateCollisions(aabb, currentBlock + glm::vec3(0, 1, 0)) && up != AIR)
+		DoCollisions(player, currentBlock + glm::vec3(0, 1, 0));
+
+	BlockType down	= world->FindBlock(currentBlock + glm::vec3(0, -1, 0));
+	if (CalculateCollisions(aabb, currentBlock + glm::vec3(0, -1, 0)) && down != AIR)
+		DoCollisions(player, currentBlock + glm::vec3(0, -1, 0));
+
 }
 
 bool Renderer::CalculateCollisions(const AABB& box, const glm::vec3& block)
@@ -37,4 +55,10 @@ bool Renderer::CalculateCollisions(const AABB& box, const glm::vec3& block)
 	bool collisionX = (boxPos.x + box.GetWidth()  >= block.x) && (block.x + 1 >= boxPos.x);
 	bool collisionY = (boxPos.y + box.GetHeight() >= block.y) && (block.y + 1 >= boxPos.y);
 	bool collisionZ = (boxPos.z + box.GetWidth()  >= block.z) && (block.z + 1 >= boxPos.z);
+	return collisionX && collisionY && collisionZ;
+}
+
+void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& block)
+{
+	std::cout << "Collided with block at: (" << block.x << ", " << block.y << ", " << block.z << << ")" << std::endl;
 }
