@@ -17,7 +17,8 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgr
 
 void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world)
 {
-	glm::vec3 playerPos = player->GetPlayerPosition();
+	AABB aabb = player->GetAABBCollision();
+	glm::vec3 playerPos = player->GetCollisionBoxPos();
 	glm::vec3 currentBlock = glm::vec3(floor(playerPos.x), floor(playerPos.y), floor(playerPos.z));
 
 	// use direction vector instead
@@ -27,6 +28,13 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	BlockType west	= world->FindBlock(currentBlock.x - 1, currentBlock.y, currentBlock.z);
 	BlockType up	= world->FindBlock(currentBlock.x, currentBlock.y + 1, currentBlock.z);
 	BlockType down	= world->FindBlock(currentBlock.x, currentBlock.y - 1, currentBlock.z);
+}
 
-	
+bool Renderer::CalculateCollisions(const AABB& box, const glm::vec3& block)
+{
+	// Note: blocks are 1 units in size
+	glm::vec3 boxPos = box.GetPosition();
+	bool collisionX = (boxPos.x + box.GetWidth()  >= block.x) && (block.x + 1 >= boxPos.x);
+	bool collisionY = (boxPos.y + box.GetHeight() >= block.y) && (block.y + 1 >= boxPos.y);
+	bool collisionZ = (boxPos.z + box.GetWidth()  >= block.z) && (block.z + 1 >= boxPos.z);
 }

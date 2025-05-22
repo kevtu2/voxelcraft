@@ -7,7 +7,6 @@ private:
 	glm::vec3 position; // world
 	unsigned int height;
 	unsigned int width;
-	glm::vec3 centre;
 
 public:
 	// Square collision box
@@ -18,4 +17,6 @@ public:
 	
 	glm::vec3 GetPosition() const { return position; }
 	void UpdatePosition(const glm::vec3& position);
+	unsigned int GetHeight() const { return height; }
+	unsigned int GetWidth() const { return width; }
 };

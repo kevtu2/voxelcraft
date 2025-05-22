@@ -38,4 +38,5 @@ public:
 	void ResetPosAfterCollision(const glm::vec3 position);
 
 	glm::vec3 GetPlayerPosition() const { return position; }
+	AABB& GetAABBCollision() const { return aabb; }
 };
