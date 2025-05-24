@@ -22,7 +22,7 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	glm::vec3 playerPos = player->GetPlayerPosition();
 	glm::vec3 currentBlock = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(playerPos.z, 1));
 	
-	std::cout << "AABB Pos: " << aabbPos.x << ", " << aabbPos.y << ", " << aabbPos.z << std::endl;
+	//std::cout << "AABB Pos: " << aabbPos.x << ", " << aabbPos.y << ", " << aabbPos.z << std::endl;
 	/*
 	std::cout << "Player Pos: " << player->GetPlayerPosition().x << ", " << player->GetPlayerPosition().y << ", " << player->GetPlayerPosition().z << std::endl;*/
 
@@ -65,5 +65,17 @@ bool Renderer::CalculateCollisions(const AABB& box, const glm::vec3& block)
 
 void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& block)
 {
-	std::cout << "Collided with block at: (" << block.x << ", " << block.y << ", " << block.z << ")" << std::endl;
+	AABB box = player->GetAABBCollision();
+	glm::vec3 playerPos = player->GetPlayerPosition();
+	glm::vec3 boxPos = box.GetPosition();
+
+	float dx = (boxPos.x + box.GetWidth()) - block.x;
+	float dy = (boxPos.y + box.GetHeight()) - block.y;
+	float dz = (boxPos.z + box.GetWidth()) - block.z;
+
+	float minOverlap = std::min({ dx, dy, dz });
+
+	if (minOverlap == dx) player->ResetPosAfterCollision(playerPos - glm::vec3(dx, 0, 0));
+	else if (minOverlap == dy) player->ResetPosAfterCollision(playerPos - glm::vec3(0, dy, 0));
+	else player->ResetPosAfterCollision(playerPos - glm::vec3(0, 0, dz));
 }
