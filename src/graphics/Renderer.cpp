@@ -20,6 +20,8 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	AABB aabb = player->GetAABBCollision();
 	glm::vec3 playerPos = aabb.GetPosition();
 	glm::vec3 currentBlock = glm::vec3(floor(playerPos.x), floor(playerPos.y), floor(playerPos.z));
+	
+	std::cout << "Player Pos: " << player->GetPlayerPosition().x << ", " << player->GetPlayerPosition().y << ", " << player->GetPlayerPosition().z << std::endl;
 
 	// use direction vector instead
 	BlockType north = world->FindBlock(currentBlock.x, currentBlock.y, currentBlock.z + 1);

@@ -51,6 +51,6 @@ public:
 	void setRenderDistance(unsigned int renderDistance);
 	unsigned int getRenderDistance() const { return renderDistance; }
 
-	int DivFloor(int x, int y) const;
+	
 
 };
