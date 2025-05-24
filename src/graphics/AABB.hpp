@@ -1,6 +1,8 @@
 #pragma once
 #include "glm/glm.hpp"
 
+#define AABB_POS_OFFSET glm::vec3(-0.5f, -2.0f, -0.5f)
+
 struct AABB
 {
 private:

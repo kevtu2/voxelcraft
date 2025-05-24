@@ -8,7 +8,7 @@ Player::Player(int width, int height)
 	cameraSensitivity(0.1f),
 	yaw(-90.0f),
 	pitch(0.0f),
-	aabb(AABB(position + glm::vec3(-0.5, -1, -0.5), 2, 1)) // Centre the box and move down, w/ height = 2 and width = 1
+	aabb(AABB(position, 2, 1)) // Centre the box and move down, w/ height = 2 and width = 1
 {
 	glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	cameraRight = glm::normalize(glm::cross(lookDirection, worldUp));
