@@ -1,7 +1,7 @@
 #pragma once
-#include "Utils.h"
+#include "Utils.hpp"
 
-int VMath::DivFloor(int x, int y) const
+int VMath::DivFloor(int x, int y)
 {
 	int res = x / y;
 	int rem = x % y;

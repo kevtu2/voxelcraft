@@ -8,6 +8,7 @@
 
 #include "Chunk.hpp"
 #include "../graphics/Player.hpp"
+#include "../graphics/Utils.hpp"
 
 
 class World
@@ -50,7 +51,4 @@ public:
 
 	void setRenderDistance(unsigned int renderDistance);
 	unsigned int getRenderDistance() const { return renderDistance; }
-
-	
-
 };

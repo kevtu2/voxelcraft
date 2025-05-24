@@ -2,5 +2,5 @@
 
 namespace VMath
 {
-	int DivFloor(int x, int y) const;
+	int DivFloor(int x, int y);
 };

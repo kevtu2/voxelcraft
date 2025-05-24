@@ -96,8 +96,8 @@ void World::GenerateChunks()
 
 BlockType World::FindBlock(int x, int y, int z) const
 {
-	int chunkX = DivFloor(x, CHUNK_X);
-	int chunkZ = DivFloor(z, CHUNK_Z);
+	int chunkX = VMath::DivFloor(x, CHUNK_X);
+	int chunkZ = VMath::DivFloor(z, CHUNK_Z);
 
 	glm::vec2 chunkWorldPos = glm::ivec2(chunkX, chunkZ);
 	if (activeChunks.contains(chunkWorldPos))
@@ -122,12 +122,4 @@ void World::setRenderDistance(unsigned int renderDistance)
 		this->renderDistance = 32;
 	}
 	this->renderDistance = renderDistance;
-}
-
-int World::DivFloor(int x, int y) const
-{
-	int res = x / y;
-	int rem = x % y;
-	int corr = (rem != 0 && ((rem < 0) != (y < 0)));
-	return res - corr;
 }
