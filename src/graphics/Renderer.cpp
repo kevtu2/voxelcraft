@@ -18,9 +18,11 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgr
 void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world)
 {
 	AABB aabb = player->GetAABBCollision();
-	glm::vec3 playerPos = aabb.GetPosition();
+	glm::vec3 aabbPos = aabb.GetPosition();
+	glm::vec3 playerPos = player->GetPlayerPosition();
 	glm::vec3 currentBlock = glm::vec3(VMath::DivFloor(playerPos.x, 1), VMath::DivFloor(playerPos.y, 1), VMath::DivFloor(playerPos.z, 1));
 	
+	std::cout << "AABB Pos: " << aabbPos.x << ", " << aabbPos.y << ", " << aabbPos.z << std::endl;
 	std::cout << "Player Pos: " << player->GetPlayerPosition().x << ", " << player->GetPlayerPosition().y << ", " << player->GetPlayerPosition().z << std::endl;
 
 	// use direction vector instead
