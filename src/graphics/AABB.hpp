@@ -6,7 +6,8 @@
 struct AABB
 {
 private:
-	glm::vec3 position; // world
+	glm::vec3 min; // world
+	glm::vec3 max;
 	unsigned int height;
 	unsigned int width;
 

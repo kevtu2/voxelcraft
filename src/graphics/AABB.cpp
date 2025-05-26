@@ -1,20 +1,23 @@
 #include "AABB.hpp"
 
 AABB::AABB(const glm::vec3& position, unsigned int size) :
-	position(position + AABB_POS_OFFSET),
+	min(min + AABB_POS_OFFSET),
 	height(size),
-	width(size)
+	width(size),
+	max(min + glm::vec3(width, height, width))
 {
 }
 
 AABB::AABB(const glm::vec3& position, unsigned int height, unsigned int width) :
-	position(position + AABB_POS_OFFSET),
+	min(min + AABB_POS_OFFSET),
 	height(height),
-	width(width)
+	width(width),
+	max(min + glm::vec3(width, height, width))
 {
 }
 
 void AABB::UpdatePosition(const glm::vec3& position)
 {
-	this->position = position + AABB_POS_OFFSET;
+	this->min = position + AABB_POS_OFFSET;
+	this->max = min + glm::vec3(width, height, width);
 }

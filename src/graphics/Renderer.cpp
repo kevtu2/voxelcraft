@@ -69,9 +69,13 @@ void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& blo
 	glm::vec3 playerPos = player->GetPlayerPosition();
 	glm::vec3 boxPos = box.GetPosition();
 
+	std::cout << "Collided at: " << "(" << boxPos.x << ", " << boxPos.y << ", " << boxPos.z << ")" << std::endl;
+
 	float dx = (boxPos.x + box.GetWidth()) - block.x;
 	float dy = (boxPos.y + box.GetHeight()) - block.y;
 	float dz = (boxPos.z + box.GetWidth()) - block.z;
+
+	std::cout << "dx: " << dx << ", dy: " << dy << ", dz: " << dz << std::endl;
 
 	float minOverlap = std::min({ dx, dy, dz });
 
