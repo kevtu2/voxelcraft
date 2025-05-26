@@ -7,7 +7,7 @@
 
 enum CameraMovement
 {
-	C_FORWARD, C_BACKWARD, C_RIGHT, C_LEFT, C_UP, C_DOWN
+	C_FORWARD, C_BACKWARD, C_RIGHT, C_LEFT, C_UP, C_DOWN, C_NONE
 };
 
 class Player
@@ -27,6 +27,7 @@ private:
 	glm::mat4 projection;
 
 	AABB aabb;
+	glm::vec3 velocity;
 
 public:
 	Player(int width, int height);
@@ -38,5 +39,6 @@ public:
 	void ResetPosAfterCollision(const glm::vec3 position);
 
 	glm::vec3 GetPlayerPosition() const { return position; }
+	glm::vec3 GetVelocity() const { return velocity; }
 	AABB GetAABBCollision() const { return aabb; }
 };

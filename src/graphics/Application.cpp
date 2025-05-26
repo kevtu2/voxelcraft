@@ -96,6 +96,8 @@ void Application::ProcessInput()
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		player->HandleInputControls(C_RIGHT, deltaTime);
+
+	player->HandleInputControls(C_NONE, deltaTime);
 }
 
 void Application::Run()
