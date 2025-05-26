@@ -56,10 +56,9 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 bool Renderer::CalculateCollisions(const AABB& box, const glm::vec3& block)
 {
 	// Note: blocks are 1 units in size
-	glm::vec3 boxPos = box.GetMin();
-	bool collisionX = (boxPos.x + box.GetWidth()  >= block.x) && (block.x + 1 >= boxPos.x);
-	bool collisionY = (boxPos.y + box.GetHeight() >= block.y) && (block.y + 1 >= boxPos.y);
-	bool collisionZ = (boxPos.z + box.GetWidth()  >= block.z) && (block.z + 1 >= boxPos.z);
+	bool collisionX = (box.max.x > block.x) && (block.x + 1 > box.min.x);
+	bool collisionY = (box.max.y > block.y) && (block.y + 1 > box.min.y);
+	bool collisionZ = (box.max.z > block.z) && (block.z + 1 > box.min.z);
 	return collisionX && collisionY && collisionZ;
 }
 
@@ -68,6 +67,9 @@ void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& blo
 	AABB box = player->GetAABBCollision();
 	glm::vec3 playerPos = player->GetPlayerPosition();
 	glm::vec3 boxPos = box.GetMin();
+
+	player->SetVelocity(glm::vec3(0.0f));
+	
 
 	std::cout << "Collided at: " << "(" << boxPos.x << ", " << boxPos.y << ", " << boxPos.z << ")" << std::endl;
 

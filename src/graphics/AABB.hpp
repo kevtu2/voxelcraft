@@ -5,13 +5,12 @@
 
 struct AABB
 {
-private:
+public:
 	glm::vec3 min; // world
 	glm::vec3 max;
 	unsigned int height;
 	unsigned int width;
 
-public:
 	// Square collision box
 	AABB(const glm::vec3& position, unsigned int size);
 
