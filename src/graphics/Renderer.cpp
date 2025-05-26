@@ -18,7 +18,7 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgr
 void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world)
 {
 	AABB aabb = player->GetAABBCollision();
-	glm::vec3 aabbPos = aabb.GetPosition();
+	glm::vec3 aabbPos = aabb.GetMin();
 	glm::vec3 playerPos = player->GetPlayerPosition();
 	glm::vec3 currentBlock = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(playerPos.z, 1));
 	
@@ -56,7 +56,7 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 bool Renderer::CalculateCollisions(const AABB& box, const glm::vec3& block)
 {
 	// Note: blocks are 1 units in size
-	glm::vec3 boxPos = box.GetPosition();
+	glm::vec3 boxPos = box.GetMin();
 	bool collisionX = (boxPos.x + box.GetWidth()  >= block.x) && (block.x + 1 >= boxPos.x);
 	bool collisionY = (boxPos.y + box.GetHeight() >= block.y) && (block.y + 1 >= boxPos.y);
 	bool collisionZ = (boxPos.z + box.GetWidth()  >= block.z) && (block.z + 1 >= boxPos.z);
@@ -67,7 +67,7 @@ void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& blo
 {
 	AABB box = player->GetAABBCollision();
 	glm::vec3 playerPos = player->GetPlayerPosition();
-	glm::vec3 boxPos = box.GetPosition();
+	glm::vec3 boxPos = box.GetMin();
 
 	std::cout << "Collided at: " << "(" << boxPos.x << ", " << boxPos.y << ", " << boxPos.z << ")" << std::endl;
 

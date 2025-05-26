@@ -18,7 +18,8 @@ public:
 	// Rectangular collision box
 	AABB(const glm::vec3& position, unsigned int width, unsigned int height);
 	
-	glm::vec3 GetPosition() const { return position; }
+	glm::vec3 GetMin() const { return min; }
+	glm::vec3 GetMax() const { return max; }
 	void UpdatePosition(const glm::vec3& position);
 	unsigned int GetHeight() const { return height; }
 	unsigned int GetWidth() const { return width; }

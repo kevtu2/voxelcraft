@@ -95,9 +95,7 @@ void Application::ProcessInput()
 		player->HandleInputControls(C_BACKWARD, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		player->HandleInputControls(C_RIGHT, deltaTime);
-
-	player->HandleInputControls(C_NONE, deltaTime);
+		player->HandleInputControls(C_RIGHT, deltaTime);	
 }
 
 void Application::Run()
@@ -133,6 +131,9 @@ void Application::Run()
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
 		Renderer::CheckCollisions(player, world);
+
+		glm::vec3 pos = player->GetVelocity();
+		std::cout << "vel: " << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
 
 		glm::vec3 cameraPos = player->GetPlayerPosition();
 		light.SetLightPosition(cameraPos);
