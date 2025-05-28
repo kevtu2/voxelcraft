@@ -31,27 +31,36 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 {
 	lastPosition = position;
 
+	// Flatten lookDirection and cameraRight onto XZ plane
+	glm::vec3 flatForward = lookDirection;
+	flatForward.y = 0.0f;
+	flatForward = glm::normalize(flatForward);
+
+	glm::vec3 flatRight = cameraRight;
+	flatRight.y = 0.0f;
+	flatRight = glm::normalize(flatRight);
+
+
 	switch (move) {
 	case C_FORWARD:
-		velocity = lookDirection * cameraSpeed;
+		velocity = flatForward * cameraSpeed;
 		break;
 
 	case C_LEFT:
-		velocity = -cameraRight * cameraSpeed;
+		velocity = -flatRight * cameraSpeed;
 		break;
 
 	case C_BACKWARD:
-		velocity = -lookDirection * cameraSpeed;
+		velocity = -flatForward * cameraSpeed;
 		break;
 
 	case C_RIGHT:
-		velocity = cameraRight * cameraSpeed;
+		velocity = flatRight * cameraSpeed;
 		break;
 	}
 	position += velocity * deltaTime;
 
 	position.y = 50.0f;
-	velocity = (position - lastPosition) / deltaTime;
 	aabb.UpdatePosition(position);
 }
 

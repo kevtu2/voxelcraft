@@ -63,7 +63,7 @@ void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& blo
 	
 	std::cout << "Collided at: " << "(" << boxPos.x << ", " << boxPos.y << ", " << boxPos.z << ")" << std::endl;
 
-	float dx = (boxPos.x + box.GetWidth()) - block.x;
+	/*float dx = (boxPos.x + box.GetWidth()) - block.x;
 	float dy = (boxPos.y + box.GetHeight()) - block.y;
 	float dz = (boxPos.z + box.GetWidth()) - block.z;
 
@@ -73,5 +73,5 @@ void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& blo
 
 	if (minOverlap == dx) player->ResetPosAfterCollision(playerPos - glm::vec3(dx, 0, 0));
 	else if (minOverlap == dy) player->ResetPosAfterCollision(playerPos - glm::vec3(0, dy, 0));
-	else player->ResetPosAfterCollision(playerPos - glm::vec3(0, 0, dz));
+	else player->ResetPosAfterCollision(playerPos - glm::vec3(0, 0, dz));*/
 }
