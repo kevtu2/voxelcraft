@@ -31,15 +31,18 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	else
 		direction = glm::vec3(0.0f);
 
-	glm::vec3 blockPos = aabbPos + glm::vec3(round(direction.x), round(direction.y), round(direction.z));
+	glm::vec3 blockPos = 
+		glm::vec3(round(aabbPos.x), round(aabbPos.y), round(aabbPos.z)) 
+		+ glm::vec3(round(direction.x), round(direction.y), round(direction.z));
+
 	BlockType block = world->FindBlock(VMath::DivFloor(blockPos.x, 1), VMath::DivFloor(blockPos.y, 1), VMath::DivFloor(blockPos.z, 1));
 
 	if (block != AIR && IsColliding(aabb, blockPos))
 		DoCollisions(player, blockPos);
 
-	std::cout << "Direction Pos: (" << round(direction.x) << ", " << round(direction.y) << ", " << round(direction.z) << ")" << std::endl;
+	/*std::cout << "Direction Pos: (" << round(direction.x) << ", " << round(direction.y) << ", " << round(direction.z) << ")" << std::endl;
 	std::cout << "Block: (" << VMath::DivFloor(blockPos.x, 1) << ", " << VMath::DivFloor(blockPos.y, 1) << ", " << VMath::DivFloor(blockPos.z, 1) << ")" << std::endl;
-	std::cout << "Player Pos: (" << playerPos.x << ", " << playerPos.y << ", " << playerPos.z << ")" << std::endl;
+	std::cout << "Player Pos: (" << round(aabbPos.x) << ", " << round(aabbPos.y) << ", " << round(aabbPos.z) << ")" << std::endl;*/
 	
 }
 
@@ -58,9 +61,7 @@ void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& blo
 	glm::vec3 playerPos = player->GetPlayerPosition();
 	glm::vec3 boxPos = box.GetMin();
 
-	player->SetVelocity(glm::vec3(0.0f));
-	
-	/*std::cout << "Collided at: " << "(" << boxPos.x << ", " << boxPos.y << ", " << boxPos.z << ")" << std::endl;*/
+	std::cout << "Collided at: " << "(" << boxPos.x << ", " << boxPos.y << ", " << boxPos.z << ")" << std::endl;
 
 	/*float dx = (boxPos.x + box.GetWidth()) - block.x;
 	float dy = (boxPos.y + box.GetHeight()) - block.y;
