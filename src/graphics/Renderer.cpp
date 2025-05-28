@@ -21,29 +21,27 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	glm::vec3 aabbPos = aabb.GetMin();
 	glm::vec3 playerPos = player->GetPlayerPosition();
 	glm::vec3 currentBlock = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(playerPos.z, 1));
-	
-	//std::cout << "AABB Pos: " << aabbPos.x << ", " << aabbPos.y << ", " << aabbPos.z << std::endl;
-	/*
-	std::cout << "Player Pos: " << player->GetPlayerPosition().x << ", " << player->GetPlayerPosition().y << ", " << player->GetPlayerPosition().z << std::endl;*/
 
 	glm::vec3 direction;
 	glm::vec3 velocity = player->GetVelocity();
+
+	// Avoids division by zero when calculating normal vector
 	if (glm::length(velocity))
 		direction = glm::normalize(player->GetVelocity());
 	else
 		direction = glm::vec3(0.0f);
 
-	glm::vec3 blockPos = playerPos + direction;
-	blockPos = glm::vec3(round(blockPos.x), round(blockPos.y), round(blockPos.z));
-	BlockType block = world->FindBlock(blockPos.x, blockPos.y, blockPos.z);
+	glm::vec3 blockPos = aabbPos + glm::vec3(round(direction.x), round(direction.y), round(direction.z));
+	BlockType block = world->FindBlock(VMath::DivFloor(blockPos.x, 1), VMath::DivFloor(blockPos.y, 1), VMath::DivFloor(blockPos.z, 1));
 
-	std::cout << (block != AIR && IsColliding(aabb, blockPos)) << std::endl;
+	std::cout << static_cast<int>(block) << std::endl;
 	if (block != AIR && IsColliding(aabb, blockPos))
 		DoCollisions(player, blockPos);
 
+	/*std::cout << "Direction Pos: (" << round(direction.x) << ", " << round(direction.y) << ", " << round(direction.z) << ")" << std::endl;
 	std::cout << "Block: (" << blockPos.x << ", " << blockPos.y << ", " << blockPos.z << ")" << std::endl;
-	std::cout << "Player Pos: (" << playerPos.x << ", " << playerPos.y << ", " << playerPos.z << ")" << std::endl;
-	std::cout << "Direction Pos: (" << direction.x << ", " << direction.y << ", " << direction.z << ")" << std::endl;
+	std::cout << "Player Pos: (" << playerPos.x << ", " << playerPos.y << ", " << playerPos.z << ")" << std::endl;*/
+	
 }
 
 bool Renderer::IsColliding(const AABB& box, const glm::vec3& block)
