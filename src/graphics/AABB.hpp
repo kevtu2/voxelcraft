@@ -8,8 +8,8 @@ struct AABB
 public:
 	glm::vec3 min; // world
 	glm::vec3 max;
-	unsigned int height;
-	unsigned int width;
+	float height;
+	float width;
 
 	// Square collision box
 	AABB(const glm::vec3& position, unsigned int size);

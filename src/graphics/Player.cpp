@@ -8,7 +8,7 @@ Player::Player(int width, int height)
 	cameraSensitivity(0.1f),
 	yaw(-90.0f),
 	pitch(0.0f),
-	aabb(AABB(position, 2, 1)), // Centre the box and move down, w/ height = 2 and width = 1
+	aabb(AABB(position, 2.0f, 0.8f)), // Centre the box and move down, w/ height = 2 and width = 1
 	velocity(glm::vec3(0.0f))
 {
 	glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -33,21 +33,23 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 
 	switch (move) {
 	case C_FORWARD:
-		position += lookDirection * cameraSpeed * deltaTime;
+		velocity = lookDirection * cameraSpeed;
 		break;
 
 	case C_LEFT:
-		position += -cameraRight * cameraSpeed * deltaTime;
+		velocity = -cameraRight * cameraSpeed;
 		break;
 
 	case C_BACKWARD:
-		position += -lookDirection * cameraSpeed * deltaTime;
+		velocity = -lookDirection * cameraSpeed;
 		break;
 
 	case C_RIGHT:
-		position += cameraRight * cameraSpeed * deltaTime;
+		velocity = cameraRight * cameraSpeed;
 		break;
 	}
+	position += velocity * deltaTime;
+
 	position.y = 50.0f;
 	velocity = (position - lastPosition) / deltaTime;
 	aabb.UpdatePosition(position);
