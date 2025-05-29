@@ -12,14 +12,14 @@ public:
 	float width;
 
 	// Square collision box
-	AABB(const glm::vec3& position, unsigned int size);
+	AABB(const glm::vec3& position, float size);
 
 	// Rectangular collision box
-	AABB(const glm::vec3& position, unsigned int width, unsigned int height);
+	AABB(const glm::vec3& position, float width, float height);
 	
 	glm::vec3 GetMin() const { return min; }
 	glm::vec3 GetMax() const { return max; }
 	void UpdatePosition(const glm::vec3& position);
-	unsigned int GetHeight() const { return height; }
-	unsigned int GetWidth() const { return width; }
+	float GetHeight() const { return height; }
+	float GetWidth() const { return width; }
 };

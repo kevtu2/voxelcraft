@@ -19,9 +19,12 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 {
 	AABB aabb = player->GetAABBCollision();
 	glm::vec3 aabbPos = aabb.GetMin();
+	glm::vec3 aabbPosMax = aabb.GetMax();
 	glm::vec3 playerPos = player->GetPlayerPosition();
 	glm::vec3 currentBlock = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(playerPos.z, 1));
 
+	std::cout << "aabb min: (" << aabbPos.x << ", " << aabbPos.y << ", " << aabbPos.z << ")" << std::endl;
+	std::cout << "aabb max: (" << aabbPosMax.x << ", " << aabbPosMax.y << ", " << aabbPosMax.z << ")" << std::endl;
 	glm::vec3 direction;
 	glm::vec3 velocity = player->GetVelocity();
 
@@ -40,8 +43,10 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	if (block != AIR && IsColliding(aabb, blockPos))
 		DoCollisions(player, blockPos);
 
-	/*std::cout << "Direction Pos: (" << round(direction.x) << ", " << round(direction.y) << ", " << round(direction.z) << ")" << std::endl;
-	std::cout << "Block: (" << VMath::DivFloor(blockPos.x, 1) << ", " << VMath::DivFloor(blockPos.y, 1) << ", " << VMath::DivFloor(blockPos.z, 1) << ")" << std::endl;
+	std::cout << static_cast<int>(block) << std::endl;
+
+	/*std::cout << "Direction Pos: (" << round(direction.x) << ", " << round(direction.y) << ", " << round(direction.z) << ")" << std::endl;*/
+	/*std::cout << "Block: (" << VMath::DivFloor(blockPos.x, 1) << ", " << VMath::DivFloor(blockPos.y, 1) << ", " << VMath::DivFloor(blockPos.z, 1) << ")" << std::endl;
 	std::cout << "Player Pos: (" << round(aabbPos.x) << ", " << round(aabbPos.y) << ", " << round(aabbPos.z) << ")" << std::endl;*/
 	
 }

@@ -1,6 +1,6 @@
 #include "AABB.hpp"
 
-AABB::AABB(const glm::vec3& position, unsigned int size) :
+AABB::AABB(const glm::vec3& position, float size) :
 	min(position + AABB_POS_OFFSET),
 	height(size),
 	width(size),
@@ -8,7 +8,7 @@ AABB::AABB(const glm::vec3& position, unsigned int size) :
 {
 }
 
-AABB::AABB(const glm::vec3& position, unsigned int height, unsigned int width) :
+AABB::AABB(const glm::vec3& position, float height, float width) :
 	min(position + AABB_POS_OFFSET),
 	height(height),
 	width(width),
