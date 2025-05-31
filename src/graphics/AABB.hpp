@@ -8,6 +8,7 @@ struct AABB
 public:
 	glm::vec3 min; // world
 	glm::vec3 max;
+	glm::vec3 pos;
 	float height;
 	float width;
 
