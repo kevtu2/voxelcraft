@@ -19,26 +19,6 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 {
 	AABB aabb = player->GetAABBCollision();
 	glm::vec3 aabbPos = aabb.pos;
-	glm::vec3 aabbPosMax = aabb.max;
-	glm::vec3 playerPos = player->GetPlayerPosition();
-	glm::vec3 currentBlock = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(aabbPos.z, 1));
-
-	/*std::cout << "aabb min: (" << aabbPos.x << ", " << aabbPos.y << ", " << aabbPos.z << ")" << std::endl;
-	std::cout << "aabb max: (" << aabbPosMax.x << ", " << aabbPosMax.y << ", " << aabbPosMax.z << ")" << std::endl;*/
-	glm::vec3 direction;
-	glm::vec3 velocity = player->GetVelocity();
-
-	// Avoids division by zero when calculating normal vector
-	if (glm::length(velocity))
-		direction = glm::normalize(player->GetVelocity());
-	else
-		direction = glm::vec3(0.0f);
-
-	/*glm::vec3 blockPos = 
-		glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(aabbPos.z, 1))
-		+ glm::vec3(round(direction.x), round(direction.y), round(direction.z));*/
-
-	//blockPos = glm::vec3(VMath::DivFloor(blockPos.x, 1), VMath::DivFloor(blockPos.y, 1), VMath::DivFloor(blockPos.z, 1));
 
 	glm::vec3 blockPos = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(aabbPos.z, 1));
 
@@ -54,18 +34,6 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 			}
 		}
 	}
-
-	/*std::cout << "Box pos: (" << VMath::DivFloor(aabbPos.x, 1) << ", " << VMath::DivFloor(aabbPos.y, 1) << ", " << VMath::DivFloor(aabbPos.z, 1) << ")" << std::endl;
-
-	std::cout << "Block pos: (" << blockPos.x << ", " << blockPos.y << ", " << blockPos.z << ")" << std::endl;*/
-	/*std::cout << "Box min: (" << aabb.min.x << ", " << aabb.min.y << ", " << aabb.min.z << ")" << std::endl;
-	
-	std::cout << "Box max: (" << aabb.max.x << ", " << aabb.max.y << ", " << aabb.max.z << ")" << std::endl;*/
-
-
-	//std::cout << "Direction Pos: (" << round(direction.x) << ", " << round(direction.y) << ", " << round(direction.z) << ")" << std::endl;
-	//std::cout << "Block: (" << VMath::DivFloor(blockPos.x, 1) << ", " << VMath::DivFloor(blockPos.y, 1) << ", " << VMath::DivFloor(blockPos.z, 1) << ")" << std::endl;
-	//std::cout << "Player Pos: (" << round(aabbPos.x) << ", " << round(aabbPos.y) << ", " << round(aabbPos.z) << ")" << std::endl;
 }
 
 bool Renderer::IsColliding(const AABB& box, const glm::vec3& block)
