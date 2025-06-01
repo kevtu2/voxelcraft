@@ -9,6 +9,7 @@ Player::Player(int width, int height)
 	yaw(-90.0f),
 	pitch(0.0f),
 	aabb(AABB(position, 2.0f, 1.0f)), // Centre the box and move down, w/ height = 2 and width = 1
+	isColliding(false),
 	velocity(glm::vec3(0.0f))
 {
 	glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -29,6 +30,8 @@ glm::mat4 Player::GetViewMatrix() const
 
 void Player::HandleInputControls(CameraMovement move, float deltaTime)
 {
+	if (isColliding) return;
+
 	lastPosition = position;
 
 	// Flatten lookDirection and cameraRight onto XZ plane
@@ -60,7 +63,7 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 	}
 	position += velocity * deltaTime;
 
-	position.y = 50.15f;
+	position.y = 50.0f;
 	aabb.UpdatePosition(position);
 }
 

@@ -23,6 +23,7 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	glm::vec3 blockPos = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(aabbPos.z, 1));
 
 	//std::cout << "Current block: (" << blockPos.x << ", " << blockPos.y << ", " << blockPos.z << ")" << std::endl;
+	bool isColliding = false;
 	for (int x = blockPos.x - 1; x <= blockPos.x + 1; ++x)
 	{
 		for (int y = blockPos.y - 1; y <= blockPos.y + 3; ++y)
@@ -31,11 +32,13 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 			{
 				BlockType block = world->FindBlock(x, y, z);
 				//std::cout << "Block type: " << static_cast<int>(block) << " at: (" << x << ", " << y << ", " << z << ")" << std::endl;
-				if (block != AIR && IsColliding(aabb, glm::vec3(x, y, z)))
+				isColliding |= (block != AIR && IsColliding(aabb, glm::vec3(x, y, z)));
+				if (isColliding)
 					DoCollisions(player, blockPos);
 			}
 		}
 	}
+	player->SetIsColliding(isColliding);
 }
 
 bool Renderer::IsColliding(const AABB& box, const glm::vec3& block)
@@ -50,15 +53,17 @@ bool Renderer::IsColliding(const AABB& box, const glm::vec3& block)
 void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& block)
 {
 	AABB box = player->GetAABBCollision();
+	glm::vec3 aabbMin = box.min;
 	glm::vec3 playerPos = player->GetPlayerPosition();
-	glm::vec3 boxPos = box.GetMin();
-
 	std::cout << "Collided with: " << "(" << block.x << ", " << block.y << ", " << block.z << ")" << std::endl;
 	std::cout << "______________________" << std::endl;
 
-	/*float dx = (boxPos.x + box.GetWidth()) - block.x;
-	float dy = (boxPos.y + box.GetHeight()) - block.y;
-	float dz = (boxPos.z + box.GetWidth()) - block.z;
+	glm::vec3 velocity = glm::vec3(0.0f);
+	player->SetVelocity(velocity);
+
+	/*float dx = (aabbMin.x + box.GetWidth()) - block.x;
+	float dy = (aabbMin.y + box.GetHeight()) - block.y;
+	float dz = (aabbMin.z + box.GetWidth()) - block.z;
 
 	std::cout << "dx: " << dx << ", dy: " << dy << ", dz: " << dz << std::endl;
 
