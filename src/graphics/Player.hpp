@@ -13,6 +13,7 @@ enum CameraMovement
 class Player
 {
 private:
+	// TODO: Extract into Camera class
 	glm::vec3 position;
 	glm::vec3 lastPosition;
 	glm::vec3 lookDirection;

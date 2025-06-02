@@ -18,6 +18,23 @@ AABB::AABB(const glm::vec3& position, float height, float width) :
 {
 }
 
+#ifdef DEBUG
+void AABB::GenerateAABBMesh()
+{
+
+}
+
+void AABB::BufferAABBData()
+{
+
+}
+
+void AABB::DrawArrays()
+{
+
+}
+#endif
+
 void AABB::UpdatePosition(const glm::vec3& position)
 {
 	this->min = position + AABB_POS_OFFSET;

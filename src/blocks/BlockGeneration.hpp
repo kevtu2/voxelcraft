@@ -71,7 +71,7 @@ namespace BlockGeneration
 
     static constexpr unsigned int FACE_INDICES[] = { 1, 0, 3, 1, 3, 2 };
 
-     void GenerateFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face);
+    void GenerateFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face);
 
 };
 
