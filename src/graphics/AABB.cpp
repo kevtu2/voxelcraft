@@ -18,7 +18,6 @@ AABB::AABB(const glm::vec3& position, float height, float width) :
 {
 }
 
-#ifdef DEBUG
 void AABB::GenerateAABBMesh()
 {
 	glGenVertexArrays(1, &VAO_ID);
@@ -50,7 +49,6 @@ void AABB::DrawArrays()
 	glDrawElements(GL_TRIANGLES, 32, GL_UNSIGNED_INT, 0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
-#endif
 
 void AABB::UpdatePosition(const glm::vec3& position)
 {

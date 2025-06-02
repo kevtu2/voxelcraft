@@ -15,7 +15,6 @@
 #define COLLISION_NEG_Y  32
 
 
-#ifdef DEBUG
 // Each vertex: { x, y, z }
 static constexpr float vertices[] = {
 	// Bottom face
@@ -56,7 +55,6 @@ static constexpr float indices[] = {
    1, 2, 6,
    6, 5, 1
 };
-#endif
 
 struct AABB
 {
@@ -67,14 +65,12 @@ public:
 	float height;
 	float width;
 
-	#ifdef DEBUG
 	unsigned int VBO_ID;
 	unsigned int VAO_ID;
 	unsigned int EBO_ID;
 	void GenerateAABBMesh();
 	void BufferAABBData();
 	void DrawArrays();
-	#endif
 
 	// Square collision box
 	AABB(const glm::vec3& position, float size);
