@@ -39,6 +39,7 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 		}
 	}
 	player->SetIsColliding(isColliding);
+	std::cout << "isColliding: " << isColliding << std::endl;
 }
 
 bool Renderer::IsColliding(const AABB& box, const glm::vec3& block)
@@ -61,7 +62,7 @@ void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& blo
 	glm::vec3 velocity = glm::vec3(0.0f);
 	player->SetVelocity(velocity);
 
-	/*float dx = (aabbMin.x + box.GetWidth()) - block.x;
+	float dx = (aabbMin.x + box.GetWidth()) - block.x;
 	float dy = (aabbMin.y + box.GetHeight()) - block.y;
 	float dz = (aabbMin.z + box.GetWidth()) - block.z;
 
@@ -71,5 +72,5 @@ void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& blo
 
 	if (minOverlap == dx) player->ResetPosAfterCollision(playerPos - glm::vec3(dx, 0, 0));
 	else if (minOverlap == dy) player->ResetPosAfterCollision(playerPos - glm::vec3(0, dy, 0));
-	else player->ResetPosAfterCollision(playerPos - glm::vec3(0, 0, dz));*/
+	else player->ResetPosAfterCollision(playerPos - glm::vec3(0, 0, dz));
 }

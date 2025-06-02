@@ -42,6 +42,6 @@ public:
 	glm::vec3 GetPlayerPosition() const { return position; }
 	glm::vec3 GetVelocity() const { return velocity; }
 	void SetVelocity(const glm::vec3& value) { velocity = value; }
-	void SetIsColliding(bool value) { isColliding |= value; }
+	void SetIsColliding(bool value) { isColliding = value; }
 	AABB GetAABBCollision() const { return aabb; }
 };

@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include <iostream>
 
 Player::Player(int width, int height)
 	: position(glm::vec3(0.0f, 100.f, 0.0f)),
@@ -31,6 +32,7 @@ glm::mat4 Player::GetViewMatrix() const
 void Player::HandleInputControls(CameraMovement move, float deltaTime)
 {
 	if (isColliding) return;
+	std::cout << "Moving.." << std::endl;
 
 	lastPosition = position;
 
