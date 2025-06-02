@@ -62,10 +62,18 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 	case C_RIGHT:
 		velocity = flatRight * cameraSpeed;
 		break;
+
+	case C_UP:
+		velocity = cameraUp * cameraSpeed;
+		break;
+	
+	case C_DOWN:
+		velocity = -cameraUp * cameraSpeed;
+		break;
 	}
 	position += velocity * deltaTime;
 
-	position.y = 50.0f;
+	//position.y = 50.15f;
 	aabb.UpdatePosition(position);
 }
 

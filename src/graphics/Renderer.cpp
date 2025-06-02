@@ -18,6 +18,7 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgr
 void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world)
 {
 	AABB aabb = player->GetAABBCollision();
+	glm::vec3 playerPos = player->GetPlayerPosition();
 	glm::vec3 aabbPos = aabb.min;
 
 	glm::vec3 blockPos = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(aabbPos.z, 1));
@@ -31,10 +32,10 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 			for (int z = blockPos.z - 1; z <= blockPos.z + 1; ++z)
 			{
 				BlockType block = world->FindBlock(x, y, z);
-				//std::cout << "Block type: " << static_cast<int>(block) << " at: (" << x << ", " << y << ", " << z << ")" << std::endl;
 				isColliding |= (block != AIR && IsColliding(aabb, glm::vec3(x, y, z)));
+				glm::vec3 diff = aabbPos - glm::vec3(x, y, z);
 				if (isColliding)
-					DoCollisions(player, blockPos);
+					DoCollisions(player, playerPos);
 			}
 		}
 	}
@@ -51,18 +52,19 @@ bool Renderer::IsColliding(const AABB& box, const glm::vec3& block)
 	return collisionX && collisionY && collisionZ;
 }
 
-void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& block)
+void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& prevPos)
 {
 	AABB box = player->GetAABBCollision();
 	glm::vec3 aabbMin = box.min;
 	glm::vec3 playerPos = player->GetPlayerPosition();
-	std::cout << "Collided with: " << "(" << block.x << ", " << block.y << ", " << block.z << ")" << std::endl;
-	std::cout << "______________________" << std::endl;
+	//std::cout << "Collided with: " << "(" << block.x << ", " << block.y << ", " << block.z << ")" << std::endl;
+	//std::cout << "______________________" << std::endl;
 
 	glm::vec3 velocity = glm::vec3(0.0f);
 	player->SetVelocity(velocity);
 
-	float dx = (aabbMin.x + box.GetWidth()) - block.x;
+	player->ResetPosAfterCollision(prevPos);
+	/*float dx = (aabbMin.x + box.GetWidth()) - block.x;
 	float dy = (aabbMin.y + box.GetHeight()) - block.y;
 	float dz = (aabbMin.z + box.GetWidth()) - block.z;
 
@@ -72,5 +74,5 @@ void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& blo
 
 	if (minOverlap == dx) player->ResetPosAfterCollision(playerPos - glm::vec3(dx, 0, 0));
 	else if (minOverlap == dy) player->ResetPosAfterCollision(playerPos - glm::vec3(0, dy, 0));
-	else player->ResetPosAfterCollision(playerPos - glm::vec3(0, 0, dz));
+	else player->ResetPosAfterCollision(playerPos - glm::vec3(0, 0, dz));*/
 }
