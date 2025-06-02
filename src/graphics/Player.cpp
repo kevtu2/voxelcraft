@@ -64,11 +64,11 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 		break;
 
 	case C_UP:
-		velocity = cameraUp * cameraSpeed;
+		velocity = glm::vec3(0.0f, 1.0f, 0.0f) * cameraSpeed;
 		break;
 	
 	case C_DOWN:
-		velocity = -cameraUp * cameraSpeed;
+		velocity = glm::vec3(0.0f, -1.0f, 0.0f) * cameraSpeed;
 		break;
 	}
 	position += velocity * deltaTime;
