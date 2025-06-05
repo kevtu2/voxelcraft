@@ -35,15 +35,13 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 				isColliding |= (block != AIR && IsColliding(aabb, glm::vec3(x, y, z)));
 				glm::vec3 diff = aabbPos - glm::vec3(x, y, z);
 				if (isColliding)
-					DoCollisions(player, playerPos);
+					DoCollisions(player, glm::vec3(x, y, z));
 			}
 		}
 	}
-	player->SetIsColliding(isColliding);
-	std::cout << "isColliding: " << isColliding << std::endl;
 }
 
-bool Renderer::IsColliding(const AABB& box, const glm::vec3& block)
+bool Renderer::IsIntersecting(const AABB& box, const glm::vec3& block)
 {
 	// Note: blocks are 1 units in size
 	bool collisionX = (box.max.x >= block.x) && (block.x + 1 >= box.min.x);
@@ -52,27 +50,48 @@ bool Renderer::IsColliding(const AABB& box, const glm::vec3& block)
 	return collisionX && collisionY && collisionZ;
 }
 
-void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& prevPos)
+void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& block, float& outTime, glm::vec3& outNormal)
 {
-	AABB box = player->GetAABBCollision();
-	glm::vec3 aabbMin = box.min;
-	glm::vec3 playerPos = player->GetPlayerPosition();
-	//std::cout << "Collided with: " << "(" << block.x << ", " << block.y << ", " << block.z << ")" << std::endl;
-	//std::cout << "______________________" << std::endl;
+	AABB aabb = player->GetAABBCollision();
+	glm::vec3 velocity = player->GetVelocity();
+	glm::vec3 min = aabb.GetMin();
+	glm::vec3 max = aabb.GetMax();
 
-	glm::vec3 velocity = glm::vec3(0.0f);
-	player->SetVelocity(velocity);
+	// Entry times
+	float xEntry = CalculateTime((velocity.x > 0) ? (block.x - max.x) : ((block.x + 1) - min.x), velocity.x);
+	float xExit  = CalculateTime((velocity.x > 0) ? ((block.x + 1) - min.x) : (block.x - max.x), velocity.x);
 
-	player->ResetPosAfterCollision(prevPos);
-	/*float dx = (aabbMin.x + box.GetWidth()) - block.x;
-	float dy = (aabbMin.y + box.GetHeight()) - block.y;
-	float dz = (aabbMin.z + box.GetWidth()) - block.z;
+	float yEntry = CalculateTime((velocity.y > 0) ? (block.y - max.y) : ((block.y + 1) - min.y), velocity.y);
+	float yExit = CalculateTime((velocity.y > 0) ? ((block.y + 1) - min.y) : (block.y - max.y), velocity.y);
 
-	std::cout << "dx: " << dx << ", dy: " << dy << ", dz: " << dz << std::endl;
+	float zEntry = CalculateTime((velocity.z > 0) ? (block.z - max.z) : ((block.z + 1) - min.z), velocity.z);
+	float zExit = CalculateTime((velocity.z > 0) ? ((block.z + 1) - min.z) : (block.z - max.z), velocity.z);
 
-	float minOverlap = std::min({ dx, dy, dz });
+	// No collision conditions
+	if (xEntry < 0 and yEntry < 0 and zEntry < 0)
+		outTime = 1;
+		outNormal = glm::vec3(NAN);
+		return;
 
-	if (minOverlap == dx) player->ResetPosAfterCollision(playerPos - glm::vec3(dx, 0, 0));
-	else if (minOverlap == dy) player->ResetPosAfterCollision(playerPos - glm::vec3(0, dy, 0));
-	else player->ResetPosAfterCollision(playerPos - glm::vec3(0, 0, dz));*/
+	if (xEntry > 1 or yEntry > 1 or zEntry > 1)
+		outTime = 1;
+		outNormal = glm::vec3(NAN);
+		return;
+	
+	float entryPoint = std::max(xEntry, yEntry, zEntry);
+	float exitPoint = std::min(xExit, yExit, zExit);
+
+}
+
+static float CalculateTime(float x, float y)
+{
+	if (y)
+		return x / y;
+	else
+		return -(x > 0) * std::numeric_limits<float>::max();
+}
+
+static bool IsVec3Invalid(const glm::vec3& v)
+{
+	return std::isnan(v.x) || std::isnan(v.y) || std::isnan(v.z);
 }
