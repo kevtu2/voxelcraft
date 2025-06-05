@@ -50,14 +50,14 @@ bool Renderer::IsIntersecting(const AABB& box, const glm::vec3& block)
 	return collisionX && collisionY && collisionZ;
 }
 
-void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& block, float& outTime, glm::vec3& outNormal)
+void Renderer::CalculateCollisions(std::shared_ptr<Player> player, const glm::vec3& block, float& outTime, glm::vec3& outNormal)
 {
 	AABB aabb = player->GetAABBCollision();
 	glm::vec3 velocity = player->GetVelocity();
 	glm::vec3 min = aabb.GetMin();
 	glm::vec3 max = aabb.GetMax();
 
-	// Entry times
+	// Entry and Exit times (distance / velocity)
 	float xEntry = CalculateTime((velocity.x > 0) ? (block.x - max.x) : ((block.x + 1) - min.x), velocity.x);
 	float xExit  = CalculateTime((velocity.x > 0) ? ((block.x + 1) - min.x) : (block.x - max.x), velocity.x);
 
@@ -67,7 +67,14 @@ void Renderer::DoCollisions(std::shared_ptr<Player> player, const glm::vec3& blo
 	float zEntry = CalculateTime((velocity.z > 0) ? (block.z - max.z) : ((block.z + 1) - min.z), velocity.z);
 	float zExit = CalculateTime((velocity.z > 0) ? ((block.z + 1) - min.z) : (block.z - max.z), velocity.z);
 
-	// No collision conditions
+	/* No collision conditions:
+	* This occurs when the entry distance is greater than where the player will be in the next tick. In other
+	* words, the block is too far to collide with the player in the very next tick. (entryTime > velocity)
+	* We will "normalize" wrt velocity and get that:
+	* if entry time > 1, (i.e, entryTime > velocity), then the block is too far away, therefore no collision.
+	* if entry time < 0, represents a past collision which will already be handled.
+	* Source: Obiwac's collision physics video (https://www.youtube.com/watch?v=fWkbIOna6RA)
+	*/
 	if (xEntry < 0 and yEntry < 0 and zEntry < 0)
 		outTime = 1;
 		outNormal = glm::vec3(NAN);
