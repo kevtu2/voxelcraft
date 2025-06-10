@@ -53,26 +53,28 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 				if (glm::all(glm::isnan(collisionNormal)))
 					continue;
 
-				std::pair<float, glm::vec3> candidate(collisionTime, collisionNormal);
+				std::pair<float, glm::vec3> candidate;
+				candidate.first = collisionTime;
+				candidate.second = collisionNormal;
 				collisionCandidates.push_back(candidate);
 			}
 		}
 	}
 
 	// Narrow phase
-	float min = collisionCandidates.back().first;
+	float minVel = collisionCandidates.back().first;
 	glm::vec3 minNormal = collisionCandidates.back().second;
 	for (auto& candidate : collisionCandidates)
 	{
-		if (candidate.first < min)
+		if (candidate.first < minVel)
 		{
-			min = candidate.first;
+			minVel = candidate.first;
 			minNormal = candidate.second;
 		}
 	}
 	
 	// Extra padding for collision
-	min -= 0.001;
+	minVel -= 0.001;
 
 	// Collide!
 	glm::vec3 newVel;
@@ -80,19 +82,19 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	if (minNormal.x != 0)
 	{
 		newVel.x = 0;
-		pos.x = velocity.x * min;
+		pos.x = velocity.x * minVel;
 	}
 
 	if (minNormal.y != 0)
 	{
 		newVel.y = 0;
-		pos.y = velocity.y * min;
+		pos.y = velocity.y * minVel;
 	}
 
 	if (minNormal.z != 0)
 	{
 		newVel.z = 0;
-		pos.z = velocity.z * min;
+		pos.z = velocity.z * minVel;
 	}
 
 }
@@ -146,8 +148,11 @@ void Renderer::CalculateCollisions(std::shared_ptr<Player> player, const glm::ve
 		return;
 	}
 		
-	float entryTime = std::max(xEntry, yEntry, zEntry);
-	float exitTime = std::min(xExit, yExit, zExit);
+	float entryTime = std::max(xEntry, yEntry);
+	entryTime = std::max(entryTime, zEntry);
+
+	float exitTime = std::min(xExit, yExit);
+	exitTime = std::max(exitTime, zExit);
 
 	if (entryTime > exitTime) 
 	{
