@@ -61,6 +61,9 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 		}
 	}
 
+	if (collisionCandidates.empty())
+		return;
+
 	// Narrow phase
 	float minVel = collisionCandidates.back().first;
 	glm::vec3 minNormal = collisionCandidates.back().second;
@@ -152,7 +155,7 @@ void Renderer::CalculateCollisions(std::shared_ptr<Player> player, const glm::ve
 	entryTime = std::max(entryTime, zEntry);
 
 	float exitTime = std::min(xExit, yExit);
-	exitTime = std::max(exitTime, zExit);
+	exitTime = std::min(exitTime, zExit);
 
 	if (entryTime > exitTime) 
 	{

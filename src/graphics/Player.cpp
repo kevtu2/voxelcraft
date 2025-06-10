@@ -31,9 +31,6 @@ glm::mat4 Player::GetViewMatrix() const
 
 void Player::HandleInputControls(CameraMovement move, float deltaTime)
 {
-	if (isColliding) return;
-	std::cout << "Moving.." << std::endl;
-
 	lastPosition = position;
 
 	// Flatten lookDirection and cameraRight onto XZ plane
