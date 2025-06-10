@@ -30,7 +30,7 @@ static float CalculateTime(float x, float y)
 	}
 }
 
-void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world)
+void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world, float deltaTime)
 {
 	AABB aabb = player->GetAABBCollision();
 
@@ -38,21 +38,32 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	glm::vec3 velocity = player->GetVelocity();
 	glm::vec3 aabbPos = aabb.min;
 
+	// Current position
 	glm::vec3 blockPos = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(aabbPos.z, 1));
+	
+	velocity = velocity * deltaTime;
+	
+	int dirX = (velocity.x > 0) ? 1 : -1;
+	int dirY = (velocity.y > 0) ? 1 : -1;
+	int dirZ = (velocity.z > 0) ? 1 : -1;
 
-	//std::cout << "Current block: (" << blockPos.x << ", " << blockPos.y << ", " << blockPos.z << ")" << std::endl;
+	int targetX = blockPos.x + velocity.x;
+	int targetY = blockPos.y + velocity.y;
+	int targetZ = blockPos.z + velocity.z;
+
 	std::vector<std::pair<float, glm::vec3>> collisionCandidates;
-	for (int x = blockPos.x - 1; x <= blockPos.x + 1; ++x)
+
+	// Broad phase
+	for (int x = blockPos.x - 1; x <= ; x += dirX)
 	{
-		for (int y = blockPos.y - 1; y <= blockPos.y + 3; ++y)
+		for (int y = blockPos.y - 1; y <= blockPos.y + 3; y += dirY)
 		{
-			for (int z = blockPos.z - 1; z <= blockPos.z + 1; ++z)
+			for (int z = blockPos.z - 1; z <= blockPos.z + 1; z += dirZ)
 			{
 				BlockType block = world->FindBlock(x, y, z);
 				if (block == AIR)
 					continue;
 				
-				// Broad phase
 				float collisionTime;
 				glm::vec3 collisionNormal;
 				CalculateCollisions(player, glm::vec3(x, y, z), collisionTime, collisionNormal);

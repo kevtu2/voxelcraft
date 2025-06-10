@@ -138,7 +138,7 @@ void Application::Run()
 		
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
-		Renderer::CheckCollisions(player, world);
+		Renderer::CheckCollisions(player, world, deltaTime);
 	
 		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
 		shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
