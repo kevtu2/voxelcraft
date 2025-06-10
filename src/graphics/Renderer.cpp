@@ -50,7 +50,7 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 				glm::vec3 collisionNormal;
 				CalculateCollisions(player, glm::vec3(x, y, z), collisionTime, collisionNormal);
 
-				if (glm::isnan(collisionNormal))
+				if (glm::all(glm::isnan(collisionNormal)))
 					continue;
 
 				std::pair<float, glm::vec3> candidate(collisionTime, collisionNormal);
@@ -157,9 +157,9 @@ void Renderer::CalculateCollisions(std::shared_ptr<Player> player, const glm::ve
 	}
 
 	// Calculate collision normals
-	int xNormal = [0, velocity.x > 0 ? -1 : 1][entryTime = xEntry];
-	int yNormal = [0, velocity.y > 0 ? -1 : 1][entryTime = yEntry];
-	int zNormal = [0, velocity.z > 0 ? -1 : 1][entryTime = zEntry];
+	int xNormal = (entryTime == xEntry) ? (velocity.x > 0 ? -1 : 1) : 0;
+	int yNormal = (entryTime == yEntry) ? (velocity.y > 0 ? -1 : 1) : 0;
+	int zNormal = (entryTime == zEntry) ? (velocity.z > 0 ? -1 : 1) : 0;
 
 	outTime = entryTime;
 	outNormal = glm::vec3(xNormal, yNormal, zNormal);
