@@ -135,12 +135,13 @@ void Application::Run()
 
 		ProcessInput();
 		CalculateNewMousePosition();
-		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
-		shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
 		
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
 		Renderer::CheckCollisions(player, world);
+	
+		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
+		shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
 
 		glm::vec3 cameraPos = player->GetPlayerPosition();
 		light.SetLightPosition(cameraPos);

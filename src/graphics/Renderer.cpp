@@ -20,7 +20,14 @@ static float CalculateTime(float x, float y)
 	if (y)
 		return x / y;
 	else
-		return -(x > 0) * std::numeric_limits<float>::max();
+	{
+		if (x > 0)
+			return std::numeric_limits<float>::max();
+		else if (x < 0)
+			return std::numeric_limits<float>::min();
+		else
+			return 0.0f;
+	}
 }
 
 void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world)
@@ -80,26 +87,33 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	minVel -= 0.001;
 
 	// Collide!
-	glm::vec3 newVel;
-	glm::vec3 pos;
+	glm::vec3 newVel = velocity;
+	glm::vec3 pos = playerPos;
 	if (minNormal.x != 0)
 	{
 		newVel.x = 0;
-		pos.x = velocity.x * minVel;
+		pos.x += velocity.x * minVel;
+		std::cout << "Collided in the x axis!" << std::endl;
 	}
 
 	if (minNormal.y != 0)
 	{
 		newVel.y = 0;
-		pos.y = velocity.y * minVel;
+		pos.y += velocity.y * minVel;
+		std::cout << "Collided in the y axis!" << std::endl;
+
 	}
 
 	if (minNormal.z != 0)
 	{
 		newVel.z = 0;
-		pos.z = velocity.z * minVel;
+		pos.z += velocity.z * minVel;
+		std::cout << "Collided in the z axis!" << std::endl;
+
 	}
 
+	player->SetVelocity(newVel);
+	player->ResetPosAfterCollision(pos);
 }
 
 bool Renderer::IsIntersecting(const AABB& box, const glm::vec3& block)
