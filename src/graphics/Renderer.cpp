@@ -22,9 +22,9 @@ static float CalculateTime(float x, float y)
 	else
 	{
 		if (x > 0)
-			return std::numeric_limits<float>::max();
-		else if (x < 0)
 			return std::numeric_limits<float>::min();
+		else if (x < 0)
+			return std::numeric_limits<float>::max();
 		else
 			return 0.0f;
 	}
