@@ -15,16 +15,26 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgr
 	world->DrawChunks();
 }
 
+static float CalculateTime(float x, float y)
+{
+	if (y)
+		return x / y;
+	else
+		return -(x > 0) * std::numeric_limits<float>::max();
+}
+
 void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world)
 {
 	AABB aabb = player->GetAABBCollision();
+
 	glm::vec3 playerPos = player->GetPlayerPosition();
+	glm::vec3 velocity = player->GetVelocity();
 	glm::vec3 aabbPos = aabb.min;
 
 	glm::vec3 blockPos = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(aabbPos.z, 1));
 
 	//std::cout << "Current block: (" << blockPos.x << ", " << blockPos.y << ", " << blockPos.z << ")" << std::endl;
-	bool isColliding = false;
+	std::vector<std::pair<float, glm::vec3>> collisionCandidates;
 	for (int x = blockPos.x - 1; x <= blockPos.x + 1; ++x)
 	{
 		for (int y = blockPos.y - 1; y <= blockPos.y + 3; ++y)
@@ -39,9 +49,52 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 				float collisionTime;
 				glm::vec3 collisionNormal;
 				CalculateCollisions(player, glm::vec3(x, y, z), collisionTime, collisionNormal);
+
+				if (glm::isnan(collisionNormal))
+					continue;
+
+				std::pair<float, glm::vec3> candidate(collisionTime, collisionNormal);
+				collisionCandidates.push_back(candidate);
 			}
 		}
 	}
+
+	// Narrow phase
+	float min = collisionCandidates.back().first;
+	glm::vec3 minNormal = collisionCandidates.back().second;
+	for (auto& candidate : collisionCandidates)
+	{
+		if (candidate.first < min)
+		{
+			min = candidate.first;
+			minNormal = candidate.second;
+		}
+	}
+	
+	// Extra padding for collision
+	min -= 0.001;
+
+	// Collide!
+	glm::vec3 newVel;
+	glm::vec3 pos;
+	if (minNormal.x != 0)
+	{
+		newVel.x = 0;
+		pos.x = velocity.x * min;
+	}
+
+	if (minNormal.y != 0)
+	{
+		newVel.y = 0;
+		pos.y = velocity.y * min;
+	}
+
+	if (minNormal.z != 0)
+	{
+		newVel.z = 0;
+		pos.z = velocity.z * min;
+	}
+
 }
 
 bool Renderer::IsIntersecting(const AABB& box, const glm::vec3& block)
@@ -112,15 +165,4 @@ void Renderer::CalculateCollisions(std::shared_ptr<Player> player, const glm::ve
 	outNormal = glm::vec3(xNormal, yNormal, zNormal);
 }
 
-static float CalculateTime(float x, float y)
-{
-	if (y)
-		return x / y;
-	else
-		return -(x > 0) * std::numeric_limits<float>::max();
-}
 
-static bool IsVec3Invalid(const glm::vec3& v)
-{
-	return std::isnan(v.x) || std::isnan(v.y) || std::isnan(v.z);
-}
