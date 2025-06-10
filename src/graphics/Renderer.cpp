@@ -32,10 +32,13 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 			for (int z = blockPos.z - 1; z <= blockPos.z + 1; ++z)
 			{
 				BlockType block = world->FindBlock(x, y, z);
-				isColliding |= (block != AIR && IsColliding(aabb, glm::vec3(x, y, z)));
-				glm::vec3 diff = aabbPos - glm::vec3(x, y, z);
-				if (isColliding)
-					DoCollisions(player, glm::vec3(x, y, z));
+				if (block == AIR)
+					continue;
+				
+				// Broad phase
+				float collisionTime;
+				glm::vec3 collisionNormal;
+				CalculateCollisions(player, glm::vec3(x, y, z), collisionTime, collisionNormal);
 			}
 		}
 	}

@@ -15,6 +15,6 @@ namespace Renderer
 	void DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgram, const Texture& texture, const Player& player);
 
 	void CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world);
-	bool IsColliding(const AABB& box, const glm::vec3& block);
+	bool IsIntersecting(const AABB& box, const glm::vec3& block);
 	void CalculateCollisions(std::shared_ptr<Player> player, const glm::vec3& block, float& outTime, glm::vec3& outNormal);
 };
