@@ -76,18 +76,37 @@ void Renderer::CalculateCollisions(std::shared_ptr<Player> player, const glm::ve
 	* Source: Obiwac's collision physics video (https://www.youtube.com/watch?v=fWkbIOna6RA)
 	*/
 	if (xEntry < 0 and yEntry < 0 and zEntry < 0)
+	{
 		outTime = 1;
 		outNormal = glm::vec3(NAN);
 		return;
+	}
+		
 
-	if (xEntry > 1 or yEntry > 1 or zEntry > 1)
+	if (xEntry > 1 or yEntry > 1 or zEntry > 1) 
+	{
 		outTime = 1;
 		outNormal = glm::vec3(NAN);
 		return;
-	
-	float entryPoint = std::max(xEntry, yEntry, zEntry);
-	float exitPoint = std::min(xExit, yExit, zExit);
+	}
+		
+	float entryTime = std::max(xEntry, yEntry, zEntry);
+	float exitTime = std::min(xExit, yExit, zExit);
 
+	if (entryTime > exitTime) 
+	{
+		outTime = 1;
+		outNormal = glm::vec3(NAN);
+		return;
+	}
+
+	// Calculate collision normals
+	int xNormal = [0, velocity.x > 0 ? -1 : 1][entryTime = xEntry];
+	int yNormal = [0, velocity.y > 0 ? -1 : 1][entryTime = yEntry];
+	int zNormal = [0, velocity.z > 0 ? -1 : 1][entryTime = zEntry];
+
+	outTime = entryTime;
+	outNormal = glm::vec3(xNormal, yNormal, zNormal);
 }
 
 static float CalculateTime(float x, float y)
