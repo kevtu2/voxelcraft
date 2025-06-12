@@ -63,6 +63,7 @@ public:
 	glm::vec3 max;
 	glm::vec3 pos;
 	float height;
+	float length;
 	float width;
 
 	unsigned int VBO_ID;
@@ -77,6 +78,9 @@ public:
 
 	// Rectangular collision box
 	AABB(const glm::vec3& position, float width, float height);
+
+	// Primarily used for getting broad phase box for collisions
+	AABB(const glm::vec3& position, float length, float width, float height);
 	
 	glm::vec3 GetMin() const { return min; }
 	glm::vec3 GetMax() const { return max; }

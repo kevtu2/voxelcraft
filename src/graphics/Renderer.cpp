@@ -22,13 +22,30 @@ static float CalculateTime(float x, float y)
 	else
 	{
 		if (x > 0)
-			return std::numeric_limits<float>::infinity();
+			return -std::numeric_limits<float>::infinity();
 		else if (x < 0)
 			return std::numeric_limits<float>::infinity();
 		else
 			return 0.0f;
 	}
 }
+
+AABB GetBroadPhaseBox(const AABB& aabb, const glm::vec3& playerVel)
+{
+	float x, y, z, l, w, h;
+	
+	glm::vec3 pos = aabb.GetMin();
+	x = playerVel.x > 0 ? pos.x : pos.x + playerVel.x;
+	y = playerVel.y > 0 ? pos.y : pos.y + playerVel.y;
+	z = playerVel.z > 0 ? pos.z : pos.z + playerVel.z;
+
+	l = aabb.GetWidth() + std::abs(playerVel.x);
+	w = aabb.GetWidth() + std::abs(playerVel.z);
+	h = aabb.GetWidth() + std::abs(playerVel.y);
+
+	return AABB(glm::vec3(x,y,z), )
+
+};
 
 void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world, float deltaTime)
 {
@@ -165,7 +182,7 @@ void Renderer::CalculateCollisions(std::shared_ptr<Player> player, const glm::ve
 	* if entry time < 0, represents a past collision which will already be handled.
 	* Source: Obiwac's collision physics video (https://www.youtube.com/watch?v=fWkbIOna6RA)
 	*/
-	if (xEntry < 0 and yEntry < 0 and zEntry < 0)
+	if (xEntry < 0 && yEntry < 0 && zEntry < 0)
 	{
 		outTime = 1;
 		outNormal = glm::vec3(NAN);
@@ -173,7 +190,7 @@ void Renderer::CalculateCollisions(std::shared_ptr<Player> player, const glm::ve
 	}
 		
 
-	if (xEntry > 1 or yEntry > 1 or zEntry > 1) 
+	if (xEntry > 1 || yEntry > 1 || zEntry > 1) 
 	{
 		outTime = 1;
 		outNormal = glm::vec3(NAN);
