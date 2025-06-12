@@ -22,9 +22,9 @@ static float CalculateTime(float x, float y)
 	else
 	{
 		if (x > 0)
-			return std::numeric_limits<float>::min();
+			return std::numeric_limits<float>::infinity();
 		else if (x < 0)
-			return std::numeric_limits<float>::max();
+			return std::numeric_limits<float>::infinity();
 		else
 			return 0.0f;
 	}
@@ -45,24 +45,28 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	
 	int dirX = (velocity.x > 0) ? 1 : -1;
 	int dirY = (velocity.y > 0) ? 1 : -1;
-	int dirZ = (velocity.z > 0) ? 1 : -1;
+	int dirZ = (velocity.z > 0) ? 1 : -1; 
 
 	int targetX = blockPos.x + velocity.x;
 	int targetY = blockPos.y + velocity.y;
 	int targetZ = blockPos.z + velocity.z;
 
+	int marginXZ = VMath::DivFloor(aabb.GetWidth(), 2);
+	int marginY = aabb.GetHeight();
+
 	std::vector<std::pair<float, glm::vec3>> collisionCandidates;
 
 	// Broad phase
-	for (int x = blockPos.x - 1; x <= ; x += dirX)
+	for (int x = blockPos.x - dirX * (marginXZ + 1); (dirX > 0 && x <= targetX) || (dirX < 0 && x >= -targetX); x += dirX)
 	{
-		for (int y = blockPos.y - 1; y <= blockPos.y + 3; y += dirY)
+		for (int y = blockPos.y - dirY * (marginY + 1); (dirY > 0 && y <= targetY) || (dirY < 0 && y >= -targetY); y += dirY)
 		{
-			for (int z = blockPos.z - 1; z <= blockPos.z + 1; z += dirZ)
+			for (int z = blockPos.z - dirZ * (marginXZ + 1); (dirZ > 0 && z <= targetZ) || (dirZ < 0 && z >= -targetZ); z += dirZ)
 			{
 				BlockType block = world->FindBlock(x, y, z);
 				if (block == AIR)
 					continue;
+				std::cout << "Broad phasing.." << std::endl;
 				
 				float collisionTime;
 				glm::vec3 collisionNormal;
