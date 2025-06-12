@@ -30,21 +30,21 @@ static float CalculateTime(float x, float y)
 	}
 }
 
-AABB GetBroadPhaseBox(const AABB& aabb, const glm::vec3& playerVel)
+struct BroadPhaseVolume
 {
 	float x, y, z, l, w, h;
 	
-	glm::vec3 pos = aabb.GetMin();
-	x = playerVel.x > 0 ? pos.x : pos.x + playerVel.x;
-	y = playerVel.y > 0 ? pos.y : pos.y + playerVel.y;
-	z = playerVel.z > 0 ? pos.z : pos.z + playerVel.z;
+	BroadPhaseVolume(const AABB& aabb, const glm::vec3& playerVel)
+	{
+		glm::vec3 pos = aabb.GetMin();
+		x = playerVel.x > 0 ? pos.x : pos.x + playerVel.x;
+		y = playerVel.y > 0 ? pos.y : pos.y + playerVel.y;
+		z = playerVel.z > 0 ? pos.z : pos.z + playerVel.z;
 
-	l = aabb.GetWidth() + std::abs(playerVel.x);
-	w = aabb.GetWidth() + std::abs(playerVel.z);
-	h = aabb.GetWidth() + std::abs(playerVel.y);
-
-	return AABB(glm::vec3(x,y,z), )
-
+		l = aabb.GetWidth() + std::abs(playerVel.x);
+		w = aabb.GetWidth() + std::abs(playerVel.z);
+		h = aabb.GetHeight() + std::abs(playerVel.y);
+	}
 };
 
 void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world, float deltaTime)
@@ -74,17 +74,20 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	std::vector<std::pair<float, glm::vec3>> collisionCandidates;
 
 	// Broad phase
-	for (int x = blockPos.x - dirX * (marginXZ + 1); (dirX > 0 && x <= targetX) || (dirX < 0 && x >= -targetX); x += dirX)
+	BroadPhaseVolume box(aabb, velocity);
+	glm::ivec3 minBlock = glm::floor(glm::vec3(box.x, box.y, box.z));
+	glm::ivec3 maxBlock = glm::ceil(glm::vec3(box.x + box.l, box.y + box.h, box.z + box.w));
+	
+	for (int x = minBlock.x; x <= maxBlock.x; ++x)
 	{
-		for (int y = blockPos.y - dirY * (marginY + 1); (dirY > 0 && y <= targetY) || (dirY < 0 && y >= -targetY); y += dirY)
+		for (int y = minBlock.y; y <= maxBlock.y; ++y)
 		{
-			for (int z = blockPos.z - dirZ * (marginXZ + 1); (dirZ > 0 && z <= targetZ) || (dirZ < 0 && z >= -targetZ); z += dirZ)
+			for (int z = minBlock.z; z <= maxBlock.z; ++z)
 			{
 				BlockType block = world->FindBlock(x, y, z);
 				if (block == AIR)
 					continue;
-				std::cout << "Broad phasing.." << std::endl;
-				
+
 				float collisionTime;
 				glm::vec3 collisionNormal;
 				CalculateCollisions(player, glm::vec3(x, y, z), collisionTime, collisionNormal);
@@ -97,7 +100,7 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 				candidate.second = collisionNormal;
 				collisionCandidates.push_back(candidate);
 			}
-		}
+		}	
 	}
 
 	if (collisionCandidates.empty())
