@@ -45,4 +45,6 @@ public:
 	void SetVelocity(const glm::vec3& value) { velocity = value; }
 	void SetIsColliding(bool value) { isColliding = value; }
 	AABB GetAABBCollision() const { return aabb; }
+
+	void Move(float deltaTime);
 };

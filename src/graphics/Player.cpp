@@ -68,10 +68,6 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 		velocity = glm::vec3(0.0f, -1.0f, 0.0f) * cameraSpeed;
 		break;
 	}
-	position += velocity * deltaTime;
-
-	//position.y = 50.15f;
-	aabb.UpdatePosition(position + AABB_POS_OFFSET);
 }
 
 void Player::UpdatePlayerLookAt(float deltaTime, double xPos, double yPos)
@@ -106,5 +102,12 @@ void Player::ResetPosAfterCollision(const glm::vec3 position)
 {
 	this->position = position - AABB_POS_OFFSET;
 	aabb.UpdatePosition(position);
+}
+
+void Player::Move(float deltaTime)
+{
+	position += velocity * deltaTime;
+	//position.y = 50.15f;
+	aabb.UpdatePosition(position + AABB_POS_OFFSET);
 }
 

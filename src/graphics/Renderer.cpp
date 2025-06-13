@@ -111,9 +111,8 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	minTime = glm::clamp(minTime - 0.001f, 0.0f, 1.0f);
 
 	// Collide!
-	// TODO: Fix this to use aabbPos (since it's actually used to calculate the collisions and not playerPos!!!
 	glm::vec3 newVel = velocity;
-	glm::vec3 pos = playerPos;
+	glm::vec3 pos = aabbPos;
 	if (minNormal.x != 0)
 	{
 		newVel.x = 0;

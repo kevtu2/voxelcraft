@@ -138,7 +138,8 @@ void Application::Run()
 		CalculateNewMousePosition();
 		ProcessInput();
 		Renderer::CheckCollisions(player, world, deltaTime);
-	
+		player->Move(deltaTime);
+
 		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
 		shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
 
