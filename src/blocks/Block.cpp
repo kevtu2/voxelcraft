@@ -14,6 +14,10 @@ void Block::AssignBlockInfo(BlockType blockType)
 	// Note that the texture atlas is flipped vertically, hence the indices specified below.
 
 	switch (blockType) {
+	case BOUNDARY:
+		texturesUsed = 0;
+		transparent = false;
+		break;
 	case AIR:
 		texturesUsed = 0;
 		break;
@@ -59,6 +63,8 @@ void Block::AssignBlockInfo(BlockType blockType)
 bool Block::IsTransparent(BlockType blockType)
 {
 	switch (blockType) {
+	case BOUNDARY:
+		return false;
 	case AIR:
 		return true;
 	case GRASS:

@@ -146,9 +146,6 @@ void Application::Run()
 		glm::vec3 aabbPos = player->GetAABBCollision().GetMin();
 		glm::vec3 pos = player->GetPlayerPosition();
 		
-		std::cout << "aabbPos: (" << aabbPos.x << ", " << aabbPos.y << ", " << aabbPos.z << ")" << std::endl;
-		std::cout << "playerPos: (" << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
-
 		glm::vec3 cameraPos = player->GetPlayerPosition();
 		light.SetLightPosition(cameraPos);
 		shaderProgram.UseLightSource(light);

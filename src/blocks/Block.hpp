@@ -12,6 +12,7 @@
 
 enum BlockType
 {
+    BOUNDARY,
     AIR, // Default type
     GRASS,
     DIRT,

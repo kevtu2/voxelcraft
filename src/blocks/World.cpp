@@ -104,7 +104,7 @@ BlockType World::FindBlock(int x, int y, int z) const
 	{
 		return activeChunks.at(chunkWorldPos)->GetBlock(x, y, z);
 	}
-	return BlockType::AIR; // Prevent it from generating the face if chunk doesn't exist yet.
+	return BlockType::BOUNDARY; // Prevent it from generating the face if chunk doesn't exist yet.
 }
 
 void World::DrawChunks()

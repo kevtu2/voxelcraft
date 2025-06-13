@@ -169,7 +169,6 @@ void Chunk::GenerateChunkMesh(World* world)
 				if ((cullingFlag & CULL_POS_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, UP);
 				if ((cullingFlag & CULL_NEG_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, DOWN);
 			}
-
 		}
 	}
 	BufferData();
@@ -178,8 +177,8 @@ void Chunk::GenerateChunkMesh(World* world)
 
 BlockType Chunk::GetBlock(int x, int y, int z) const
 {
-	if (y < 0) return BlockType::AIR;
-	else if (y > CHUNK_Y - 1) return BlockType::AIR;
+	if (y < 0) return BlockType::BOUNDARY;
+	else if (y > CHUNK_Y - 1) return BlockType::BOUNDARY;
 
 	int localX = x - (position.x * CHUNK_X);
 	int localY = y;
