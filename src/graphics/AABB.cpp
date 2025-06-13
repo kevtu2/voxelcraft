@@ -52,7 +52,7 @@ void AABB::DrawArrays()
 
 void AABB::UpdatePosition(const glm::vec3& position)
 {
-	this->min = position + AABB_POS_OFFSET;
+	this->min = position;
 	this->max = min + glm::vec3(width, height, width);
 	this->pos = glm::vec3((max.x + min.x) / 2, min.y, (max.z + min.z) / 2);
 }

@@ -71,7 +71,7 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 	position += velocity * deltaTime;
 
 	//position.y = 50.15f;
-	aabb.UpdatePosition(position);
+	aabb.UpdatePosition(position + AABB_POS_OFFSET);
 }
 
 void Player::UpdatePlayerLookAt(float deltaTime, double xPos, double yPos)
@@ -101,9 +101,10 @@ void Player::UpdatePlayerLookAt(float deltaTime, double xPos, double yPos)
 	cameraUp = glm::normalize(glm::cross(cameraRight, lookDirection));
 }
 
+// Position is the AABB's position since it's used to calculate collisions.
 void Player::ResetPosAfterCollision(const glm::vec3 position)
 {
-	this->position = position;
+	this->position = position - AABB_POS_OFFSET;
 	aabb.UpdatePosition(position);
 }
 

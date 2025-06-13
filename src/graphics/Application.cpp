@@ -132,12 +132,11 @@ void Application::Run()
 
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		ProcessInput();
-		CalculateNewMousePosition();
 		
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
+		CalculateNewMousePosition();
+		ProcessInput();
 		Renderer::CheckCollisions(player, world, deltaTime);
 	
 		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());

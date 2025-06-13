@@ -52,24 +52,13 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	AABB aabb = player->GetAABBCollision();
 
 	glm::vec3 playerPos = player->GetPlayerPosition();
-	glm::vec3 velocity = player->GetVelocity();
+	glm::vec3 playerVel = player->GetVelocity();
 	glm::vec3 aabbPos = aabb.min;
 
 	// Current position
 	glm::vec3 blockPos = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(aabbPos.z, 1));
 	
-	velocity = velocity * deltaTime;
-	
-	int dirX = (velocity.x > 0) ? 1 : -1;
-	int dirY = (velocity.y > 0) ? 1 : -1;
-	int dirZ = (velocity.z > 0) ? 1 : -1; 
-
-	int targetX = blockPos.x + velocity.x;
-	int targetY = blockPos.y + velocity.y;
-	int targetZ = blockPos.z + velocity.z;
-
-	int marginXZ = VMath::DivFloor(aabb.GetWidth(), 2);
-	int marginY = aabb.GetHeight();
+	glm::vec3 velocity = playerVel * deltaTime;
 
 	std::vector<std::pair<float, glm::vec3>> collisionCandidates;
 
@@ -77,7 +66,7 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	BroadPhaseVolume box(aabb, velocity);
 	glm::ivec3 minBlock = glm::floor(glm::vec3(box.x, box.y, box.z));
 	glm::ivec3 maxBlock = glm::ceil(glm::vec3(box.x + box.l, box.y + box.h, box.z + box.w));
-	
+
 	for (int x = minBlock.x; x <= maxBlock.x; ++x)
 	{
 		for (int y = minBlock.y; y <= maxBlock.y; ++y)
@@ -90,7 +79,7 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 
 				float collisionTime;
 				glm::vec3 collisionNormal;
-				CalculateCollisions(player, glm::vec3(x, y, z), collisionTime, collisionNormal);
+				CalculateCollisions(player, velocity, glm::vec3(x, y, z), collisionTime, collisionNormal);
 
 				if (glm::all(glm::isnan(collisionNormal)))
 					continue;
@@ -107,19 +96,19 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 		return;
 
 	// Narrow phase
-	float minVel = collisionCandidates.back().first;
+	float minTime = collisionCandidates.back().first;
 	glm::vec3 minNormal = collisionCandidates.back().second;
 	for (auto& candidate : collisionCandidates)
 	{
-		if (candidate.first < minVel)
+		if (candidate.first < minTime)
 		{
-			minVel = candidate.first;
+			minTime = candidate.first;
 			minNormal = candidate.second;
 		}
 	}
 	
 	// Extra padding for collision
-	minVel -= 0.001;
+	minTime = glm::clamp(minTime - 0.001f, 0.0f, 1.0f);
 
 	// Collide!
 	glm::vec3 newVel = velocity;
@@ -127,14 +116,14 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	if (minNormal.x != 0)
 	{
 		newVel.x = 0;
-		pos.x += velocity.x * minVel;
+		pos.x += velocity.x * minTime;
 		std::cout << "Collided in the x axis!" << std::endl;
 	}
 
 	if (minNormal.y != 0)
 	{
 		newVel.y = 0;
-		pos.y += velocity.y * minVel;
+		pos.y += velocity.y * minTime;
 		std::cout << "Collided in the y axis!" << std::endl;
 
 	}
@@ -142,7 +131,7 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 	if (minNormal.z != 0)
 	{
 		newVel.z = 0;
-		pos.z += velocity.z * minVel;
+		pos.z += velocity.z * minTime;
 		std::cout << "Collided in the z axis!" << std::endl;
 
 	}
@@ -160,10 +149,9 @@ bool Renderer::IsIntersecting(const AABB& box, const glm::vec3& block)
 	return collisionX && collisionY && collisionZ;
 }
 
-void Renderer::CalculateCollisions(std::shared_ptr<Player> player, const glm::vec3& block, float& outTime, glm::vec3& outNormal)
+void Renderer::CalculateCollisions(std::shared_ptr<Player> player, const glm::vec3& velocity, const glm::vec3& block, float& outTime, glm::vec3& outNormal)
 {
 	AABB aabb = player->GetAABBCollision();
-	glm::vec3 velocity = player->GetVelocity();
 	glm::vec3 min = aabb.GetMin();
 	glm::vec3 max = aabb.GetMax();
 
