@@ -9,7 +9,7 @@ The project is built with C++ and OpenGL. I wanted to use this as an opportunity
   - [x] Chunk loading
   - [x] Terrain & world generation
   - [x] Lighting
-  - [ ] Player & block collisions
+  - [x] Player & block collisions
   - [ ] ImGui integration for metrics
   - [ ] Day and night cycle
   - [ ] Block placement/destruction
