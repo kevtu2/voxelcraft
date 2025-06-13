@@ -4,7 +4,7 @@
 
 #include "../blocks/BlockGeneration.hpp"
 
-#define AABB_POS_OFFSET glm::vec3(-0.5f, -2.0f, -0.5f)
+#define AABB_POS_OFFSET glm::vec3(-0.4753f, -2.0f, 0.4753f)
 
 // Bitmasks for collisions
 #define COLLISION_POS_Z  1

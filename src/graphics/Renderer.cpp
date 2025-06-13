@@ -50,7 +50,7 @@ struct BroadPhaseVolume
 void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world, float deltaTime)
 {
 	// 3 iterations for 3 of the axes.
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 3; ++i)
 	{
 		AABB aabb = player->GetAABBCollision();
 
