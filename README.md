@@ -9,7 +9,7 @@ The project is built with C++ and OpenGL. I wanted to use this as an opportunity
   - [x] Chunk loading
   - [x] Terrain & world generation
   - [x] Lighting
-  - [ ] Player & block collisions
+  - [x] Player & block collisions
   - [ ] ImGui integration for metrics
   - [ ] Day and night cycle
   - [ ] Block placement/destruction
@@ -17,7 +17,13 @@ The project is built with C++ and OpenGL. I wanted to use this as an opportunity
   - [ ] Cool world destruction superpowers (For gameplay) 
  
 ## How to Play
-Here is the installation guide for Windows and Linux.
+### Controls
+* WASD to move around
+* Use the mouse to look around
+* Q to pan down
+* E to pan up
+
+## Installation
 
 ### Prerequisites
 * CMake

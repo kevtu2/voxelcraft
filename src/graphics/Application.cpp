@@ -49,7 +49,7 @@ Application::Application()
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
-	camera = std::make_shared<Camera>(width, height);
+	player = std::make_shared<Player>(width, height);
 }
 
 void Application::CalculateNewMousePosition()
@@ -68,7 +68,7 @@ void Application::CalculateNewMousePosition()
 	lastX = xPos;
 	lastY = yPos;
 
-	camera->UpdateCameraLookAt(deltaTime, xOffset, yOffset);
+	player->UpdatePlayerLookAt(deltaTime, xOffset, yOffset);
 }
 
 Application::~Application()
@@ -85,24 +85,34 @@ void Application::ProcessInput()
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 
+	// Assume player not moving initially
+	if (player->GetVelocity() != glm::vec3(0.0f))
+		player->SetVelocity(glm::vec3(0.0f));
+
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera->HandleInputControls(C_FORWARD, deltaTime);
+		player->HandleInputControls(C_FORWARD, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera->HandleInputControls(C_LEFT, deltaTime);
+		player->HandleInputControls(C_LEFT, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera->HandleInputControls(C_BACKWARD, deltaTime);
+		player->HandleInputControls(C_BACKWARD, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera->HandleInputControls(C_RIGHT, deltaTime);
+		player->HandleInputControls(C_RIGHT, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		player->HandleInputControls(C_DOWN, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		player->HandleInputControls(C_UP, deltaTime);
 }
 
 void Application::Run()
 {
 	VoxelShader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 	shaderProgram.UseProgram();
-	shaderProgram.SetUniformMatrix4f("projection", camera->GetProjectionMatrix());
+	shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
@@ -122,15 +132,24 @@ void Application::Run()
 
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		ProcessInput();
-		CalculateNewMousePosition();
-		shaderProgram.SetUniformMatrix4f("view", camera->GetViewMatrix());
-		shaderProgram.SetUniformVec3f("cameraPosition", camera->GetCameraPosition());
 		
-		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *camera.get());
+		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
+		
+		CalculateNewMousePosition();
+		ProcessInput();
+		Renderer::CheckCollisions(player, world, deltaTime);
+		player->Move(deltaTime);
 
-		glm::vec3 cameraPos = camera->GetCameraPosition();
+		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
+		shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
+
+		glm::vec3 aabbPos = player->GetAABBCollision().GetMin();
+		glm::vec3 pos = player->GetPlayerPosition();
+		
+		std::cout << "aabbPos: (" << aabbPos.x << ", " << aabbPos.y << ", " << aabbPos.z << ")" << std::endl;
+		std::cout << "playerPos: (" << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+
+		glm::vec3 cameraPos = player->GetPlayerPosition();
 		light.SetLightPosition(cameraPos);
 		shaderProgram.UseLightSource(light);
 
