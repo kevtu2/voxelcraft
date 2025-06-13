@@ -120,23 +120,18 @@ void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<W
 		{
 			newVel.x = 0;
 			pos.x += velocity.x * minTime;
-			std::cout << "Collided in the x axis!" << std::endl;
 		}
 
 		if (minNormal.y != 0)
 		{
 			newVel.y = 0;
 			pos.y += velocity.y * minTime;
-			std::cout << "Collided in the y axis!" << std::endl;
-
 		}
 
 		if (minNormal.z != 0)
 		{
 			newVel.z = 0;
 			pos.z += velocity.z * minTime;
-			std::cout << "Collided in the z axis!" << std::endl;
-
 		}
 
 		player->SetVelocity(newVel / deltaTime);
