@@ -49,95 +49,99 @@ struct BroadPhaseVolume
 
 void Renderer::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world, float deltaTime)
 {
-	AABB aabb = player->GetAABBCollision();
-
-	glm::vec3 playerPos = player->GetPlayerPosition();
-	glm::vec3 playerVel = player->GetVelocity();
-	glm::vec3 aabbPos = aabb.min;
-
-	// Current position
-	glm::vec3 blockPos = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(aabbPos.z, 1));
-	
-	glm::vec3 velocity = playerVel * deltaTime;
-
-	std::vector<std::pair<float, glm::vec3>> collisionCandidates;
-
-	// Broad phase
-	BroadPhaseVolume box(aabb, velocity);
-	glm::ivec3 minBlock = glm::floor(glm::vec3(box.x, box.y, box.z));
-	glm::ivec3 maxBlock = glm::ceil(glm::vec3(box.x + box.l, box.y + box.h, box.z + box.w));
-
-	for (int x = minBlock.x; x <= maxBlock.x; ++x)
+	// 3 iterations for 3 of the axes.
+	for (int i = 0; i < 2; ++i)
 	{
-		for (int y = minBlock.y; y <= maxBlock.y; ++y)
+		AABB aabb = player->GetAABBCollision();
+
+		glm::vec3 playerPos = player->GetPlayerPosition();
+		glm::vec3 playerVel = player->GetVelocity();
+		glm::vec3 aabbPos = aabb.min;
+
+		// Current position
+		glm::vec3 blockPos = glm::vec3(VMath::DivFloor(aabbPos.x, 1), VMath::DivFloor(aabbPos.y, 1), VMath::DivFloor(aabbPos.z, 1));
+
+		glm::vec3 velocity = playerVel * deltaTime;
+
+		std::vector<std::pair<float, glm::vec3>> collisionCandidates;
+
+		// Broad phase
+		BroadPhaseVolume box(aabb, velocity);
+		glm::ivec3 minBlock = glm::floor(glm::vec3(box.x, box.y, box.z));
+		glm::ivec3 maxBlock = glm::ceil(glm::vec3(box.x + box.l, box.y + box.h, box.z + box.w));
+
+		for (int x = minBlock.x; x <= maxBlock.x; ++x)
 		{
-			for (int z = minBlock.z; z <= maxBlock.z; ++z)
+			for (int y = minBlock.y; y <= maxBlock.y; ++y)
 			{
-				BlockType block = world->FindBlock(x, y, z);
-				if (block == AIR)
-					continue;
+				for (int z = minBlock.z; z <= maxBlock.z; ++z)
+				{
+					BlockType block = world->FindBlock(x, y, z);
+					if (block == AIR)
+						continue;
 
-				float collisionTime;
-				glm::vec3 collisionNormal;
-				CalculateCollisions(player, velocity, glm::vec3(x, y, z), collisionTime, collisionNormal);
+					float collisionTime;
+					glm::vec3 collisionNormal;
+					CalculateCollisions(player, velocity, glm::vec3(x, y, z), collisionTime, collisionNormal);
 
-				if (glm::all(glm::isnan(collisionNormal)))
-					continue;
+					if (glm::all(glm::isnan(collisionNormal)))
+						continue;
 
-				std::pair<float, glm::vec3> candidate;
-				candidate.first = collisionTime;
-				candidate.second = collisionNormal;
-				collisionCandidates.push_back(candidate);
+					std::pair<float, glm::vec3> candidate;
+					candidate.first = collisionTime;
+					candidate.second = collisionNormal;
+					collisionCandidates.push_back(candidate);
+				}
 			}
-		}	
-	}
-
-	if (collisionCandidates.empty())
-		return;
-
-	// Narrow phase
-	float minTime = collisionCandidates.back().first;
-	glm::vec3 minNormal = collisionCandidates.back().second;
-	for (auto& candidate : collisionCandidates)
-	{
-		if (candidate.first < minTime)
-		{
-			minTime = candidate.first;
-			minNormal = candidate.second;
 		}
+
+		if (collisionCandidates.empty())
+			return;
+
+		// Narrow phase
+		float minTime = collisionCandidates.back().first;
+		glm::vec3 minNormal = collisionCandidates.back().second;
+		for (auto& candidate : collisionCandidates)
+		{
+			if (candidate.first < minTime)
+			{
+				minTime = candidate.first;
+				minNormal = candidate.second;
+			}
+		}
+
+		// Extra padding for collision
+		minTime = glm::clamp(minTime - 0.001f, 0.0f, 1.0f);
+
+		// Collide!
+		glm::vec3 newVel = velocity;
+		glm::vec3 pos = aabbPos;
+		if (minNormal.x != 0)
+		{
+			newVel.x = 0;
+			pos.x += velocity.x * minTime;
+			std::cout << "Collided in the x axis!" << std::endl;
+		}
+
+		if (minNormal.y != 0)
+		{
+			newVel.y = 0;
+			pos.y += velocity.y * minTime;
+			std::cout << "Collided in the y axis!" << std::endl;
+
+		}
+
+		if (minNormal.z != 0)
+		{
+			newVel.z = 0;
+			pos.z += velocity.z * minTime;
+			std::cout << "Collided in the z axis!" << std::endl;
+
+		}
+
+		player->SetVelocity(newVel / deltaTime);
+		player->ResetPosAfterCollision(pos);
 	}
-	
-	// Extra padding for collision
-	minTime = glm::clamp(minTime - 0.001f, 0.0f, 1.0f);
-
-	// Collide!
-	glm::vec3 newVel = velocity;
-	glm::vec3 pos = aabbPos;
-	if (minNormal.x != 0)
-	{
-		newVel.x = 0;
-		pos.x += velocity.x * minTime;
-		std::cout << "Collided in the x axis!" << std::endl;
-	}
-
-	if (minNormal.y != 0)
-	{
-		newVel.y = 0;
-		pos.y += velocity.y * minTime;
-		std::cout << "Collided in the y axis!" << std::endl;
-
-	}
-
-	if (minNormal.z != 0)
-	{
-		newVel.z = 0;
-		pos.z += velocity.z * minTime;
-		std::cout << "Collided in the z axis!" << std::endl;
-
-	}
-
-	player->SetVelocity(newVel);
-	player->ResetPosAfterCollision(pos);
 }
 
 bool Renderer::IsIntersecting(const AABB& box, const glm::vec3& block)
