@@ -17,7 +17,12 @@ The project is built with C++ and OpenGL. I wanted to use this as an opportunity
   - [ ] Cool world destruction superpowers (For gameplay) 
  
 ## How to Play
-Here is the installation guide for Windows and Linux.
+### Controls
+* WASD to move around
+* Q to pan up
+* E to pan down
+
+## Installation
 
 ### Prerequisites
 * CMake
