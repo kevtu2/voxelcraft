@@ -19,8 +19,9 @@ The project is built with C++ and OpenGL. I wanted to use this as an opportunity
 ## How to Play
 ### Controls
 * WASD to move around
-* Q to pan up
-* E to pan down
+* Use the mouse to look around
+* Q to pan down
+* E to pan up
 
 ## Installation
 
