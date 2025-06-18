@@ -6,7 +6,7 @@ The project is built with C++ and OpenGL. I wanted to use this as an opportunity
 ## Current Features
 * Features are underway. Moving back to terrain generation to make it more realistic [May 18, 2025].
 * I am planning on adding more features in the future such as:
-  - [x] Chunk loading
+  - [x] Chunk management
   - [x] Terrain & world generation
   - [x] Lighting
   - [x] Player & block collisions
