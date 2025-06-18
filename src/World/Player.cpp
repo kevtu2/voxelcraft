@@ -1,4 +1,6 @@
 #include "Player.hpp"
+
+#include <GLFW/glfw3.h>
 #include <iostream>
 
 Player::Player(int width, int height)

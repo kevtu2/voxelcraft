@@ -1,5 +1,13 @@
 #include "Application.hpp"
+
+#include <glad/glad.h>
 #include <filesystem>
+
+#include "/graphics/VoxelShader.hpp"
+#include "/graphics/Renderer.hpp"
+#include "/graphics/Texture.hpp"
+#include "/world/Chunk.hpp"
+#include "/graphics/LightSource.hpp"
 
 Application::Application()
 	: deltaTime(0.0f),

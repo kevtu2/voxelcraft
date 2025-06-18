@@ -1,5 +1,9 @@
 #include "BlockGeneration.hpp"
 
+#include "graphics/vertex.hpp"
+#include <vector>
+
+
 void BlockGeneration::GenerateFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face)
 {
  	Block block(type);

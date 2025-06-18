@@ -17,6 +17,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	lib/glfw/include
 	lib/glm
 	lib/stb
+	lib/FastNoiseLite
 
 )
 
