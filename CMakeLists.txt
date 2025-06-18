@@ -8,8 +8,12 @@ add_subdirectory("lib/glfw")
 add_subdirectory("lib/glm")
 
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp)
+file(GLOB_RECURSE HDR_FILES CONFIGURE_DEPENDS src/*.hpp)
 
-add_executable(${PROJECT_NAME} ${SRC_FILES} lib/glad/src/glad.c)
+add_executable(${PROJECT_NAME} ${SRC_FILES} ${HDR_FILES} lib/glad/src/glad.c)
+
+source_group(TREE ${CMAKE_SOURCE_DIR}/src PREFIX "Source Files" FILES ${SRC_FILES})
+source_group(TREE ${CMAKE_SOURCE_DIR}/src PREFIX "Header Files" FILES ${HDR_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE 
 	src
@@ -17,7 +21,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	lib/glfw/include
 	lib/glm
 	lib/stb
-
+	lib/FastNoiseLite
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

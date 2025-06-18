@@ -1,10 +1,8 @@
 #pragma once
-#include "../graphics/Vertex.hpp"
-#include "../blocks/Block.hpp"
-#include "../blocks/ChunkMesh.hpp"
+#include "blocks/Block.hpp"
+#include "world/ChunkMesh.hpp"
 
 #include <glm/glm.hpp>
-#include <vector>
 
 
 namespace BlockGeneration

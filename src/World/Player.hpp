@@ -1,9 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <GLFW/glfw3.h>
 
-#include "AABB.hpp"
+#include "physics/AABB.hpp"
 
 enum CameraMovement
 {

@@ -1,8 +1,6 @@
 #pragma once
-#include <glm/glm.hpp>
 #include <glad/glad.h>
-
-#include "../blocks/BlockGeneration.hpp"
+#include <glm/glm.hpp>
 
 #define AABB_POS_OFFSET glm::vec3(-0.4753f, -2.0f, 0.4753f)
 

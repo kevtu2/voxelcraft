@@ -1,5 +1,4 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include "graphics/Application.hpp"
+#include "Application.hpp"
 
 int main()
 {
