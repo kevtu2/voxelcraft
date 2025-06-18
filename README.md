@@ -26,7 +26,8 @@ I am planning on adding more features in the future such as:
 ## Installation
 
 ### Prerequisites
-* CMake
+* C++20
+* CMake (3.31+)
 
 ### Installation Guide For Windows
 1. Recursively clone the repository
