@@ -4,11 +4,10 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <unordered_set>
-#include "../FastNoiseLite/FastNoiseLite.hpp"
+#include <FastNoiseLite.hpp>
 
 #include "Chunk.hpp"
-#include "../graphics/Player.hpp"
-#include "../graphics/Utils.hpp"
+#include "Player.hpp"
 
 
 class World

@@ -5,9 +5,8 @@
 #include <array>
 #include <iostream>
 #include <cstdlib>
-#include "lib/FastNoise"
+#include <FastNoiseLite.hpp>
 
-#include "Graphics/Vertex.hpp"
 #include "Blocks/BlockGeneration.hpp"
 #include "Blocks/Block.hpp"
 #include "World/ChunkMesh.hpp"

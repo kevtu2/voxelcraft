@@ -1,6 +1,7 @@
 #include "Chunk.hpp"
-#include "World.hpp"
 
+#include "World.hpp"
+#include "Graphics/Vertex.hpp"
 
 Chunk::Chunk()
 {
