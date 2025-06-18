@@ -10,6 +10,7 @@ The project is built with C++ and OpenGL. I wanted to use this as an opportunity
   - [x] Terrain & world generation
   - [x] Lighting
   - [x] Player & block collisions
+  - [ ] Gravity
   - [ ] ImGui integration for metrics
   - [ ] Day and night cycle
   - [ ] Block placement/destruction
