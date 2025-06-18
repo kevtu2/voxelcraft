@@ -4,7 +4,6 @@ Voxelcraft is a clone of the popular indie game called Minecraft, originally cre
 ## About The Project
 The project is built with C++ and OpenGL. I wanted to use this as an opportunity to strengthen my skills in C++ and learn more about OpenGL. I also love Minecraft, so I thought that this would be a great challenge for me. 😺
 ## Current Features
-* Features are underway. Moving back to terrain generation to make it more realistic [May 18, 2025].
 * I am planning on adding more features in the future such as:
   - [x] Chunk management
   - [x] Terrain & world generation
