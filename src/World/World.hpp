@@ -1,7 +1,8 @@
 #pragma once
+
+#include <glm/glm.hpp>
 #include <memory>
 #include <set>
-#include <glm/glm.hpp>
 #include <unordered_map>
 #include <unordered_set>
 #include <FastNoiseLite.hpp>

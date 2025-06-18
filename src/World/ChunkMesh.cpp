@@ -1,5 +1,7 @@
 #include "ChunkMesh.hpp"
 
+#include <iostream>
+
 void ChunkMesh::Clear()
 {
 	chunkVertexData.clear();

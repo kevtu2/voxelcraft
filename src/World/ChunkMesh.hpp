@@ -3,7 +3,6 @@
 #include "graphics/Vertex.hpp"
 
 #include <vector>
-#include <iostream>
 
 class ChunkMesh
 {

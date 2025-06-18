@@ -3,11 +3,9 @@
 #include <glad/glad.h>
 #include <vector>
 #include <array>
-#include <iostream>
-#include <cstdlib>
+#include <memory>
 #include <FastNoiseLite.hpp>
 
-#include "Blocks/BlockGeneration.hpp"
 #include "Blocks/Block.hpp"
 #include "World/ChunkMesh.hpp"
 
