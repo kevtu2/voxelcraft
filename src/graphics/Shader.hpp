@@ -4,13 +4,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <sstream>
-#include <fstream>
-#include <iostream>
-#include <string>
-
-
-
 class Shader 
 {
 private:

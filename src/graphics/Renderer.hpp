@@ -3,14 +3,13 @@
 #include <utility>
 #include <vector>
 
-#include "Shader.hpp"
-#include "../blocks/Chunk.hpp"
-#include "../blocks/Texture.hpp"
-#include "../blocks/BlockGeneration.hpp"
-#include "../graphics/Player.hpp"
-#include "../blocks/World.hpp"
-#include "../graphics/AABB.hpp"
-#include "../graphics/Utils.hpp"
+#include "World/Player.hpp"
+#include "World/World.hpp"
+
+#include "Graphics/Shader.hpp"
+#include "Graphics/Texture.hpp"
+
+#include "Physics/AABB.hpp"
 
 namespace Renderer
 {

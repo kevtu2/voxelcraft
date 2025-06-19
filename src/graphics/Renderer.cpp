@@ -1,5 +1,9 @@
 #include "Renderer.hpp"
 
+#include "World/Chunk.hpp"
+#include "Blocks/BlockGeneration.hpp"
+#include "Core/Utils.hpp"
+
 void Renderer::DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgram, const Texture& texture, const Player& player)
 {
 	shaderProgram.UseProgram();

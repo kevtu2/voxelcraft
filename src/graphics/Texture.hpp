@@ -1,9 +1,5 @@
 #pragma once
 #include <glad/glad.h>
-#include <iostream>
-#include "stb_image.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
 class Texture
 {
