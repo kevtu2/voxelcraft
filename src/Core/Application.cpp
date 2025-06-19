@@ -5,8 +5,9 @@
 #include "Graphics/VoxelShader.hpp"
 #include "Graphics/Renderer.hpp"
 #include "Graphics/Texture.hpp"
-#include "World/Chunk.hpp"
 #include "Graphics/LightSource.hpp"
+
+#include "Physics/Physics.hpp"
 
 Application::Application()
 	: deltaTime(0.0f),
@@ -144,7 +145,7 @@ void Application::Run()
 		
 		CalculateNewMousePosition();
 		ProcessInput();
-		Renderer::CheckCollisions(player, world, deltaTime);
+		Physics::CheckCollisions(player, world, deltaTime);
 		player->Move(deltaTime);
 
 		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());

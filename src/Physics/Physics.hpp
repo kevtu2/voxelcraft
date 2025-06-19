@@ -3,7 +3,6 @@
 
 #include "World/Player.hpp"
 #include "World/World.hpp"
-#include "AABB.hpp"
 
 namespace Physics
 {

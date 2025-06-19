@@ -1,5 +1,22 @@
 #include "Physics.hpp"
+
 #include "Core/Utils.hpp"
+#include "AABB.hpp"
+
+float CalculateTime(float x, float y)
+{
+	if (y)
+		return x / y;
+	else
+	{
+		if (x > 0)
+			return -std::numeric_limits<float>::infinity();
+		else if (x < 0)
+			return std::numeric_limits<float>::infinity();
+		else
+			return 0.0f;
+	}
+}
 
 void Physics::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world, float deltaTime)
 {
@@ -152,19 +169,4 @@ void Physics::CalculateCollisions(std::shared_ptr<Player> player, const glm::vec
 
 	outTime = entryTime;
 	outNormal = glm::vec3(xNormal, yNormal, zNormal);
-}
-
-static float CalculateTime(float x, float y)
-{
-	if (y)
-		return x / y;
-	else
-	{
-		if (x > 0)
-			return -std::numeric_limits<float>::infinity();
-		else if (x < 0)
-			return std::numeric_limits<float>::infinity();
-		else
-			return 0.0f;
-	}
 }
