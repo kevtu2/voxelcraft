@@ -109,11 +109,15 @@ void Application::ProcessInput()
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		player->HandleInputControls(C_RIGHT, deltaTime);
 
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		player->HandleInputControls(C_JUMP, deltaTime);
+
+	// Maybe used for freecam mode?
+	/*if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 		player->HandleInputControls(C_DOWN, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-		player->HandleInputControls(C_UP, deltaTime);
+		player->HandleInputControls(C_UP, deltaTime);*/
 }
 
 void Application::Run()
@@ -137,6 +141,8 @@ void Application::Run()
 		float currentTime = glfwGetTime();
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
+		deltaTime = glm::clamp(deltaTime, 0.0f, 0.05f);
+		//std::cout << "deltaTime: " << deltaTime << std::endl;
 
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -145,14 +151,12 @@ void Application::Run()
 		
 		CalculateNewMousePosition();
 		ProcessInput();
+		Physics::CalculateGravity(player, deltaTime);
 		Physics::CheckCollisions(player, world, deltaTime);
 		player->Move(deltaTime);
 
 		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
 		shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
-
-		glm::vec3 aabbPos = player->GetAABBCollision().GetMin();
-		glm::vec3 pos = player->GetPlayerPosition();
 		
 		glm::vec3 cameraPos = player->GetPlayerPosition();
 		light.SetLightPosition(cameraPos);

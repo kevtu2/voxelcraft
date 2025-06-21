@@ -4,6 +4,9 @@
 #include "World/Player.hpp"
 #include "World/World.hpp"
 
+#define GRAVITY -1000.f
+#define TERMINAL_VEL -50.0f
+
 namespace Physics
 {
 
@@ -26,4 +29,5 @@ namespace Physics
 
 	void CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world, float deltaTime);
 	void CalculateCollisions(std::shared_ptr<Player> player, const glm::vec3& adjustedVel, const glm::vec3& block, float& outTime, glm::vec3& outNormal);
+	void CalculateGravity(std::shared_ptr<Player> player, float deltaTime);
 };

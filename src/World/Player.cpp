@@ -12,7 +12,7 @@ Player::Player(int width, int height)
 	yaw(-90.0f),
 	pitch(0.0f),
 	aabb(AABB(position, 2.0f, 1.0f)), // Centre the box and move down, w/ height = 2 and width = 1
-	isColliding(false),
+	isGrounded(false),
 	velocity(glm::vec3(0.0f))
 {
 	glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -68,6 +68,14 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 	
 	case C_DOWN:
 		velocity += glm::vec3(0.0f, -1.0f, 0.0f) * cameraSpeed;
+		break;
+
+	case C_JUMP:
+		if (isGrounded)
+		{
+			velocity.y = JUMP_VEL;
+			isGrounded = false;
+		}
 		break;
 	}
 }

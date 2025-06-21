@@ -3,10 +3,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "physics/AABB.hpp"
+#define JUMP_VEL 5.0f
 
 enum CameraMovement
 {
-	C_FORWARD, C_BACKWARD, C_RIGHT, C_LEFT, C_UP, C_DOWN, C_NONE
+	C_FORWARD, C_BACKWARD, C_RIGHT, C_LEFT, C_UP, C_DOWN, C_JUMP, C_NONE
 };
 
 class Player
@@ -25,9 +26,8 @@ private:
 	float pitch;
 
 	glm::mat4 projection;
-
+	bool isGrounded;
 	AABB aabb;
-	bool isColliding;
 	glm::vec3 velocity;
 
 public:
@@ -41,8 +41,9 @@ public:
 
 	glm::vec3 GetPlayerPosition() const { return position; }
 	glm::vec3 GetVelocity() const { return velocity; }
-	void SetVelocity(const glm::vec3& value) { velocity = value; }
-	void SetIsColliding(bool value) { isColliding = value; }
+	inline void SetVelocity(const glm::vec3& value) { velocity = value; }
+	inline void AddVelocity(const glm::vec3& value) { velocity += value; }
+	void SetIsGrounded(bool value) { isGrounded = value; }
 	AABB GetAABBCollision() const { return aabb; }
 
 	void Move(float deltaTime);

@@ -1,5 +1,7 @@
 #include "Physics.hpp"
 
+#include <iostream>
+
 #include "Core/Utils.hpp"
 #include "AABB.hpp"
 
@@ -97,6 +99,7 @@ void Physics::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<Wo
 		{
 			newVel.y = 0;
 			pos.y += velocity.y * minTime;
+			player->SetIsGrounded(true);
 		}
 
 		if (minNormal.z != 0)
@@ -169,4 +172,13 @@ void Physics::CalculateCollisions(std::shared_ptr<Player> player, const glm::vec
 
 	outTime = entryTime;
 	outNormal = glm::vec3(xNormal, yNormal, zNormal);
+}
+
+void Physics::CalculateGravity(std::shared_ptr<Player> player, float deltaTime)
+{
+	glm::vec3 vel = player->GetVelocity();
+	vel.y += (GRAVITY * deltaTime);
+	vel.y = std::max(vel.y, TERMINAL_VEL);
+	std::cout << "vel.y " << vel.y << std::endl;
+	player->SetVelocity(vel);
 }
