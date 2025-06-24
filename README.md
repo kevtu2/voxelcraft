@@ -9,7 +9,7 @@ I am planning on adding more features in the future such as:
   - [x] Terrain & world generation
   - [x] Lighting
   - [x] Player & block collisions
-  - [ ] Gravity
+  - [x] Gravity
   - [ ] ImGui integration for metrics
   - [ ] Day and night cycle
   - [ ] Block placement/destruction
