@@ -20,8 +20,9 @@ I am planning on adding more features in the future such as:
 ### Controls
 * WASD to move around
 * Use the mouse to look around
-* Q to pan down
-* E to pan up
+* SPACE to jump [NEW!]
+* Q to pan down [REMOVED]
+* E to pan up [REMOVED]
 
 ## Installation
 
