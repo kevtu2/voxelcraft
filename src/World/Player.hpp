@@ -2,8 +2,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "physics/AABB.hpp"
-#define JUMP_VEL 5.0f
+#include "Physics/AABB.hpp"
+
 
 enum CameraMovement
 {
@@ -39,8 +39,8 @@ public:
 	void UpdatePlayerLookAt(float deltaTime, double xPos, double yPos);
 	void ResetPosAfterCollision(const glm::vec3 position);
 
-	glm::vec3 GetPlayerPosition() const { return position; }
-	glm::vec3 GetVelocity() const { return velocity; }
+	inline glm::vec3 GetPlayerPosition() const { return position; }
+	inline glm::vec3 GetVelocity() const { return velocity; }
 	inline void SetVelocity(const glm::vec3& value) { velocity = value; }
 	inline void AddVelocity(const glm::vec3& value) { velocity += value; }
 	void SetIsGrounded(bool value) { isGrounded = value; }

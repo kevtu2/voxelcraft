@@ -95,7 +95,7 @@ void Application::ProcessInput()
 
 	// Assume player not moving initially
 	if (player->GetVelocity() != glm::vec3(0.0f))
-		player->SetVelocity(glm::vec3(0.0f));
+		player->SetVelocity(glm::vec3(0.0f, player->GetVelocity().y, 0.0f));
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		player->HandleInputControls(C_FORWARD, deltaTime);

@@ -3,8 +3,10 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include "Physics/Constants.hpp"
+
 Player::Player(int width, int height)
-	: position(glm::vec3(0.0f, 100.f, 0.0f)),
+	: position(glm::vec3(0.0f, 300.f, 0.0f)),
 	lastPosition(position),
 	lookDirection(glm::vec3(-1.0f, 0.0f, 0.0f)),
 	cameraSpeed(10.5f),
@@ -43,7 +45,6 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 	glm::vec3 flatRight = cameraRight;
 	flatRight.y = 0.0f;
 	flatRight = glm::normalize(flatRight);
-
 
 	switch (move) {
 	case C_FORWARD:

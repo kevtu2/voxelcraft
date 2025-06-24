@@ -4,8 +4,8 @@
 #include "World/Player.hpp"
 #include "World/World.hpp"
 
-#define GRAVITY -1000.f
-#define TERMINAL_VEL -50.0f
+#include "Physics/Constants.hpp"
+
 
 namespace Physics
 {
