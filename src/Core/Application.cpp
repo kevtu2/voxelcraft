@@ -5,8 +5,9 @@
 #include "Graphics/VoxelShader.hpp"
 #include "Graphics/Renderer.hpp"
 #include "Graphics/Texture.hpp"
-#include "World/Chunk.hpp"
 #include "Graphics/LightSource.hpp"
+
+#include "Physics/Physics.hpp"
 
 Application::Application()
 	: deltaTime(0.0f),
@@ -94,7 +95,7 @@ void Application::ProcessInput()
 
 	// Assume player not moving initially
 	if (player->GetVelocity() != glm::vec3(0.0f))
-		player->SetVelocity(glm::vec3(0.0f));
+		player->SetVelocity(glm::vec3(0.0f, player->GetVelocity().y, 0.0f));
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		player->HandleInputControls(C_FORWARD, deltaTime);
@@ -108,11 +109,15 @@ void Application::ProcessInput()
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		player->HandleInputControls(C_RIGHT, deltaTime);
 
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		player->HandleInputControls(C_JUMP, deltaTime);
+
+	// Maybe used for freecam mode?
+	/*if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 		player->HandleInputControls(C_DOWN, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-		player->HandleInputControls(C_UP, deltaTime);
+		player->HandleInputControls(C_UP, deltaTime);*/
 }
 
 void Application::Run()
@@ -136,6 +141,8 @@ void Application::Run()
 		float currentTime = glfwGetTime();
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
+		deltaTime = glm::clamp(deltaTime, 0.0f, 0.05f);
+		//std::cout << "deltaTime: " << deltaTime << std::endl;
 
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -144,14 +151,12 @@ void Application::Run()
 		
 		CalculateNewMousePosition();
 		ProcessInput();
-		Renderer::CheckCollisions(player, world, deltaTime);
+		Physics::CalculateGravity(player, deltaTime);
+		Physics::CheckCollisions(player, world, deltaTime);
 		player->Move(deltaTime);
 
 		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
 		shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
-
-		glm::vec3 aabbPos = player->GetAABBCollision().GetMin();
-		glm::vec3 pos = player->GetPlayerPosition();
 		
 		glm::vec3 cameraPos = player->GetPlayerPosition();
 		light.SetLightPosition(cameraPos);

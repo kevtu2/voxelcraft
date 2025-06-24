@@ -1,5 +1,10 @@
 #include "Shader.hpp"
 
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <string>
+
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
 	programID = glCreateProgram();

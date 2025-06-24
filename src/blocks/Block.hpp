@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "../graphics/Vertex.hpp"
 
 // Bitmasks for face culling
 #define CULL_POS_Z  1

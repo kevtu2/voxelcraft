@@ -1,5 +1,11 @@
 #include "Texture.hpp"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
+#include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 // Texture will have to replace the texture coordinates in Block.hpp
 // The textures will be based on a texture atlas.

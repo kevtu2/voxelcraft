@@ -1,7 +1,5 @@
 #include "Block.hpp"
 
-
-
 Block::Block(BlockType blockType)
 	: blockType(blockType)
 {
