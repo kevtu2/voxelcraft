@@ -142,7 +142,6 @@ void Application::Run()
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 		deltaTime = glm::clamp(deltaTime, 0.0f, 0.05f);
-		//std::cout << "deltaTime: " << deltaTime << std::endl;
 
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
