@@ -19,9 +19,17 @@ UserInterface::UserInterface(GLFWWindow* window)
 	ImGui_ImplOpenGL3_Init("#version 330");
 }
 
+UserInterface::~UserInterface()
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+}
+
 void UserInterface::StartFrame()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 }
+
