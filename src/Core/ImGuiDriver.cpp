@@ -1,4 +1,4 @@
-#include "UserInterface.hpp"
+#include "ImGuiDriver.hpp"
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -9,6 +9,7 @@ ImGuiDriver::ImGuiDriver(GLFWwindow* window)
 	// Set up ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+
 	io = ImGui::GetIO();
 	scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
 

@@ -8,7 +8,7 @@
 #include "Graphics/LightSource.hpp"
 
 #include "Physics/Physics.hpp"
-#include "Core/UserInterface.hpp"
+#include "Core/ImGuiDriver.hpp"
 
 Application::Application()
 	: deltaTime(0.0f),
