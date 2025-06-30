@@ -8,6 +8,7 @@
 #include "Graphics/LightSource.hpp"
 
 #include "Physics/Physics.hpp"
+#include "Core/UserInterface.hpp"
 
 Application::Application()
 	: deltaTime(0.0f),
@@ -122,22 +123,29 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
+	// Set up ImGui
+	ImGuiDriver imgui;
+
+	// Set up shaders
 	VoxelShader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
 	shaderProgram.UseProgram();
 	shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
 
+	// Set camera origin
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
 	shaderProgram.SetUniformMatrix4f("model", model);
 
+	// Set up light source and textures
 	LightSource light;
-
 	Texture textureAtlas("../textures/blocks.png");
 
+	// New world!
 	std::shared_ptr<World> world(new World());
-
+	
 	while (!glfwWindowShouldClose(window))
 	{
+		// DeltaTime calculation
 		float currentTime = glfwGetTime();
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
@@ -146,10 +154,17 @@ void Application::Run()
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
+		// ImGui
+		imgui.StartGuiFrame();
+
+		// Draw world chunks
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
+		// Determine where the character wants to move before calculating physics
 		CalculateNewMousePosition();
 		ProcessInput();
+
+		// Physics calculations
 		Physics::CalculateGravity(player, deltaTime);
 		Physics::CheckCollisions(player, world, deltaTime);
 		player->Move(deltaTime);

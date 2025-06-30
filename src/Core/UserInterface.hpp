@@ -2,21 +2,22 @@
 #include <GLFW/glfw3.h>
 
 struct ImGuiIO;
-class UserInterface
+struct ImGuiStyle;
+
+class ImGuiDriver
 {
 public:
-	UserInterface(GLFWwindow* window);
-	~UserInterface();
+	ImGuiDriver(GLFWwindow* window);
+	~ImGuiDriver();
 
-	void StartFrame();
+	void StartGuiFrame();
 
-protected:
+private:
 	ImGuiIO& io;
 	float scale;
 	ImGuiStyle& style;
 
-	// To be defined and displays the contents of the window.
-	virtual void Window() = 0;
-
+	bool showMainMenu = false;
+	
 };
 

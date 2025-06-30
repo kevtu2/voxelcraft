@@ -4,7 +4,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-UserInterface::UserInterface(GLFWwindow* window)
+ImGuiDriver::ImGuiDriver(GLFWwindow* window)
 {
 	// Set up ImGui context
 	IMGUI_CHECKVERSION();
@@ -24,17 +24,19 @@ UserInterface::UserInterface(GLFWwindow* window)
 	ImGui_ImplOpenGL3_Init("#version 330");
 }
 
-UserInterface::~UserInterface()
+ImGuiDriver::~ImGuiDriver()
 {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 }
 
-void UserInterface::StartGuiFrame()
+void ImGuiDriver::StartGuiFrame()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 }
+
+
 
