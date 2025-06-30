@@ -10,6 +10,8 @@
 #include "Physics/Physics.hpp"
 #include "Core/ImGuiDriver.hpp"
 
+#include "UI/MainMenu.hpp"
+
 Application::Application()
 	: deltaTime(0.0f),
 	lastTime(0.0f),
@@ -125,6 +127,7 @@ void Application::Run()
 {
 	// Set up ImGui
 	ImGuiDriver imgui(window);
+	MainMenu mainMenu;
 
 	// Set up shaders
 	VoxelShader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
@@ -153,10 +156,6 @@ void Application::Run()
 
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		// ImGui
-		imgui.StartGuiFrame();
-		imgui.Render();
 
 		// Draw world chunks
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
@@ -176,6 +175,11 @@ void Application::Run()
 		glm::vec3 cameraPos = player->GetPlayerPosition();
 		light.SetLightPosition(cameraPos);
 		shaderProgram.UseLightSource(light);
+
+		// ImGui
+		imgui.StartGuiFrame();
+		mainMenu.Draw();
+		imgui.Render();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

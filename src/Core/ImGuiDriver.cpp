@@ -42,6 +42,7 @@ void ImGuiDriver::StartGuiFrame()
 void ImGuiDriver::Render()
 {
 	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 
