@@ -10,8 +10,6 @@
 #include "Physics/Physics.hpp"
 #include "Core/ImGuiDriver.hpp"
 
-#include <imgui.h>
-
 Application::Application()
 	: deltaTime(0.0f),
 	lastTime(0.0f),
@@ -158,6 +156,7 @@ void Application::Run()
 		
 		// ImGui
 		imgui.StartGuiFrame();
+		imgui.Render();
 
 		// Draw world chunks
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());

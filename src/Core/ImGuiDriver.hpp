@@ -9,6 +9,7 @@ public:
 	~ImGuiDriver();
 
 	void StartGuiFrame();
+	void Render();
 
 private:
 	float scale;

@@ -39,5 +39,10 @@ void ImGuiDriver::StartGuiFrame()
 	ImGui::NewFrame();
 }
 
+void ImGuiDriver::Render()
+{
+	ImGui::Render();
+}
+
 
 
