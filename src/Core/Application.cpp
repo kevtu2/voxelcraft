@@ -11,6 +11,7 @@
 #include "Core/ImGuiDriver.hpp"
 
 #include "UI/MainMenu.hpp"
+#include "UI/HUD.hpp"
 
 Application::Application()
 	: deltaTime(0.0f),
@@ -128,6 +129,7 @@ void Application::Run()
 	// Set up ImGui
 	ImGuiDriver imgui(window);
 	MainMenu mainMenu;
+	HUD hud;
 
 	// Set up shaders
 	VoxelShader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
@@ -179,6 +181,7 @@ void Application::Run()
 		// ImGui
 		imgui.StartGuiFrame();
 		mainMenu.Draw();
+		hud.Draw();
 		imgui.Render();
 
 		glfwSwapBuffers(window);
