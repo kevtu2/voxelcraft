@@ -1,13 +1,17 @@
 #pragma once
+#include <glad/glad.h>
 
 class HUD
 {	
 public:
-	HUD();
+	HUD(int width, int height);
 	~HUD();
 	void Draw();
 
 private:
-	int width, height, nrChannels;
+	int windowW, windowH;
+
+	int cwidth, cheight, nrChannels;
 	unsigned char* crosshairData;
+	GLuint crosshairID;
 };

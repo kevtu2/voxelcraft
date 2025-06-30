@@ -129,7 +129,7 @@ void Application::Run()
 	// Set up ImGui
 	ImGuiDriver imgui(window);
 	MainMenu mainMenu;
-	HUD hud;
+	HUD hud(width, height);
 
 	// Set up shaders
 	VoxelShader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
