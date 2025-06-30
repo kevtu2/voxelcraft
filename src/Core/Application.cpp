@@ -10,6 +10,8 @@
 #include "Physics/Physics.hpp"
 #include "Core/ImGuiDriver.hpp"
 
+#include <imgui.h>
+
 Application::Application()
 	: deltaTime(0.0f),
 	lastTime(0.0f),
@@ -124,7 +126,7 @@ void Application::ProcessInput()
 void Application::Run()
 {
 	// Set up ImGui
-	ImGuiDriver imgui;
+	ImGuiDriver imgui(window);
 
 	// Set up shaders
 	VoxelShader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");

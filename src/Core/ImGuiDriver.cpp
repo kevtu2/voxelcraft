@@ -10,13 +10,13 @@ ImGuiDriver::ImGuiDriver(GLFWwindow* window)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 
-	io = ImGui::GetIO();
+	ImGuiIO& io = ImGui::GetIO();
 	scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
 
 	ImGui::StyleColorsDark();
 
 	// Setup scaling
-	style = ImGui::GetStyle();
+	ImGuiStyle& style = ImGui::GetStyle();
 	style.ScaleAllSizes(scale);
 	style.FontScaleDpi = scale;
 
