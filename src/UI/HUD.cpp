@@ -30,11 +30,16 @@ HUD::HUD(int width, int height) :
 
 HUD::~HUD()
 {
-	glDeleteBuffers(1, crosshairVBO);
-	glDeleteVertexArrays(1, crosshairVAO);
+	glDeleteBuffers(1, &crosshairVBO);
+	glDeleteVertexArrays(1, &crosshairVAO);
 }
 
 void HUD::Draw()
 {
-	
+	glBindVertexArray(crosshairVAO);
+	glDisable(GL_DEPTH_TEST);
+
+	glLineWidth(1.5f);
+	glDrawArrays(GL_LINES, 0, 4);
+	glEnable(GL_DEPTH_TEST);
 }

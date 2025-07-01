@@ -136,6 +136,9 @@ void Application::Run()
 
 	// Set up shaders
 	VoxelShader shaderProgram("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
+	shaderProgram.UseProgram();
+	shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
+
 	VoxelShader crosshairShader("../src/Graphics/crosshair.vert", "../src/Graphics/crosshair.frag");
 
 	// Set camera origin
@@ -157,9 +160,8 @@ void Application::Run()
 		lastTime = currentTime;
 		deltaTime = glm::clamp(deltaTime, 0.0f, 0.05f);
 
-		/* --- Draw 3D world-- - */
+		/* --- Draw 3D world--- */
 		shaderProgram.UseProgram();
-		shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
 
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -183,13 +185,15 @@ void Application::Run()
 		light.SetLightPosition(cameraPos);
 		shaderProgram.UseLightSource(light);
 
-		/* --- Draw Crosshair --- */
-		
+		/* --- Enable Draw Crosshair --- */
+		crosshairShader.UseProgram();
+		crosshairShader.SetUniformMatrix4f("projection", hud.GetProjectionMatrix());
+		crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
 
 		// ImGui
 		imgui.StartGuiFrame();
 		mainMenu.Draw();
-		//hud.Draw();
+		hud.Draw();
 		imgui.Render();
 
 		glfwSwapBuffers(window);

@@ -3,11 +3,11 @@
 #include <glm/glm.hpp>
 
 // Crosshair vertices
-float crosshairVertices[] = {
-	-5.0f, 0.0f,
-	 5.0f, 0.0f,
-	 0.0f, -5.0f,
-	 0.0f,  5.0f,
+static constexpr float crosshairVertices[] = {
+	-10.0f, 0.0f,
+	 10.0f, 0.0f,
+	 0.0f, -10.0f,
+	 0.0f,  10.0f,
 };
 
 class HUD
@@ -16,6 +16,7 @@ public:
 	HUD(int width, int height);
 	~HUD();
 	void Draw();
+	glm::mat4 GetProjectionMatrix() const { return proj; }
 
 private:
 	int windowW, windowH;
@@ -23,4 +24,6 @@ private:
 	// Crosshair attributes
 	GLuint crosshairVAO, crosshairVBO;
 	glm::mat4 proj;
+
+	
 };
