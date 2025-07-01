@@ -13,6 +13,8 @@
 #include "UI/MainMenu.hpp"
 #include "UI/HUD.hpp"
 
+void KeyCallback();
+
 Application::Application()
 	: deltaTime(0.0f),
 	lastTime(0.0f),
@@ -58,6 +60,9 @@ Application::Application()
 		glViewport(0, 0, width, height);
 	});
 
+	glfwSetWindowUserPointer(window, this);
+	glfwSetKeyCallback(window, KeyCallback);
+
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
@@ -97,8 +102,8 @@ Application::~Application()
 
 void Application::ProcessInput()
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	/*if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GLFW_TRUE);*/
 
 	// Assume player not moving initially
 	if (player->GetVelocity() != glm::vec3(0.0f))
@@ -115,10 +120,7 @@ void Application::ProcessInput()
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		player->HandleInputControls(C_RIGHT, deltaTime);
-
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		player->HandleInputControls(C_JUMP, deltaTime);
-
+	
 	// Maybe used for freecam mode?
 	/*if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 		player->HandleInputControls(C_DOWN, deltaTime);
@@ -190,13 +192,30 @@ void Application::Run()
 		crosshairShader.SetUniformMatrix4f("projection", hud.GetProjectionMatrix());
 		crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
 
-		// ImGui
+		// ImGui and UI drawing
 		imgui.StartGuiFrame();
-		mainMenu.Draw();
+		if (showMainMenu) mainMenu.Draw();
 		hud.Draw();
 		imgui.Render();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+}
+
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
+
+	if (!app)
+	{
+		std::cerr << "Could not find Application via GLFW Window User Pointer." << std::endl;
+		exit(-1);
+	}
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	{
+		showMainMenu = showMainMenu ? false : true;
+	}
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+		player->HandleInputControls(C_JUMP, deltaTime);
 }
