@@ -1,6 +1,14 @@
 #pragma once
 #include <glad/glad.h>
 
+// Crosshair vertices
+float crosshairVertices[] = {
+	-5.0f, 0.0f,
+	 5.0f, 0.0f,
+	 0.0f, -5.0f,
+	 0.0f,  5.0f,
+};
+
 class HUD
 {	
 public:
@@ -11,7 +19,7 @@ public:
 private:
 	int windowW, windowH;
 
-	int cwidth, cheight, nrChannels;
-	unsigned char* crosshairData;
-	GLuint crosshairID;
+	// Crosshair attributes
+	int crosshairVAO, crosshairVBO;
+	glm::mat4 proj;
 };

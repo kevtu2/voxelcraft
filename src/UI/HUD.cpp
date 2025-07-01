@@ -3,22 +3,28 @@
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 #include <stb_image.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 HUD::HUD(int width, int height) :
 	windowW(width),
 	windowH(height)
 {
-	stbi_set_flip_vertically_on_load(true);
-	crosshairData = stbi_load("../textures/crosshair.png", &cwidth, &cheight, &nrChannels, STBI_rgb_alpha);
+	// Setup crosshair
+	glGenVertexArrays(1, &crosshairVAO);
+	glGenBuffers(1, &crosshairVBO);
 
-	if (crosshairData)
-	{
-		glGenTextures(1, &crosshairID);
-		glBindTexture(GL_TEXTURE_2D, crosshairID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cwidth, cheight, 0, GL_RGBA, GL_UNSIGNED_BYTE, crosshairData);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
+	glBindVertexArray(crosshairVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, crosshairVBO);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(crosshairVertices), crosshairVertices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	proj = glm::ortho(0.0f, float(windowW), 0.0f, float(windowH));
 }
 
 HUD::~HUD()
@@ -29,10 +35,6 @@ HUD::~HUD()
 
 void HUD::Draw()
 {
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-
 	ImGuiWindowFlags WindowFlags = 
 		ImGuiWindowFlags_NoResize | 
 		ImGuiWindowFlags_NoTitleBar | 

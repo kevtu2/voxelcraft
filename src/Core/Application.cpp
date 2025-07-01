@@ -135,9 +135,11 @@ void Application::Run()
 	HUD hud(width, height);
 
 	// Set up shaders
-	VoxelShader shaderProgram("../src/graphics/shader.vert", "../src/graphics/shader.frag");
+	VoxelShader shaderProgram("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
 	shaderProgram.UseProgram();
 	shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
+
+	VoxelShader crosshairShader("../src/Graphics/crosshair.vert", "../src/Graphics/crosshair.frag");
 
 	// Set camera origin
 	glm::mat4 model = glm::mat4(1.0f);
