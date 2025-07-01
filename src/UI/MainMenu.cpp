@@ -10,9 +10,16 @@ MainMenu::MainMenu()
 
 void MainMenu::Draw()
 {
-    ImGui::Begin("Main Menu");   
+    ImGuiWindowFlags windowFlags =
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar |
+        ImGuiWindowFlags_NoCollapse;
+
+    ImGui::SetNextWindowSize(ImVec2(500, 250));
+    ImGui::Begin("Main Menu", nullptr, windowFlags);   
     ImGui::Text("Hello from main menu!");
-    if (ImGui::Button("Press Me!"))
-        std::cout << "Button pressed!" << std::endl;
+    if (ImGui::Button("Quit App!"))
+        quitApp = true;
     ImGui::End();
 }

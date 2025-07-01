@@ -172,29 +172,33 @@ void Application::Run()
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
 		// Determine where the character wants to move before calculating physics
-		CalculateNewMousePosition();
-		ProcessInput();
+		if (!showMainMenu) 
+		{
+			CalculateNewMousePosition();
+			ProcessInput();
 
-		// Physics calculations
-		Physics::CalculateGravity(player, deltaTime);
-		Physics::CheckCollisions(player, world, deltaTime);
-		player->Move(deltaTime);
+			// Physics calculations
+			Physics::CalculateGravity(player, deltaTime);
+			Physics::CheckCollisions(player, world, deltaTime);
+			player->Move(deltaTime);
 
-		shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
-		shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
+			shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
+			shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
+
+			glm::vec3 cameraPos = player->GetPlayerPosition();
+			light.SetLightPosition(cameraPos);
+			shaderProgram.UseLightSource(light);
+
+			/* --- Enable Draw Crosshair --- */
+			crosshairShader.UseProgram();
+			crosshairShader.SetUniformMatrix4f("projection", hud.GetProjectionMatrix());
+			crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
+		}
 		
-		glm::vec3 cameraPos = player->GetPlayerPosition();
-		light.SetLightPosition(cameraPos);
-		shaderProgram.UseLightSource(light);
-
-		/* --- Enable Draw Crosshair --- */
-		crosshairShader.UseProgram();
-		crosshairShader.SetUniformMatrix4f("projection", hud.GetProjectionMatrix());
-		crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
-
 		// ImGui and UI drawing
 		imgui.StartGuiFrame();
 		if (showMainMenu) mainMenu.Draw();
+		if (mainMenu.quitApp) glfwSetWindowShouldClose(window, true);
 		hud.Draw();
 		imgui.Render();
 

@@ -6,4 +6,5 @@ public:
 	MainMenu();
 
 	void Draw();
+	bool quitApp = false;
 };
