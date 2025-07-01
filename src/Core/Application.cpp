@@ -13,7 +13,7 @@
 #include "UI/MainMenu.hpp"
 #include "UI/HUD.hpp"
 
-void KeyCallback();
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 Application::Application()
 	: deltaTime(0.0f),
@@ -60,8 +60,8 @@ Application::Application()
 		glViewport(0, 0, width, height);
 	});
 
-	glfwSetWindowUserPointer(window, this);
 	glfwSetKeyCallback(window, KeyCallback);
+	glfwSetWindowUserPointer(window, this);
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -212,10 +212,14 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		std::cerr << "Could not find Application via GLFW Window User Pointer." << std::endl;
 		exit(-1);
 	}
+
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
 		showMainMenu = showMainMenu ? false : true;
 	}
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-		player->HandleInputControls(C_JUMP, deltaTime);
+	{
+		std::shared_ptr<Player> player = app->GetPlayer();
+		player->HandleInputControls(C_JUMP, app->GetWorldDeltaTime());
+	}
 }
