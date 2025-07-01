@@ -197,7 +197,11 @@ void Application::Run()
 		
 		// ImGui and UI drawing
 		imgui.StartGuiFrame();
-		if (showMainMenu) mainMenu.Draw();
+		if (showMainMenu)
+		{
+			mainMenu.Draw();
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
 		if (mainMenu.quitApp) glfwSetWindowShouldClose(window, true);
 		hud.Draw();
 		imgui.Render();
