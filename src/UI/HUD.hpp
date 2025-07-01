@@ -1,5 +1,6 @@
 #pragma once
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 // Crosshair vertices
 float crosshairVertices[] = {
@@ -20,6 +21,6 @@ private:
 	int windowW, windowH;
 
 	// Crosshair attributes
-	int crosshairVAO, crosshairVBO;
+	GLuint crosshairVAO, crosshairVBO;
 	glm::mat4 proj;
 };

@@ -5,6 +5,7 @@
 #include <stb_image.h>
 #include <glm/gtc/matrix_transform.hpp>
 
+
 HUD::HUD(int width, int height) :
 	windowW(width),
 	windowH(height)
@@ -29,28 +30,11 @@ HUD::HUD(int width, int height) :
 
 HUD::~HUD()
 {
-	stbi_image_free(crosshairData);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glDeleteBuffers(1, crosshairVBO);
+	glDeleteVertexArrays(1, crosshairVAO);
 }
 
 void HUD::Draw()
 {
-	ImGuiWindowFlags WindowFlags = 
-		ImGuiWindowFlags_NoResize | 
-		ImGuiWindowFlags_NoTitleBar | 
-		ImGuiWindowFlags_NoBackground | 
-		ImGuiWindowFlags_NoScrollbar | 
-		ImGuiWindowFlags_NoDecoration |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoInputs |
-		ImGuiWindowFlags_NoSavedSettings;
-
-	ImGui::SetNextWindowPos(ImVec2((windowW - cwidth) / 2, (windowH - cheight) / 2));
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-
-	ImGui::Begin("crosshair", nullptr, WindowFlags);
-	ImGui::Image((ImTextureID)(intptr_t)crosshairID, ImVec2(cwidth, cheight));
-	ImGui::End();
-
-	ImGui::PopStyleVar();
+	
 }
