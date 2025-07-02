@@ -24,11 +24,6 @@ private:
 	float deltaTime;
 	float lastTime;
 
-	// Cursor positions
-	float lastX;
-	float lastY;
-	bool firstMouseInput;
-
 	void ProcessInput();
 
 	void CalculateNewMousePosition();
@@ -39,4 +34,12 @@ public:
 	void Run();
 	std::shared_ptr<Player> GetPlayer() const { return player; }
 	float GetWorldDeltaTime() const { return deltaTime; }
+
+	// Cursor positions
+	float mouseX;
+	float mouseY;
+	float lastX = 0.0f;
+	float lastY = 0.0f;
+	bool firstMouseInput;
+	bool overrideMouseCalculation = false;
 };

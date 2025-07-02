@@ -10,6 +10,7 @@
 #include "Physics/Physics.hpp"
 #include "Core/ImGuiDriver.hpp"
 
+#include <imgui.h>
 #include "UI/MainMenu.hpp"
 #include "UI/HUD.hpp"
 
@@ -19,8 +20,8 @@ Application::Application()
 	: deltaTime(0.0f),
 	lastTime(0.0f),
 	firstMouseInput(true),
-	lastX(400.0f),
-	lastY(300.0f)
+	mouseX(400.0f),
+	mouseY(300.0f)
 {
 	// Initialize GLFW
 	glfwInit();
@@ -74,19 +75,24 @@ Application::Application()
 
 void Application::CalculateNewMousePosition()
 {
+	if (overrideMouseCalculation)
+	{
+		overrideMouseCalculation = false;
+		return;
+	}
 	double xPos;
 	double yPos;
 	glfwGetCursorPos(window, &xPos, &yPos);
 	if (firstMouseInput)
 	{
-		lastX = xPos;
-		lastY = yPos;
+		mouseX = xPos;
+		mouseY = yPos;
 		firstMouseInput = false;
 	}
-	float xOffset = xPos - lastX;
-	float yOffset = lastY - yPos;
-	lastX = xPos;
-	lastY = yPos;
+	float xOffset = xPos - mouseX;
+	float yOffset = mouseY - yPos;
+	mouseX = xPos;
+	mouseY = yPos;
 
 	player->UpdatePlayerLookAt(deltaTime, xOffset, yOffset);
 }
@@ -198,10 +204,8 @@ void Application::Run()
 		// ImGui and UI drawing
 		imgui.StartGuiFrame();
 		if (showMainMenu)
-		{
 			mainMenu.Draw();
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		}
+
 		if (mainMenu.quitApp) glfwSetWindowShouldClose(window, true);
 		hud.Draw();
 		imgui.Render();
@@ -214,20 +218,33 @@ void Application::Run()
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
+	std::shared_ptr<Player> player = app->GetPlayer();
 
 	if (!app)
 	{
 		std::cerr << "Could not find Application via GLFW Window User Pointer." << std::endl;
 		exit(-1);
 	}
-
+	
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
 		showMainMenu = showMainMenu ? false : true;
+		if (showMainMenu)
+		{
+			app->lastX = app->mouseX;
+			app->lastY = app->mouseY;
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
+		else
+		{
+			app->mouseX = app->lastX;
+			app->mouseY = app->lastY;
+			app->overrideMouseCalculation = true;
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		}
 	}
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
-		std::shared_ptr<Player> player = app->GetPlayer();
 		player->HandleInputControls(C_JUMP, app->GetWorldDeltaTime());
 	}
 }
