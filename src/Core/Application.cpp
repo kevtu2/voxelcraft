@@ -142,7 +142,7 @@ void Application::ProcessInput()
 void Application::Run()
 {
 	// Set up UI
-	UIManager
+	UIManager& uiManager = GetManagerInstance();
 
 	// Set up shaders
 	VoxelShader shaderProgram("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");

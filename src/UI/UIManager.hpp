@@ -5,6 +5,7 @@
 #include "HUD.hpp"
 
 class GLFWwindow;
+static UIManager& GetManagerInstance();
 
 class UIManager
 {
@@ -18,8 +19,7 @@ private:
 	HUD hud;
 
 public:
-	static UIManager& GetInstance();
-	
+
 	UIManager(const UIManager& other) = delete;
 	void operator=(const UIManager&) = delete;
 
@@ -28,6 +28,7 @@ public:
 	bool ShouldShowMainMenu() const { return mainMenu.showMainMenu; }
 
 	void DrawHUD();
-	
+
 };
+
 

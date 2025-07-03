@@ -2,15 +2,16 @@
 
 #include <GLFW/glfw3.h>
 
-UIManager::UIManager() :
-	window(glfwGetCurrentContext())
-{
-}
 
-UIManager& UIManager::GetInstance()
+UIManager& GetManagerInstance()
 {
 	static UIManager Manager;
 	return Manager;
+}
+
+UIManager::UIManager() :
+	window(glfwGetCurrentContext())
+{
 }
 
 void UIManager::DrawMainMenu()
