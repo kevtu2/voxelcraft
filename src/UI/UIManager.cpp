@@ -12,6 +12,7 @@ UIManager& UIManager::GetManagerInstance()
 UIManager::UIManager() :
 	window(glfwGetCurrentContext())
 {
+	glfwGetWindowSize(window, &windowWidth, &windowHeight);
 }
 
 void UIManager::DrawMainMenu()
@@ -24,5 +25,6 @@ void UIManager::DrawMainMenu()
 
 void UIManager::DrawHUD()
 {
-	hud.Draw();
+	if (!mainMenu.showMainMenu)
+		hud.Draw();
 }

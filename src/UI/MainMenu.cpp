@@ -18,7 +18,6 @@ void MainMenu::Draw()
         ImGuiWindowFlags_NoCollapse;
 
     ImGui::SetNextWindowSize(ImVec2(500, 250));
-
     if (ImGui::Begin("Main Menu", nullptr, windowFlags))
     {
         ImGuiIO& io = ImGui::GetIO();

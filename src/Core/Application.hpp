@@ -8,8 +8,6 @@
 #include "world/Player.hpp"
 
 #include "Core/ImGuiDriver.hpp"
-#include "UI/MainMenu.hpp"
-#include "UI/HUD.hpp"
 
 class Application
 {
