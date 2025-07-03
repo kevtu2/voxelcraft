@@ -5,11 +5,12 @@
 #include <stb_image.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-
-HUD::HUD(int width, int height) :
-	windowW(width),
-	windowH(height)
+HUD::HUD()
 {
+	glfwGetWindowSize(glfwGetCurrentContext(), &windowW, &windowH);
+	windowW /= 2;
+	windowH /= 2;
+
 	// Setup crosshair
 	glGenVertexArrays(1, &crosshairVAO);
 	glGenBuffers(1, &crosshairVBO);

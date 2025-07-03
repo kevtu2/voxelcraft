@@ -11,6 +11,7 @@
 
 #include <imgui.h>
 
+#include "UI/UIManager.hpp"
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
@@ -140,6 +141,9 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
+	// Set up UI
+	UIManager
+
 	// Set up shaders
 	VoxelShader shaderProgram("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
 	shaderProgram.UseProgram();

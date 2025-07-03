@@ -13,7 +13,7 @@ static constexpr float crosshairVertices[] = {
 class HUD
 {	
 public:
-	HUD(int width, int height);
+	HUD();
 	~HUD();
 	void Draw();
 	glm::mat4 GetProjectionMatrix() const { return proj; }
