@@ -8,11 +8,9 @@
 #include "Graphics/LightSource.hpp"
 
 #include "Physics/Physics.hpp"
-#include "Core/ImGuiDriver.hpp"
 
 #include <imgui.h>
-#include "UI/MainMenu.hpp"
-#include "UI/HUD.hpp"
+
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
@@ -73,9 +71,9 @@ Application::Application()
 	player = std::make_shared<Player>(width, height);
 
 	// Set up ImGui and UI
-	imgui = ImGuiDriver(window);
-	mainMenu = MainMenu(imgui);
-	hud = HUD(width, height);
+	imgui = std::make_shared<ImGuiDriver>(window);
+	mainMenu = std::make_shared<MainMenu>();
+	hud = std::make_shared<HUD>(width, height);
 }
 
 void Application::CalculateNewMousePosition()
@@ -178,7 +176,7 @@ void Application::Run()
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
 		// Determine where the character wants to move before calculating physics
-		if (!mainMenu.showMainMenu) 
+		if (!mainMenu->showMainMenu) 
 		{
 			CalculateNewMousePosition();
 			ProcessInput();
@@ -197,16 +195,16 @@ void Application::Run()
 
 			/* --- Enable Draw Crosshair --- */
 			crosshairShader.UseProgram();
-			crosshairShader.SetUniformMatrix4f("projection", hud.GetProjectionMatrix());
+			crosshairShader.SetUniformMatrix4f("projection", hud->GetProjectionMatrix());
 			crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
 		}
 		
 		// ImGui and UI drawing
-		imgui.StartGuiFrame();
-		mainMenu.Draw();
-		if (mainMenu.quitApp) glfwSetWindowShouldClose(window, true);
-		hud.Draw();
-		imgui.Render();
+		imgui->StartGuiFrame();
+		if (mainMenu->showMainMenu) mainMenu->Draw();
+		if (mainMenu->quitApp) glfwSetWindowShouldClose(window, true);
+		hud->Draw();
+		imgui->Render();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -226,8 +224,9 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
-		showMainMenu = showMainMenu ? false : true;
-		if (showMainMenu)
+		std::shared_ptr<MainMenu> menu = app->mainMenu;
+		menu->showMainMenu = menu->showMainMenu ? false : true;
+		if (menu->showMainMenu)
 		{
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			app->overrideMouseCalculation = true;

@@ -1,13 +1,11 @@
 #pragma once
 
-struct ImGuiIO;
 
 class MainMenu
 {
-private:
-	ImGuiIO& io;
+
 public:
-	MainMenu(ImGuiIO& io);
+	MainMenu();
 
 	void Draw();
 	bool quitApp = false;

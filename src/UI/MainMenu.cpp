@@ -3,8 +3,7 @@
 #include <imgui.h>
 #include <iostream>
 
-MainMenu::MainMenu(ImGuiIO& io) :
-    io(io)
+MainMenu::MainMenu()
 {
 
 }
@@ -19,8 +18,9 @@ void MainMenu::Draw()
 
     ImGui::SetNextWindowSize(ImVec2(500, 250));
 
-    if (ImGui::Begin("Main Menu", &showMainMenu, windowFlags))
+    if (ImGui::Begin("Main Menu", nullptr, windowFlags))
     {
+        ImGuiIO& io = ImGui::GetIO();
         ImGui::Text("Voxelcraft");
         ImGui::Separator();
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);

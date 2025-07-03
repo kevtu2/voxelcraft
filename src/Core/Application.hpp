@@ -7,6 +7,10 @@
 
 #include "world/Player.hpp"
 
+#include "Core/ImGuiDriver.hpp"
+#include "UI/MainMenu.hpp"
+#include "UI/HUD.hpp"
+
 class Application
 {
 private:
@@ -22,7 +26,7 @@ private:
 	float lastTime;
 
 	// UI
-	ImGuiDriver imgui;
+	std::shared_ptr<ImGuiDriver> imgui;
 
 	void ProcessInput();
 
@@ -37,8 +41,8 @@ public:
 	glm::vec2 GetWindowDimensions() const { return glm::vec2(width, height); }
 
 	// UI
-	MainMenu mainMenu;
-	HUD hud;
+	std::shared_ptr<MainMenu> mainMenu;
+	std::shared_ptr<HUD> hud;
 
 	// Cursor positions
 	float mouseX;
