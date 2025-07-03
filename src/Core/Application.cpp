@@ -71,6 +71,11 @@ Application::Application()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	player = std::make_shared<Player>(width, height);
+
+	// Set up ImGui and UI
+	imgui = ImGuiDriver(window);
+	mainMenu = MainMenu(imgui);
+	hud = HUD(width, height);
 }
 
 void Application::CalculateNewMousePosition()
@@ -137,11 +142,6 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	// Set up ImGui
-	ImGuiDriver imgui(window);
-	MainMenu mainMenu;
-	HUD hud(width, height);
-
 	// Set up shaders
 	VoxelShader shaderProgram("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
 	shaderProgram.UseProgram();
@@ -178,7 +178,7 @@ void Application::Run()
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
 		// Determine where the character wants to move before calculating physics
-		if (!showMainMenu) 
+		if (!mainMenu.showMainMenu) 
 		{
 			CalculateNewMousePosition();
 			ProcessInput();
@@ -203,9 +203,7 @@ void Application::Run()
 		
 		// ImGui and UI drawing
 		imgui.StartGuiFrame();
-		if (showMainMenu)
-			mainMenu.Draw();
-
+		mainMenu.Draw();
 		if (mainMenu.quitApp) glfwSetWindowShouldClose(window, true);
 		hud.Draw();
 		imgui.Render();
@@ -231,17 +229,15 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		showMainMenu = showMainMenu ? false : true;
 		if (showMainMenu)
 		{
-			app->lastX = app->mouseX;
-			app->lastY = app->mouseY;
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			app->overrideMouseCalculation = true;
 		}
 		else
 		{
-			app->mouseX = app->lastX;
-			app->mouseY = app->lastY;
-			app->overrideMouseCalculation = true;
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		}
+		glm::vec2 windowDim = app->GetWindowDimensions();
+		glfwSetCursorPos(window, windowDim.x / 2, windowDim.y / 2);
 	}
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{

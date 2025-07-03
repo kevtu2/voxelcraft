@@ -3,7 +3,8 @@
 #include <imgui.h>
 #include <iostream>
 
-MainMenu::MainMenu()
+MainMenu::MainMenu(ImGuiIO& io) :
+    io(io)
 {
 
 }
@@ -17,9 +18,15 @@ void MainMenu::Draw()
         ImGuiWindowFlags_NoCollapse;
 
     ImGui::SetNextWindowSize(ImVec2(500, 250));
-    ImGui::Begin("Main Menu", nullptr, windowFlags);   
-    ImGui::Text("Hello from main menu!");
-    if (ImGui::Button("Quit App!"))
-        quitApp = true;
+
+    if (ImGui::Begin("Main Menu", &showMainMenu, windowFlags))
+    {
+        ImGui::Text("Voxelcraft");
+        ImGui::Separator();
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+        if (ImGui::Button("Quit App!"))
+            quitApp = true;
+    }
+
     ImGui::End();
 }

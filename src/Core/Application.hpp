@@ -2,13 +2,10 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "world/Player.hpp"
-
 #include <memory>
+#include <glm/glm.hpp>
 
-
-// UI State Management
-static bool showMainMenu = false;
+#include "world/Player.hpp"
 
 class Application
 {
@@ -24,6 +21,9 @@ private:
 	float deltaTime;
 	float lastTime;
 
+	// UI
+	ImGuiDriver imgui;
+
 	void ProcessInput();
 
 	void CalculateNewMousePosition();
@@ -34,6 +34,11 @@ public:
 	void Run();
 	std::shared_ptr<Player> GetPlayer() const { return player; }
 	float GetWorldDeltaTime() const { return deltaTime; }
+	glm::vec2 GetWindowDimensions() const { return glm::vec2(width, height); }
+
+	// UI
+	MainMenu mainMenu;
+	HUD hud;
 
 	// Cursor positions
 	float mouseX;
