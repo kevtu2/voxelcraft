@@ -2,5 +2,6 @@
 
 UIManager& UIManager::GetInstance()
 {
+	static UIManager Manager;
 	return Manager;
 }

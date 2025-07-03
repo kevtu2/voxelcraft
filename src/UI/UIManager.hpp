@@ -4,7 +4,7 @@ class UIManager
 {
 private:
 	UIManager() = default;
-	static UIManager Manager;
+	~UIManager() = default;
 
 public:
 	static UIManager& GetInstance();
