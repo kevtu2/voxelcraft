@@ -1,11 +1,11 @@
 #pragma once
 #include <memory>
+#include <glm/glm.hpp>
 
 #include "MainMenu.hpp"
 #include "HUD.hpp"
 
 class GLFWwindow;
-static UIManager& GetManagerInstance();
 
 class UIManager
 {
@@ -28,7 +28,12 @@ public:
 	bool ShouldShowMainMenu() const { return mainMenu.showMainMenu; }
 
 	void DrawHUD();
+	glm::mat4 GetHUDProjectionMat() const { return hud.GetProjectionMatrix(); }
+
+	static UIManager& GetManagerInstance();
 
 };
+
+
 
 

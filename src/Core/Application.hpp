@@ -40,10 +40,6 @@ public:
 	float GetWorldDeltaTime() const { return deltaTime; }
 	glm::vec2 GetWindowDimensions() const { return glm::vec2(width, height); }
 
-	// UI
-	std::shared_ptr<MainMenu> mainMenu;
-	std::shared_ptr<HUD> hud;
-
 	// Cursor positions
 	float mouseX;
 	float mouseY;

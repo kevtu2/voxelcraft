@@ -73,8 +73,6 @@ Application::Application()
 
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
-	mainMenu = std::make_shared<MainMenu>();
-	hud = std::make_shared<HUD>(width, height);
 }
 
 void Application::CalculateNewMousePosition()
@@ -142,7 +140,7 @@ void Application::ProcessInput()
 void Application::Run()
 {
 	// Set up UI
-	UIManager& uiManager = GetManagerInstance();
+	UIManager& uiManager = UIManager::GetManagerInstance();
 
 	// Set up shaders
 	VoxelShader shaderProgram("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
@@ -180,7 +178,7 @@ void Application::Run()
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
 		// Determine where the character wants to move before calculating physics
-		if (!mainMenu->showMainMenu) 
+		if (!uiManager.ShouldShowMainMenu()) 
 		{
 			CalculateNewMousePosition();
 			ProcessInput();
@@ -199,15 +197,14 @@ void Application::Run()
 
 			/* --- Enable Draw Crosshair --- */
 			crosshairShader.UseProgram();
-			crosshairShader.SetUniformMatrix4f("projection", hud->GetProjectionMatrix());
+			crosshairShader.SetUniformMatrix4f("projection", uiManager.GetHUDProjectionMat());
 			crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
 		}
 		
 		// ImGui and UI drawing
 		imgui->StartGuiFrame();
-		if (mainMenu->showMainMenu) mainMenu->Draw();
-		if (mainMenu->quitApp) glfwSetWindowShouldClose(window, true);
-		hud->Draw();
+		uiManager.DrawMainMenu();
+		uiManager.DrawHUD();
 		imgui->Render();
 
 		glfwSwapBuffers(window);
@@ -228,9 +225,14 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
-		std::shared_ptr<MainMenu> menu = app->mainMenu;
-		menu->showMainMenu = menu->showMainMenu ? false : true;
-		if (menu->showMainMenu)
+		UIManager& uiManager = UIManager::GetManagerInstance();
+		
+		// Update main menu state
+		bool showMainMenu = uiManager.ShouldShowMainMenu() ? false : true;
+		uiManager.SetShowMainMenu(showMainMenu);
+
+		// Change mouse settings after determining if main menu should show
+		if (showMainMenu)
 		{
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			app->overrideMouseCalculation = true;

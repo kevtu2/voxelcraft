@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 
 
-UIManager& GetManagerInstance()
+UIManager& UIManager::GetManagerInstance()
 {
 	static UIManager Manager;
 	return Manager;
