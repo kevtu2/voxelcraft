@@ -3,11 +3,11 @@
 class UIManager
 {
 private:
+	UIManager() = default;
 	static UIManager Manager;
+
 public:
 	static UIManager& GetInstance();
-
-	UIManager() = default;
 	UIManager(const UIManager& other) = delete;
 	void operator=(const UIManager&) = delete;
 };

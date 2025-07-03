@@ -2,5 +2,5 @@
 
 UIManager& UIManager::GetInstance()
 {
-	if ()
+	return Manager;
 }
