@@ -16,7 +16,10 @@ void MainMenu::Draw()
         ImGuiWindowFlags_NoScrollbar |
         ImGuiWindowFlags_NoCollapse;
 
-    ImGui::SetNextWindowSize(ImVec2(500, 250));
+    ImVec2 windowPos = ImVec2(500, 250);
+    ImGui::SetNextWindowSize(windowPos);
+    ImGui::SetNextWindowPos(ImVec2((windowW - windowPos.x) / 2, (windowH - windowPos.y) / 2));
+
     if (ImGui::Begin("Main Menu", nullptr, windowFlags))
     {
         ImGuiIO& io = ImGui::GetIO();

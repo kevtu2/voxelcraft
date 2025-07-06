@@ -30,7 +30,7 @@ Application::Application()
 	width = mode->width;
 	height = mode->height;
 
-	window = glfwCreateWindow(width, height, "voxelcraft", NULL, NULL);
+	window = glfwCreateWindow(width, height, "voxelcraft", primaryMonitor, NULL);
 	if (window == NULL)
 	{
 		std::cerr << "Failed to create a GLFW window" << std::endl;
