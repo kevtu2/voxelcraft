@@ -1,13 +1,10 @@
 #pragma once
+#include "UIElement.hpp"
 #include "UIState.hpp"
 
-class MainMenu
+class MainMenu : public UIElement
 {
-
 public:
 	MainMenu(UIState& state);
-	void Draw();
-
-private:
-	UIState& state;
+	void Draw() override;
 };

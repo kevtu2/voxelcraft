@@ -4,10 +4,8 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-MainMenu::MainMenu(UIState& state) :
-    state(state)
+MainMenu::MainMenu(UIState& state) : UIElement(state)
 {
-
 }
 
 void MainMenu::Draw()
