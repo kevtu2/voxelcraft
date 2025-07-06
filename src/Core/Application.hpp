@@ -25,6 +25,7 @@ private:
 
 	// UI
 	std::shared_ptr<ImGuiDriver> imgui;
+	UIManager uiManager;
 
 	void ProcessInput();
 

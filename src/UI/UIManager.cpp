@@ -1,16 +1,11 @@
 #include "UIManager.hpp"
-
 #include <GLFW/glfw3.h>
 
-
-UIManager& UIManager::GetManagerInstance()
-{
-	static UIManager Manager;
-	return Manager;
-}
-
 UIManager::UIManager() :
-	window(glfwGetCurrentContext())
+	window(glfwGetCurrentContext()),
+	state(UIState()),
+	mainMenu(MainMenu(state)),
+	hud(HUD(state))
 {
 	glfwGetWindowSize(window, &windowWidth, &windowHeight);
 }

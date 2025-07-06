@@ -73,6 +73,7 @@ Application::Application()
 
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
+	uiManager = UIManager();
 }
 
 void Application::CalculateNewMousePosition()

@@ -6,7 +6,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-HUD::HUD()
+HUD::HUD(UIState& state) :
+	state(state)
+
 {
 	glfwGetWindowSize(glfwGetCurrentContext(), &windowW, &windowH);
 

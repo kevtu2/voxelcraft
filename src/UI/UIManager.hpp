@@ -12,21 +12,16 @@ class UIManager
 {
 private:
 	UIManager();
-	~UIManager() = default;
 
 	// UI Elements
 	GLFWwindow* window;
+	UIState& state;
 	MainMenu mainMenu;
 	HUD hud;
 
 	int windowWidth, windowHeight;
 
 public:
-	static UIManager& GetManagerInstance();
-
-	UIManager(const UIManager& other) = delete;
-	void operator=(const UIManager&) = delete;
-
 	void DrawMainMenu();
 	void SetShowMainMenu(bool value) { mainMenu.showMainMenu = value; }
 	bool ShouldShowMainMenu() const { return mainMenu.showMainMenu; }

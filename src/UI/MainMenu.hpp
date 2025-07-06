@@ -1,13 +1,13 @@
 #pragma once
-
+#include "UIState.hpp"
 
 class MainMenu
 {
 
 public:
-	MainMenu();
-
+	MainMenu(UIState& state);
 	void Draw();
-	bool quitApp = false;
-	bool showMainMenu = false;
+
+private:
+	UIState& state;
 };

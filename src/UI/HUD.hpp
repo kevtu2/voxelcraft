@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include "UIState.hpp"
 
 // Crosshair vertices
 static constexpr float crosshairVertices[] = {
@@ -13,12 +14,13 @@ static constexpr float crosshairVertices[] = {
 class HUD
 {	
 public:
-	HUD();
+	HUD(UIState& state);
 	~HUD();
 	void Draw();
 	glm::mat4 GetProjectionMatrix() const { return proj; }
 
 private:
+	UIState& state;
 	int windowW, windowH;
 
 	// Crosshair attributes

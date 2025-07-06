@@ -4,7 +4,8 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-MainMenu::MainMenu()
+MainMenu::MainMenu(UIState& state) :
+    state(state)
 {
 
 }
@@ -30,7 +31,7 @@ void MainMenu::Draw()
 
         if (ImGui::Button("Resume"))
         {
-            showMainMenu = false;
+            state.pauseGame = false;
             GLFWwindow* window = glfwGetCurrentContext();
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
