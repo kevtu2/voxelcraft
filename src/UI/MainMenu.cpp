@@ -30,8 +30,9 @@ void MainMenu::Draw()
         // Main UI
         ImGui::Text("Voxelcraft");
         ImGui::BulletText("Crafted with my tears. -Kevin");
-        ImGui::Separator();
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+
+        ImGui::Separator();
 
         if (ImGui::Button("Resume", buttonSize))
         {
@@ -39,10 +40,16 @@ void MainMenu::Draw()
             GLFWwindow* window = glfwGetCurrentContext();
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
-            
-        if (ImGui::Button("Quit Game", buttonSize))
-            state.quitGame = true;
-    }
 
+        if (ImGui::Button("Options", buttonSize))
+        {
+            state.showOptionsMenu = true;
+        }
+
+        if (ImGui::Button("Quit Game", buttonSize))
+        {
+            state.quitGame = true;
+        }
+    }
     ImGui::End();
 }
