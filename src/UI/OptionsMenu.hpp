@@ -5,7 +5,10 @@
 class OptionsMenu : public UIElement
 {
 public:
-	OptionsMenu(UIState& state);
+	OptionsMenu(UIState& state, GameState& gameState);
 	void Draw() override;
+
+private:
+	GameState& gameState;
 };
 

@@ -2,7 +2,9 @@
 
 #include "imgui.h"
 
-OptionsMenu::OptionsMenu(UIState& state) : UIElement(state)
+OptionsMenu::OptionsMenu(UIState& state, GameState& gameState) :
+    UIElement(state),
+    gameState(gameState)
 {
 }
 
@@ -23,7 +25,9 @@ void OptionsMenu::Draw()
 
     if (ImGui::Begin("Options", nullptr, windowFlags))
     {
-
         ImGui::Checkbox("Show FPS", &state.showFPSInHUD);
+        ImGui::SliderInt("Render Distance", &gameState.renderDistance, 5, 32);
+        ImGui::SliderFloat("FOV", &gameState.FOV, 1.0f, 60.0f);
+        ImGui::SliderFloat("Mouse Sensitivity", &gameState.mouseSensitivity, 0.1f, 10.0f);
     }
 }

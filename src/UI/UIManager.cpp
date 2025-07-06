@@ -3,21 +3,21 @@
 
 UIManager::UIManager(GameState& gameState) :
 	window(glfwGetCurrentContext()),
-	state(UIState()),
-	gameState(gameState),
-	mainMenu(MainMenu(state)),
-	hud(HUD(state))
+	uiState(UIState()),
+	mainMenu(MainMenu(uiState)),
+	optionsMenu(OptionsMenu(uiState, gameState)),
+	hud(HUD(uiState))
 {
 	glfwGetWindowSize(window, &windowWidth, &windowHeight);
 }
 
 void UIManager::DrawComponents()
 {
-	if (state.pauseGame)
+	if (uiState.pauseGame)
 		mainMenu.Draw();
 	else
 		hud.Draw();
 
-	if (state.quitGame)
+	if (uiState.quitGame)
 		glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
 }

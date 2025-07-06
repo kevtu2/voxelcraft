@@ -5,7 +5,7 @@
 struct GameState
 {
 	// Rendering
-	unsigned int renderDistance = 12;
+	int renderDistance = 12;
 	float FOV = 45.0f;
 
 	// Gameplay

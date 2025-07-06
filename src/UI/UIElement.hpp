@@ -1,5 +1,6 @@
 #pragma once
 #include "UIState.hpp"
+#include "Core/GameState.hpp"
 
 class UIElement
 {
