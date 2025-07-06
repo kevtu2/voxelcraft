@@ -18,9 +18,10 @@ void MainMenu::Draw()
 
     ImVec2 windowSize = ImVec2(500, 250);
     ImVec2 buttonSize = ImVec2(100, 20);
+    ImVec2 windowCenter = ImGui::GetMainViewport()->GetCenter();
 
     ImGui::SetNextWindowSize(windowSize);
-    ImGui::SetNextWindowPos(ImVec2((windowW - windowSize.x) / 2, (windowH - windowSize.y) / 2));
+    ImGui::SetNextWindowPos(windowCenter, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
     if (ImGui::Begin("Main Menu", nullptr, windowFlags))
     {
