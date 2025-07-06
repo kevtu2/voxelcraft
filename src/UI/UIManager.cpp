@@ -1,9 +1,10 @@
 #include "UIManager.hpp"
 #include <GLFW/glfw3.h>
 
-UIManager::UIManager() :
+UIManager::UIManager(GameState& gameState) :
 	window(glfwGetCurrentContext()),
 	state(UIState()),
+	gameState(gameState),
 	mainMenu(MainMenu(state)),
 	hud(HUD(state))
 {

@@ -5,6 +5,7 @@
 
 #include "MainMenu.hpp"
 #include "HUD.hpp"
+#include "Core/GameState.hpp"
 
 class GLFWwindow;
 
@@ -14,6 +15,7 @@ private:
 
 	GLFWwindow* window;
 	UIState state;
+	GameState& gameState;
 
 	// UI Components
 	MainMenu mainMenu;
@@ -22,7 +24,7 @@ private:
 	int windowWidth, windowHeight;
 
 public:
-	UIManager();
+	UIManager(GameState& gameState);
 
 	void DrawComponents();
 	void ToggleMainMenu(bool value) { state.pauseGame = value; }

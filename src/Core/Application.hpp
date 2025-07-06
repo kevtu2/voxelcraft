@@ -9,6 +9,7 @@
 
 #include "Core/ImGuiDriver.hpp"
 #include "UI/UIManager.hpp"
+#include "GameState.hpp"
 
 
 class Application
@@ -29,6 +30,9 @@ private:
 	std::shared_ptr<ImGuiDriver> imgui;
 	std::unique_ptr<UIManager> uiManager;
 
+	// Game properties (states)
+	GameState gameState;
+
 	void ProcessInput();
 
 	void CalculateNewMousePosition();
@@ -37,12 +41,15 @@ public:
 	Application();
 	~Application();
 	void Run();
+
 	std::shared_ptr<Player> GetPlayer() const { return player; }
 	float GetWorldDeltaTime() const { return deltaTime; }
 	glm::vec2 GetWindowDimensions() const { return glm::vec2(width, height); }
 
 	// Primarily used for keycallback ui state changes
 	UIManager& GetUIManager() { return *uiManager; }
+
+	void ApplyGameState();
 
 	// Cursor positions
 	float mouseX;
