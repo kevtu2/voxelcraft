@@ -42,6 +42,7 @@ void MainMenu::Draw()
         if (ImGui::Button("Resume", buttonSize))
         {
             state.pauseGame = false;
+            state.showMainMenu = false;
             GLFWwindow* window = glfwGetCurrentContext();
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
@@ -51,6 +52,7 @@ void MainMenu::Draw()
 
         if (ImGui::Button("Options", buttonSize))
         {
+            state.showMainMenu = false;
             state.showOptionsMenu = true;
         }
 

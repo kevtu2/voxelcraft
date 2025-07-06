@@ -29,5 +29,12 @@ void OptionsMenu::Draw()
         ImGui::SliderInt("Render Distance", &gameState.renderDistance, 5, 32);
         ImGui::SliderFloat("FOV", &gameState.FOV, 1.0f, 60.0f);
         ImGui::SliderFloat("Mouse Sensitivity", &gameState.mouseSensitivity, 0.1f, 10.0f);
+        ImGui::Separator();
+        if (ImGui::Button("Back", buttonSize))
+        {
+            state.showMainMenu = true;
+            state.showOptionsMenu = false;
+        }
     }
+    ImGui::End();
 }

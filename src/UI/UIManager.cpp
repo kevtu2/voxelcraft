@@ -13,11 +13,20 @@ UIManager::UIManager(GameState& gameState) :
 
 void UIManager::DrawComponents()
 {
-	if (uiState.pauseGame)
+	if (uiState.showMainMenu)
 		mainMenu.Draw();
 	else
 		hud.Draw();
 
+	if (uiState.showOptionsMenu)
+		optionsMenu.Draw();
+
 	if (uiState.quitGame)
 		glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
+}
+
+void UIManager::ToggleMainMenu(bool value)
+{
+	uiState.showMainMenu = value;
+	uiState.pauseGame = value;
 }

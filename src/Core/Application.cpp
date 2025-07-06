@@ -173,7 +173,7 @@ void Application::Run()
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
 		// Determine where the character wants to move before calculating physics
-		if (!uiManager->ShouldShowMainMenu()) 
+		if (!uiManager->GameShouldPause())
 		{
 			CalculateNewMousePosition();
 			ProcessInput();

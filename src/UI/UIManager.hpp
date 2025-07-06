@@ -29,8 +29,9 @@ public:
 	UIManager(GameState& gameState);
 
 	void DrawComponents();
-	void ToggleMainMenu(bool value) { uiState.pauseGame = value; }
-	bool ShouldShowMainMenu() const { return uiState.pauseGame; }
+	void ToggleMainMenu(bool value);
+	bool GameShouldPause() const { return uiState.pauseGame; }
+	bool ShouldShowMainMenu() const { return uiState.showMainMenu; }
 	
 	glm::mat4 GetHUDProjectionMat() const { return hud.GetProjectionMatrix(); }
 	ImVec2 GetWindowDimensions() const { return ImVec2(windowWidth, windowHeight); }
