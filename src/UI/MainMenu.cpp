@@ -16,9 +16,11 @@ void MainMenu::Draw()
         ImGuiWindowFlags_NoScrollbar |
         ImGuiWindowFlags_NoCollapse;
 
-    ImVec2 windowPos = ImVec2(500, 250);
-    ImGui::SetNextWindowSize(windowPos);
-    ImGui::SetNextWindowPos(ImVec2((windowW - windowPos.x) / 2, (windowH - windowPos.y) / 2));
+    ImVec2 windowSize = ImVec2(500, 250);
+    ImVec2 buttonSize = ImVec2(100, 20);
+
+    ImGui::SetNextWindowSize(windowSize);
+    ImGui::SetNextWindowPos(ImVec2((windowW - windowSize.x) / 2, (windowH - windowSize.y) / 2));
 
     if (ImGui::Begin("Main Menu", nullptr, windowFlags))
     {
@@ -30,14 +32,14 @@ void MainMenu::Draw()
         ImGui::Separator();
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 
-        if (ImGui::Button("Resume"))
+        if (ImGui::Button("Resume", buttonSize))
         {
             state.pauseGame = false;
             GLFWwindow* window = glfwGetCurrentContext();
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
             
-        if (ImGui::Button("Quit Game"))
+        if (ImGui::Button("Quit Game", buttonSize))
             state.quitGame = true;
     }
 
