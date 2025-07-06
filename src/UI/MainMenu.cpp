@@ -32,7 +32,12 @@ void MainMenu::Draw()
         ImGui::BulletText("Crafted with my tears. -Kevin");
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 
+        ImGui::Spacing();
         ImGui::Separator();
+        ImGui::Spacing();
+
+        float windowWidth = ImGui::GetWindowSize().x;
+        ImGui::SetCursorPosX((windowWidth - buttonSize.x) * 0.5f);
 
         if (ImGui::Button("Resume", buttonSize))
         {
@@ -41,10 +46,16 @@ void MainMenu::Draw()
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
 
+        ImGui::Spacing();
+        ImGui::SetCursorPosX((windowWidth - buttonSize.x) * 0.5f);
+
         if (ImGui::Button("Options", buttonSize))
         {
             state.showOptionsMenu = true;
         }
+
+        ImGui::Spacing();
+        ImGui::SetCursorPosX((windowWidth - buttonSize.x) * 0.5f);
 
         if (ImGui::Button("Quit Game", buttonSize))
         {
