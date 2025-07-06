@@ -9,10 +9,6 @@
 
 #include "Physics/Physics.hpp"
 
-#include <imgui.h>
-
-#include "UI/UIManager.hpp"
-
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 Application::Application()
@@ -73,7 +69,6 @@ Application::Application()
 
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
-	uiManager = UIManager();
 }
 
 void Application::CalculateNewMousePosition()

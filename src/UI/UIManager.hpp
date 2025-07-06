@@ -11,10 +11,9 @@ class GLFWwindow;
 class UIManager
 {
 private:
-	UIManager();
 
 	GLFWwindow* window;
-	UIState& state;
+	UIState state;
 
 	// UI Components
 	MainMenu mainMenu;
@@ -23,6 +22,8 @@ private:
 	int windowWidth, windowHeight;
 
 public:
+	UIManager();
+
 	void DrawComponents();
 	void ToggleMainMenu(bool value) { state.pauseGame = value; }
 	bool ShouldShowMainMenu() const { return state.pauseGame; }

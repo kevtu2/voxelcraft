@@ -8,6 +8,8 @@
 #include "world/Player.hpp"
 
 #include "Core/ImGuiDriver.hpp"
+#include "UI/UIManager.hpp"
+
 
 class Application
 {
@@ -40,7 +42,7 @@ public:
 	glm::vec2 GetWindowDimensions() const { return glm::vec2(width, height); }
 
 	// Primarily used for keycallback ui state changes
-	UIManager& GetUIManager() const { return uiManager; }
+	UIManager& GetUIManager() { return uiManager; }
 
 	// Cursor positions
 	float mouseX;
