@@ -16,7 +16,6 @@ class Application
 {
 private:
 	GLFWwindow* window;
-	std::shared_ptr<Player> player;
 
 	// Window properties
 	int width;
@@ -32,6 +31,8 @@ private:
 
 	// Game properties (states)
 	GameState gameState;
+	std::shared_ptr<Player> player;
+	std::shared_ptr<World> world;
 
 	void ProcessInput();
 

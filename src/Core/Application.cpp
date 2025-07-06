@@ -153,8 +153,8 @@ void Application::Run()
 	LightSource light;
 	Texture textureAtlas("../textures/blocks.png");
 
-	// New world!
-	std::shared_ptr<World> world(new World());
+	// Hello new world!
+	world = std::shared_ptr<World>(new World());
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -201,9 +201,18 @@ void Application::Run()
 		uiManager->DrawComponents();
 		imgui->Render();
 
+		ApplyGameState();
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+}
+
+void Application::ApplyGameState()
+{
+	world->setRenderDistance(gameState.renderDistance);
+	player->SetFOV(gameState.FOV);
+	player->SetMouseSensitivity(gameState.mouseSensitivity);
 }
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)

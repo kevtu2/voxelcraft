@@ -11,6 +11,7 @@ Player::Player(int width, int height)
 	lookDirection(glm::vec3(-1.0f, 0.0f, 0.0f)),
 	cameraSpeed(10.5f),
 	cameraSensitivity(2.5f),
+	FOV(45.0f),
 	yaw(-90.0f),
 	pitch(0.0f),
 	aabb(AABB(position, 2.0f, 1.0f)), // Centre the box and move down, w/ height = 2 and width = 1
