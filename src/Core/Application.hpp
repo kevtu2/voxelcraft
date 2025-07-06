@@ -27,7 +27,7 @@ private:
 
 	// UI
 	std::shared_ptr<ImGuiDriver> imgui;
-	UIManager uiManager;
+	std::unique_ptr<UIManager> uiManager;
 
 	void ProcessInput();
 
@@ -42,7 +42,7 @@ public:
 	glm::vec2 GetWindowDimensions() const { return glm::vec2(width, height); }
 
 	// Primarily used for keycallback ui state changes
-	UIManager& GetUIManager() { return uiManager; }
+	UIManager& GetUIManager() { return *uiManager; }
 
 	// Cursor positions
 	float mouseX;

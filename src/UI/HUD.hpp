@@ -24,7 +24,7 @@ private:
 	int windowW, windowH;
 
 	// Crosshair attributes
-	GLuint crosshairVAO, crosshairVBO;
+	unsigned int crosshairVAO, crosshairVBO;
 	glm::mat4 proj;
 
 	

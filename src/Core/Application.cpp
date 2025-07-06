@@ -69,6 +69,8 @@ Application::Application()
 
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
+	uiManager = std::make_unique<UIManager>();
+
 }
 
 void Application::CalculateNewMousePosition()
@@ -171,7 +173,7 @@ void Application::Run()
 		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 		
 		// Determine where the character wants to move before calculating physics
-		if (!uiManager.ShouldShowMainMenu()) 
+		if (!uiManager->ShouldShowMainMenu()) 
 		{
 			CalculateNewMousePosition();
 			ProcessInput();
@@ -190,13 +192,13 @@ void Application::Run()
 
 			/* --- Enable Draw Crosshair --- */
 			crosshairShader.UseProgram();
-			crosshairShader.SetUniformMatrix4f("projection", uiManager.GetHUDProjectionMat());
+			crosshairShader.SetUniformMatrix4f("projection", uiManager->GetHUDProjectionMat());
 			crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
 		}
 		
 		// ImGui and UI drawing
 		imgui->StartGuiFrame();
-		uiManager.DrawComponents();
+		uiManager->DrawComponents();
 		imgui->Render();
 
 		glfwSwapBuffers(window);
