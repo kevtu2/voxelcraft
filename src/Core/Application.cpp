@@ -140,7 +140,6 @@ void Application::Run()
 	// Set up shaders
 	VoxelShader shaderProgram("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
 	shaderProgram.UseProgram();
-	shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
 
 	VoxelShader crosshairShader("../src/Graphics/crosshair.vert", "../src/Graphics/crosshair.frag");
 
@@ -158,6 +157,8 @@ void Application::Run()
 	
 	while (!glfwWindowShouldClose(window))
 	{
+		shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
+
 		float currentTime = glfwGetTime();
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;

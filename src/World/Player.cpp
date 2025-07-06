@@ -23,8 +23,8 @@ Player::Player(int width, int height)
 	cameraUp = glm::cross(lookDirection, cameraRight);
 
 	projection = glm::mat4(1.0f);
-	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
-	projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 512.0f);
+	aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+	projection = glm::perspective(glm::radians(FOV), aspectRatio, 0.1f, 512.0f);
 }
 
 glm::mat4 Player::GetViewMatrix() const
