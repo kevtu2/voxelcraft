@@ -2,8 +2,8 @@
 
 struct UIState
 {
-	quitGame = false;
-	pauseGame = false; // AKA Show main menu
-	showFPSInHUD = false;
+	bool quitGame = false;
+	bool pauseGame = false; // AKA Show main menu
+	bool showFPSInHUD = false;
 	// unsigned int playerHealth
 };

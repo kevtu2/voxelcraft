@@ -140,9 +140,6 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	// Set up UI
-	UIManager& uiManager = UIManager::GetManagerInstance();
-
 	// Set up shaders
 	VoxelShader shaderProgram("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
 	shaderProgram.UseProgram();
@@ -204,8 +201,7 @@ void Application::Run()
 		
 		// ImGui and UI drawing
 		imgui->StartGuiFrame();
-		uiManager.DrawMainMenu();
-		uiManager.DrawHUD();
+		uiManager.DrawComponents();
 		imgui->Render();
 
 		glfwSwapBuffers(window);
@@ -226,11 +222,10 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
-		UIManager& uiManager = UIManager::GetManagerInstance();
-		
+		UIManager& uiManager = app->GetUIManager();
 		// Update main menu state
 		bool showMainMenu = uiManager.ShouldShowMainMenu() ? false : true;
-		uiManager.SetShowMainMenu(showMainMenu);
+		uiManager.ToggleMainMenu(showMainMenu);
 
 		// Change mouse settings after determining if main menu should show
 		if (showMainMenu)

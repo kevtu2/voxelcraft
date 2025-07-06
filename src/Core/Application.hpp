@@ -39,6 +39,9 @@ public:
 	float GetWorldDeltaTime() const { return deltaTime; }
 	glm::vec2 GetWindowDimensions() const { return glm::vec2(width, height); }
 
+	// Primarily used for keycallback ui state changes
+	UIManager& GetUIManager() const { return uiManager; }
+
 	// Cursor positions
 	float mouseX;
 	float mouseY;

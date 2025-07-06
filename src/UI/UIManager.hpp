@@ -13,24 +13,22 @@ class UIManager
 private:
 	UIManager();
 
-	// UI Elements
 	GLFWwindow* window;
 	UIState& state;
+
+	// UI Components
 	MainMenu mainMenu;
 	HUD hud;
 
 	int windowWidth, windowHeight;
 
 public:
-	void DrawMainMenu();
-	void SetShowMainMenu(bool value) { mainMenu.showMainMenu = value; }
-	bool ShouldShowMainMenu() const { return mainMenu.showMainMenu; }
+	void DrawComponents();
+	void ToggleMainMenu(bool value) { state.pauseGame = value; }
+	bool ShouldShowMainMenu() const { return state.pauseGame; }
 	
-	void DrawHUD();
 	glm::mat4 GetHUDProjectionMat() const { return hud.GetProjectionMatrix(); }
-
 	ImVec2 GetWindowDimensions() const { return ImVec2(windowWidth, windowHeight); }
-
 
 };
 

@@ -10,16 +10,13 @@ UIManager::UIManager() :
 	glfwGetWindowSize(window, &windowWidth, &windowHeight);
 }
 
-void UIManager::DrawMainMenu()
+void UIManager::DrawComponents()
 {
-	if (mainMenu.showMainMenu)
+	if (state.pauseGame)
 		mainMenu.Draw();
-	if (mainMenu.quitApp)
-		glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
-}
-
-void UIManager::DrawHUD()
-{
-	if (!mainMenu.showMainMenu)
+	else
 		hud.Draw();
+
+	if (state.quitGame)
+		glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
 }

@@ -36,8 +36,8 @@ void MainMenu::Draw()
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
             
-        if (ImGui::Button("Quit App!"))
-            quitApp = true;
+        if (ImGui::Button("Quit Game"))
+            state.quitGame = true;
     }
 
     ImGui::End();
