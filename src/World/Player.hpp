@@ -20,7 +20,7 @@ private:
 	glm::vec3 cameraRight;
 	glm::vec3 cameraUp;
 	const float cameraSpeed;
-	const float cameraSensitivity;
+	float cameraSensitivity;
 	float FOV;
 
 	float yaw;

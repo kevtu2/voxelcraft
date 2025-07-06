@@ -5,12 +5,13 @@
 #include <memory>
 #include <glm/glm.hpp>
 
-#include "world/Player.hpp"
+#include "World/Player.hpp"
+#include "World/World.hpp"
+
 
 #include "Core/ImGuiDriver.hpp"
 #include "UI/UIManager.hpp"
 #include "GameState.hpp"
-
 
 class Application
 {

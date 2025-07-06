@@ -69,7 +69,7 @@ Application::Application()
 
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
-	uiManager = std::make_unique<UIManager>();
+	uiManager = std::make_unique<UIManager>(gameState);
 
 }
 

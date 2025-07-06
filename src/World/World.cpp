@@ -116,11 +116,3 @@ void World::DrawChunks()
 	}
 }
 
-void World::setRenderDistance(unsigned int renderDistance)
-{
-	if (renderDistance > 32)
-	{
-		this->renderDistance = 32;
-	}
-	this->renderDistance = renderDistance;
-}
