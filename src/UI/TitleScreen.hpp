@@ -2,7 +2,6 @@
 #include "UIElement.hpp"
 #include <vector>
 
-
 class TitleScreen : public UIElement
 {
 public:
@@ -11,6 +10,6 @@ public:
 
 private:
 	float timeElapsed = 0.0f;
-	std::vector<char>
+	std::vector<char> titleCard;
 };
 
