@@ -20,6 +20,7 @@ void TitleScreen::Draw()
         ImGuiWindowFlags_NoCollapse;
     ImVec2 windowSize = ImVec2(windowW, windowH);
     ImGui::SetNextWindowSize(windowSize);
+    ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 
     if (ImGui::Begin("Voxelcraft", nullptr, windowFlags))
     {

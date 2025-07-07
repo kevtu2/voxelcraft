@@ -157,55 +157,49 @@ void Application::Run()
 	
 	while (!glfwWindowShouldClose(window))
 	{
-		if (uiManager->ShouldShowTitleScreen())
-		{
-			imgui->StartGuiFrame();
-			uiManager->DrawComponents();
-			imgui->Render();
-			continue;
-		}
-
-		shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
-
-		float currentTime = glfwGetTime();
-		deltaTime = currentTime - lastTime;
-		lastTime = currentTime;
-		deltaTime = glm::clamp(deltaTime, 0.0f, 0.05f);
-		gameState.deltaTime = deltaTime;
-
-		/* --- Draw 3D world--- */
-		shaderProgram.UseProgram();
-
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Draw world chunks
-		Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
-		
-		// Determine where the character wants to move before calculating physics
-		if (!uiManager->GameShouldPause())
+		if (!uiManager->ShouldShowTitleScreen())
 		{
-			CalculateNewMousePosition();
-			ProcessInput();
+			shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
 
-			// Physics calculations
-			Physics::CalculateGravity(player, deltaTime);
-			Physics::CheckCollisions(player, world, deltaTime);
-			player->Move(deltaTime);
+			float currentTime = glfwGetTime();
+			deltaTime = currentTime - lastTime;
+			lastTime = currentTime;
+			deltaTime = glm::clamp(deltaTime, 0.0f, 0.05f);
+			gameState.deltaTime = deltaTime;
 
-			shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
-			shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
+			/* --- Draw 3D world--- */
+			shaderProgram.UseProgram();
 
-			glm::vec3 cameraPos = player->GetPlayerPosition();
-			light.SetLightPosition(cameraPos);
-			shaderProgram.UseLightSource(light);
+			// Draw world chunks
+			Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 
-			/* --- Enable Draw Crosshair --- */
-			crosshairShader.UseProgram();
-			crosshairShader.SetUniformMatrix4f("projection", uiManager->GetHUDProjectionMat());
-			crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
+			// Determine where the character wants to move before calculating physics
+			if (!uiManager->GameShouldPause())
+			{
+				CalculateNewMousePosition();
+				ProcessInput();
+
+				// Physics calculations
+				Physics::CalculateGravity(player, deltaTime);
+				Physics::CheckCollisions(player, world, deltaTime);
+				player->Move(deltaTime);
+
+				shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
+				shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
+
+				glm::vec3 cameraPos = player->GetPlayerPosition();
+				light.SetLightPosition(cameraPos);
+				shaderProgram.UseLightSource(light);
+
+				/* --- Enable Draw Crosshair --- */
+				crosshairShader.UseProgram();
+				crosshairShader.SetUniformMatrix4f("projection", uiManager->GetHUDProjectionMat());
+				crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
+			}
 		}
-		
 		// ImGui and UI drawing
 		imgui->StartGuiFrame();
 		uiManager->DrawComponents();
@@ -229,6 +223,8 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 {
 	Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
 	std::shared_ptr<Player> player = app->GetPlayer();
+	UIManager& uiManager = app->GetUIManager();
+
 
 	if (!app)
 	{
@@ -236,9 +232,8 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		exit(-1);
 	}
 	
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS && !uiManager.ShouldShowTitleScreen())
 	{
-		UIManager& uiManager = app->GetUIManager();
 		// Update main menu state
 		bool showMainMenu = uiManager.ShouldShowMainMenu() ? false : true;
 		uiManager.ToggleMainMenu(showMainMenu);

@@ -4,6 +4,7 @@
 UIManager::UIManager(GameState& gameState) :
 	window(glfwGetCurrentContext()),
 	uiState(UIState()),
+	titleScreen(uiState, gameState),
 	mainMenu(MainMenu(uiState)),
 	optionsMenu(OptionsMenu(uiState, gameState)),
 	hud(HUD(uiState))
@@ -14,6 +15,7 @@ UIManager::UIManager(GameState& gameState) :
 void UIManager::DrawComponents()
 {
 	if (uiState.showTitleScreen)
+		titleScreen.Draw();
 
 	if (uiState.showMainMenu)
 		mainMenu.Draw();
