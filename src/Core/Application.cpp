@@ -157,12 +157,21 @@ void Application::Run()
 	
 	while (!glfwWindowShouldClose(window))
 	{
+		if (uiManager->ShouldShowTitleScreen())
+		{
+			imgui->StartGuiFrame();
+			uiManager->DrawComponents();
+			imgui->Render();
+			continue;
+		}
+
 		shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
 
 		float currentTime = glfwGetTime();
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 		deltaTime = glm::clamp(deltaTime, 0.0f, 0.05f);
+		gameState.deltaTime = deltaTime;
 
 		/* --- Draw 3D world--- */
 		shaderProgram.UseProgram();

@@ -13,6 +13,8 @@ UIManager::UIManager(GameState& gameState) :
 
 void UIManager::DrawComponents()
 {
+	if (uiState.showTitleScreen)
+
 	if (uiState.showMainMenu)
 		mainMenu.Draw();
 	else

@@ -19,6 +19,7 @@ private:
 	UIState uiState;
 
 	// UI Components
+
 	MainMenu mainMenu;
 	OptionsMenu optionsMenu;
 	HUD hud;
@@ -32,6 +33,7 @@ public:
 	void ToggleMainMenu(bool value);
 	bool GameShouldPause() const { return uiState.pauseGame; }
 	bool ShouldShowMainMenu() const { return uiState.showMainMenu; }
+	bool ShouldShowTitleScreen() const { return uiState.showTitleScreen; }
 	
 	glm::mat4 GetHUDProjectionMat() const { return hud.GetProjectionMatrix(); }
 	ImVec2 GetWindowDimensions() const { return ImVec2(windowWidth, windowHeight); }

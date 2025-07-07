@@ -7,5 +7,6 @@ struct UIState
 	bool showMainMenu = false;
 	bool showOptionsMenu = false;
 	bool showFPSInHUD = false;
+	bool showTitleScreen = true;
 	// unsigned int playerHealth
 };

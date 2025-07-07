@@ -11,4 +11,7 @@ struct GameState
 	// Gameplay
 	float mouseSensitivity = 2.5f;
 
+	// Utils
+	float deltaTime = 0.0f;
+
 };
