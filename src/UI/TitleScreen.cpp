@@ -22,6 +22,10 @@ void TitleScreen::Draw()
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 
+    ImGuiIO& io = ImGui::GetIO();
+    ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", 24.0f);
+    ImGui::PushFont(titleFont);
+
     if (ImGui::Begin(" ", nullptr, windowFlags))
     {
         ImGui::Dummy(ImVec2(0.0f, 500.0f));
@@ -39,6 +43,8 @@ void TitleScreen::Draw()
         CentreNextItem(buttonSize.x);
         if (ImGui::Button("Quit to Desktop", buttonSize))
             glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
+
+        ImGui::PopFont();
         ImGui::End();
     }
 }

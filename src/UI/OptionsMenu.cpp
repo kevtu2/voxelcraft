@@ -16,6 +16,10 @@ void OptionsMenu::Draw()
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(windowCenter, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
+    ImGuiIO& io = ImGui::GetIO();
+    ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", 8.0f);
+    ImGui::PushFont(titleFont);
+
     if (ImGui::Begin("Options", nullptr, windowFlags))
     {
         ImGui::Checkbox("Show FPS", &uiState.showFPSInHUD);
@@ -31,6 +35,8 @@ void OptionsMenu::Draw()
             uiState.showMainMenu = true;
             uiState.showOptionsMenu = false;
         }
+
+        ImGui::PopFont();
         ImGui::End();
     }
 }

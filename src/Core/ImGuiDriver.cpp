@@ -13,9 +13,6 @@ ImGuiDriver::ImGuiDriver(GLFWwindow* window)
 	ImGuiIO& io = ImGui::GetIO();
 	scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
 
-	ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", 24.0f);
-	ImGui::PushFont(titleFont);
-
 	ImGui::StyleColorsDark();
 
 	// Setup scaling
