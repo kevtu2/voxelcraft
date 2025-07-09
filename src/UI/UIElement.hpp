@@ -12,4 +12,6 @@ protected:
 	int windowW, windowH;
 
 	virtual void Draw() = 0;
+
+	void CentreNextItem(float itemWidth);
 };

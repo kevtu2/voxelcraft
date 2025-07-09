@@ -25,6 +25,7 @@ void TitleScreen::Draw()
 
     if (ImGui::Begin(" ", nullptr, windowFlags))
     {
+        CentreNextItem(ImGui::CalcTextSize(titleCard));
         ImGui::Text("Welcome to Voxelcraft");
     }
     ImGui::End();
