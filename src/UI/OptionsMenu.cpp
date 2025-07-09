@@ -28,6 +28,6 @@ void OptionsMenu::Draw()
             uiState.showMainMenu = true;
             uiState.showOptionsMenu = false;
         }
+        ImGui::End();
     }
-    ImGui::End();
 }

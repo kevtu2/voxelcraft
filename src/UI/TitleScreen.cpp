@@ -33,13 +33,12 @@ void TitleScreen::Draw()
         if (ImGui::Button("Play Game", buttonSize))
         {
             uiState.showTitleScreen = false;
-            return;
+            glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
-
         ImGui::Dummy(ImVec2(0.0f, 50.0f));
         CentreNextItem(buttonSize.x);
         if (ImGui::Button("Quit to Desktop", buttonSize))
             glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
+        ImGui::End();
     }
-    ImGui::End();
 }

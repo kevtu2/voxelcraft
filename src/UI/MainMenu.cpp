@@ -56,6 +56,6 @@ void MainMenu::Draw()
         {
             uiState.quitGame = true;
         }
+        ImGui::End();
     }
-    ImGui::End();
 }

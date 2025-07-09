@@ -160,6 +160,13 @@ void Application::Run()
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// ImGui and UI drawing
+		imgui->StartGuiFrame();
+		uiManager->DrawComponents();
+		imgui->Render();
+
+		ApplyGameState();
+
 		if (!uiManager->ShouldShowTitleScreen())
 		{
 			shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
@@ -176,7 +183,6 @@ void Application::Run()
 			// Draw world chunks
 			Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 
-			// Determine where the character wants to move before calculating physics
 			if (!uiManager->GameShouldPause())
 			{
 				CalculateNewMousePosition();
@@ -200,12 +206,6 @@ void Application::Run()
 				crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
 			}
 		}
-		// ImGui and UI drawing
-		imgui->StartGuiFrame();
-		uiManager->DrawComponents();
-		imgui->Render();
-
-		ApplyGameState();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
