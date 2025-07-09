@@ -9,6 +9,7 @@
 #include "HUD.hpp"
 #include "Core/GameState.hpp"
 
+#define FONT_PATH "../resources/fonts/dogica/TTF/dogica.ttf"
 
 class GLFWwindow;
 

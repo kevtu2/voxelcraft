@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 
 MainMenu::MainMenu(UIState& state) : UIElement(state),
-    windowSize(ImVec2(500, 250)),
-    buttonSize(ImVec2(100, 20))
+    windowSize(ImVec2(650, 300)),
+    buttonSize(ImVec2(150, 40))
 {
 }
 
@@ -21,16 +21,23 @@ void MainMenu::Draw()
         ImGuiIO& io = ImGui::GetIO();
 
         // Main UI
+        CentreNextItem(ImGui::CalcTextSize("Voxelcraft").x);
         ImGui::Text("Voxelcraft");
-        ImGui::BulletText("Crafted with my tears. -Kevin");
+
+        ImGui::Spacing();
+        CentreNextItem(ImGui::CalcTextSize("Crafted with my tears. -Kevin").x);
+        ImGui::Text("Crafted with my tears. -Kevin");
+
+        ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+        CentreNextItem(ImGui::CalcTextSize("Application average x.xxx ms/frame (xxx.x FPS)").x);
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 
         ImGui::Spacing();
         ImGui::Separator();
-        ImGui::Spacing();
+        ImGui::Dummy(ImVec2(0.0f, 30.0f));
 
-        float windowWidth = ImGui::GetWindowSize().x;
-        ImGui::SetCursorPosX((windowWidth - buttonSize.x) * 0.5f);
+        CentreNextItem(buttonSize.x);
 
         if (ImGui::Button("Resume", buttonSize))
         {
@@ -41,7 +48,7 @@ void MainMenu::Draw()
         }
 
         ImGui::Spacing();
-        ImGui::SetCursorPosX((windowWidth - buttonSize.x) * 0.5f);
+        CentreNextItem(buttonSize.x);
 
         if (ImGui::Button("Options", buttonSize))
         {
@@ -50,7 +57,7 @@ void MainMenu::Draw()
         }
 
         ImGui::Spacing();
-        ImGui::SetCursorPosX((windowWidth - buttonSize.x) * 0.5f);
+        CentreNextItem(buttonSize.x);
 
         if (ImGui::Button("Quit Game", buttonSize))
         {
