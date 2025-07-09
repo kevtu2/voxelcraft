@@ -1,6 +1,8 @@
 #pragma once
 #include "UIElement.hpp"
 #include "UIState.hpp"
+#include <imgui.h>
+
 
 class OptionsMenu : public UIElement
 {
@@ -10,5 +12,7 @@ public:
 
 private:
 	GameState& gameState;
+	ImVec2 windowSize;
+	ImVec2 buttonSize;
 };
 

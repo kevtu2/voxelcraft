@@ -1,23 +1,16 @@
 #include "MainMenu.hpp"
 
-#include <imgui.h>
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-MainMenu::MainMenu(UIState& state) : UIElement(state)
+MainMenu::MainMenu(UIState& state) : UIElement(state),
+    windowSize(ImVec2(500, 250)),
+    buttonSize(ImVec2(100, 20))
 {
 }
 
 void MainMenu::Draw()
 {
-    ImGuiWindowFlags windowFlags =
-        ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoScrollbar |
-        ImGuiWindowFlags_NoCollapse;
-
-    ImVec2 windowSize = ImVec2(500, 250);
-    ImVec2 buttonSize = ImVec2(100, 20);
     ImVec2 windowCenter = ImGui::GetMainViewport()->GetCenter();
 
     ImGui::SetNextWindowSize(windowSize);
@@ -41,8 +34,8 @@ void MainMenu::Draw()
 
         if (ImGui::Button("Resume", buttonSize))
         {
-            state.pauseGame = false;
-            state.showMainMenu = false;
+            uiState.pauseGame = false;
+            uiState.showMainMenu = false;
             GLFWwindow* window = glfwGetCurrentContext();
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
@@ -52,8 +45,8 @@ void MainMenu::Draw()
 
         if (ImGui::Button("Options", buttonSize))
         {
-            state.showMainMenu = false;
-            state.showOptionsMenu = true;
+            uiState.showMainMenu = false;
+            uiState.showOptionsMenu = true;
         }
 
         ImGui::Spacing();
@@ -61,7 +54,7 @@ void MainMenu::Draw()
 
         if (ImGui::Button("Quit Game", buttonSize))
         {
-            state.quitGame = true;
+            uiState.quitGame = true;
         }
     }
     ImGui::End();

@@ -1,11 +1,15 @@
 #include "UIElement.hpp"
 
 #include <GLFW/glfw3.h>
-#include <imgui.h>
 
 UIElement::UIElement(UIState& state) :
-	state(state)
+	uiState(state)
 {
+	ImGuiWindowFlags windowFlags =
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoScrollbar |
+		ImGuiWindowFlags_NoCollapse;
 	glfwGetWindowSize(glfwGetCurrentContext(), &windowW, &windowH);
 }
 

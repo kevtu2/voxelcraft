@@ -1,6 +1,7 @@
 #pragma once
 #include "UIState.hpp"
 #include "Core/GameState.hpp"
+#include <imgui.h>
 
 class UIElement
 {
@@ -8,7 +9,8 @@ public:
 	UIElement(UIState& state);
 
 protected:
-	UIState& state;
+	UIState& uiState;
+	ImGuiWindowFlags windowFlags;
 	int windowW, windowH;
 
 	virtual void Draw() = 0;

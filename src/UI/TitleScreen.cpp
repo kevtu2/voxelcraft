@@ -3,30 +3,43 @@
 #include <imgui.h>
 #include <GLFW/glfw3.h>
 
-#include <string>
 
 
-TitleScreen::TitleScreen(UIState& uiState, GameState& gameState) : UIElement(uiState)
+TitleScreen::TitleScreen(UIState& uiState, GameState& gameState) : UIElement(uiState),
+    buttonSize(ImVec2(800, 100))
 {
-	std::string title = "Welcome to Voxelcraft";
-}
-
-void TitleScreen::Draw()
-{
-    ImGuiWindowFlags windowFlags =
+    windowFlags =
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoScrollbar |
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoTitleBar;
+}
+
+void TitleScreen::Draw()
+{
     ImVec2 windowSize = ImVec2(windowW, windowH);
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 
     if (ImGui::Begin(" ", nullptr, windowFlags))
     {
-        CentreNextItem(ImGui::CalcTextSize(titleCard));
+        ImGui::Dummy(ImVec2(0.0f, 500.0f));
+        CentreNextItem(ImGui::CalcTextSize(titleCard.c_str()).x);
         ImGui::Text("Welcome to Voxelcraft");
+
+        ImGui::Dummy(ImVec2(0.0f, 50.0f));
+        CentreNextItem(buttonSize.x);
+        if (ImGui::Button("Play Game", buttonSize))
+        {
+            uiState.showTitleScreen = false;
+            return;
+        }
+
+        ImGui::Dummy(ImVec2(0.0f, 50.0f));
+        CentreNextItem(buttonSize.x);
+        if (ImGui::Button("Quit to Desktop", buttonSize))
+            glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
     }
     ImGui::End();
 }

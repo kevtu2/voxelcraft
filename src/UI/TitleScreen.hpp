@@ -1,6 +1,7 @@
 #pragma once
 #include "UIElement.hpp"
-#include <vector>
+#include <string>
+
 
 class TitleScreen : public UIElement
 {
@@ -10,6 +11,7 @@ public:
 
 private:
 	float timeElapsed = 0.0f;
-	std::vector<char> titleCard;
+	std::string titleCard = "Welcome to Voxelcraft";
+	ImVec2 buttonSize;
 };
 
