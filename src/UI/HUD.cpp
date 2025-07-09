@@ -6,8 +6,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-HUD::HUD(UIState& state) : UIElement(state)
+HUD::HUD(UIState& state) : UIElement(state),
+	windowSize(ImVec2(150, 100))
 {
+	windowFlags |= ImGuiWindowFlags_NoBackground;
+
 	glfwGetWindowSize(glfwGetCurrentContext(), &windowW, &windowH);
 
 	// Setup crosshair
@@ -42,4 +45,15 @@ void HUD::Draw()
 	glLineWidth(1.5f);
 	glDrawArrays(GL_LINES, 0, 4);
 	glEnable(GL_DEPTH_TEST);
+
+	ImGui::SetNextWindowSize(windowSize);
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+
+	if (uiState.showFPSInHUD)
+	{
+		if (ImGui::Begin("Metrics"), nullptr, windowFlags)
+		{
+			ImGui::End();
+		}
+	}
 }

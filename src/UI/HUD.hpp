@@ -23,6 +23,7 @@ public:
 	glm::mat4 GetProjectionMatrix() const { return proj; }
 
 private:
+	ImVec2 windowSize;
 	// Crosshair attributes
 	unsigned int crosshairVAO, crosshairVBO;
 	glm::mat4 proj;
