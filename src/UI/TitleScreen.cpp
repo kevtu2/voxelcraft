@@ -17,12 +17,13 @@ void TitleScreen::Draw()
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoScrollbar |
-        ImGuiWindowFlags_NoCollapse;
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoTitleBar;
     ImVec2 windowSize = ImVec2(windowW, windowH);
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 
-    if (ImGui::Begin("Voxelcraft", nullptr, windowFlags))
+    if (ImGui::Begin(" ", nullptr, windowFlags))
     {
         ImGui::Text("Welcome to Voxelcraft");
     }

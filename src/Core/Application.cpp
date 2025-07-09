@@ -46,7 +46,7 @@ Application::Application()
 		exit(-1);
 	}
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_CAPTURED);
 
 	glViewport(0, 0, width, height);
 	glEnable(GL_DEPTH_TEST);
