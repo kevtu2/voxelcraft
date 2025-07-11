@@ -21,6 +21,7 @@ void UIManager::DrawComponents()
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui::PopFont();
 		ImFont* titleFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, 8.0f);
+		io.Fonts->Build();
 		ImGui::PushFont(titleFont);
 	}
 

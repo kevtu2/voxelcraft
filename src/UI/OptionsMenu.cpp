@@ -18,6 +18,7 @@ void OptionsMenu::Draw()
 
     ImGuiIO& io = ImGui::GetIO();
     ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", 8.0f);
+    io.Fonts->Build();
     ImGui::PushFont(titleFont);
 
     if (ImGui::Begin("Options", nullptr, windowFlags))

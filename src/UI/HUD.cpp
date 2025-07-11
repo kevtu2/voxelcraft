@@ -9,8 +9,6 @@
 HUD::HUD(UIState& state) : UIElement(state),
 	windowSize(ImVec2(150, 100))
 {
-	windowFlags |= ImGuiWindowFlags_NoBackground;
-
 	glfwGetWindowSize(glfwGetCurrentContext(), &windowW, &windowH);
 
 	// Setup crosshair
