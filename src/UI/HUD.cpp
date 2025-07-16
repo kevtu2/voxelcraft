@@ -9,7 +9,10 @@
 HUD::HUD(UIState& state) : UIElement(state),
 	windowSize(ImVec2(150, 100))
 {
+	int windowW, windowH;
 	glfwGetWindowSize(glfwGetCurrentContext(), &windowW, &windowH);
+	/*std::cout << "uiState dims: " << uiState.monitorWidth << "x" << uiState.monitorHeight << std::endl;
+	std::cout << "glfwGet dims: " << windowW << "x" << windowH << std::endl;*/
 
 	// Setup crosshair
 	glGenVertexArrays(1, &crosshairVAO);

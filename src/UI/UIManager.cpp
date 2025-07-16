@@ -1,5 +1,6 @@
 #include "UIManager.hpp"
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 UIManager::UIManager(GameState& gameState) :
 	window(glfwGetCurrentContext()),
@@ -9,7 +10,6 @@ UIManager::UIManager(GameState& gameState) :
 	optionsMenu(OptionsMenu(uiState, gameState)),
 	hud(HUD(uiState))
 {
-	glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
 }
 
 void UIManager::DrawComponents()

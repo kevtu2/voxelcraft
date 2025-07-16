@@ -26,8 +26,6 @@ private:
 	OptionsMenu optionsMenu;
 	HUD hud;
 
-	int windowWidth, windowHeight;
-
 public:
 	UIManager(GameState& gameState);
 
@@ -38,8 +36,6 @@ public:
 	inline bool ShouldShowTitleScreen() const { return uiState.showTitleScreen; }
 	
 	glm::mat4 GetHUDProjectionMat() const { return hud.GetProjectionMatrix(); }
-	ImVec2 GetWindowDimensions() const { return ImVec2(windowWidth, windowHeight); }
-
 };
 
 

@@ -2,6 +2,11 @@
 
 struct UIState
 {
+	// UI Properties
+	int monitorWidth;
+	int monitorHeight;
+
+	// UI States
 	bool quitGame = false;
 	bool pauseGame = false;
 	bool showMainMenu = false;

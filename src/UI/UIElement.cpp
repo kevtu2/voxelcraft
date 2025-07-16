@@ -11,8 +11,10 @@ UIElement::UIElement(UIState& state) :
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoCollapse;
-	glfwGetFramebufferSize(glfwGetCurrentContext(), &windowW, &windowH);
 	contentScale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	windowW = mode->width;
+	windowH = mode->height;
 }
 
 void UIElement::CentreNextItem(float itemWidth)
