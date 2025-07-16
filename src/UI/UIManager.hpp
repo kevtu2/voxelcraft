@@ -10,6 +10,8 @@
 #include "Core/GameState.hpp"
 
 #define FONT_PATH "../resources/fonts/dogica/TTF/dogica.ttf"
+#define SMALL_FONT_SIZE 8.0f
+#define LARGE_FONT_SIZE 24.0f
 
 class GLFWwindow;
 
@@ -25,6 +27,10 @@ private:
 	MainMenu mainMenu;
 	OptionsMenu optionsMenu;
 	HUD hud;
+
+	// Fonts
+	ImFont* menuFont = nullptr;
+	ImFont* titleFont = nullptr;
 
 public:
 	UIManager(GameState& gameState);

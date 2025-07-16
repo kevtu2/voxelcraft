@@ -14,7 +14,6 @@ TitleScreen::TitleScreen(UIState& uiState, GameState& gameState) : UIElement(uiS
         ImGuiWindowFlags_NoScrollbar |
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoTitleBar;
-    localFontSize = 24.0f;
 }
 
 void TitleScreen::Draw()
@@ -22,8 +21,6 @@ void TitleScreen::Draw()
     ImVec2 windowSize = ImVec2(windowW, windowH);
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
-
-    PushFont();
 
     if (ImGui::Begin(" ", nullptr, windowFlags))
     {
@@ -43,7 +40,6 @@ void TitleScreen::Draw()
         if (ImGui::Button("Quit to Desktop", buttonSize))
             glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
 
-        ImGui::PopFont();
         ImGui::End();
     }
 }

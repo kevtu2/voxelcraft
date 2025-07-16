@@ -1,6 +1,9 @@
 #include "UIManager.hpp"
+
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 UIManager::UIManager(GameState& gameState) :
 	window(glfwGetCurrentContext()),
@@ -10,21 +13,34 @@ UIManager::UIManager(GameState& gameState) :
 	optionsMenu(OptionsMenu(uiState, gameState)),
 	hud(HUD(uiState))
 {
+	ImGuiIO& io = ImGui::GetIO();
+	float scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
+	menuFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, SMALL_FONT_SIZE * scale);
+	titleFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, LARGE_FONT_SIZE * scale);
 }
 
 void UIManager::DrawComponents()
 {
 	if (uiState.showTitleScreen)
+	{
+		ImGui::PushFont(titleFont);
 		titleScreen.Draw();
-
-	if (uiState.showMainMenu)
-		mainMenu.Draw();
+		ImGui::PopFont();
+	}
 	else
-		hud.Draw();
+	{
+		ImGui::PushFont(menuFont);
 
-	if (uiState.showOptionsMenu)
-		optionsMenu.Draw();
+		if (uiState.showMainMenu)
+			mainMenu.Draw();
+		else
+			hud.Draw();
 
+		if (uiState.showOptionsMenu)
+			optionsMenu.Draw();
+
+		ImGui::PopFont();
+	}
 	if (uiState.quitGame)
 		glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
 }

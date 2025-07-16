@@ -16,8 +16,6 @@ void OptionsMenu::Draw()
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(windowCenter, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-    PushFont();
-
     if (ImGui::Begin("Options", nullptr, windowFlags))
     {
         ImGui::Checkbox("Show FPS", &uiState.showFPSInHUD);
@@ -34,7 +32,6 @@ void OptionsMenu::Draw()
             uiState.showOptionsMenu = false;
         }
 
-        ImGui::PopFont();
         ImGui::End();
     }
 }

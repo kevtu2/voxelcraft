@@ -16,8 +16,6 @@ void MainMenu::Draw()
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(windowCenter, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-    PushFont();
-
     if (ImGui::Begin("Main Menu", nullptr, windowFlags))
     {
         ImGuiIO& io = ImGui::GetIO();
@@ -45,8 +43,7 @@ void MainMenu::Draw()
         {
             uiState.pauseGame = false;
             uiState.showMainMenu = false;
-            GLFWwindow* window = glfwGetCurrentContext();
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
 
         ImGui::Spacing();
@@ -65,8 +62,6 @@ void MainMenu::Draw()
         {
             uiState.quitGame = true;
         }
-
-        ImGui::PopFont();
         ImGui::End();
     }
 }
