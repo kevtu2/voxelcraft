@@ -12,6 +12,7 @@ ImGuiDriver::ImGuiDriver(GLFWwindow* window)
 
 	ImGuiIO& io = ImGui::GetIO();
 	scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
+	io.DisplayFramebufferScale = ImVec2(1, 1);
 
 	ImGui::StyleColorsDark();
 
