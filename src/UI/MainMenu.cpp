@@ -17,7 +17,7 @@ void MainMenu::Draw()
     ImGui::SetNextWindowPos(windowCenter, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
     ImGuiIO& io = ImGui::GetIO();
-    ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", 8.0f * contentScale);
+    ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", 8.0f);
     ImGui::PushFont(titleFont);
 
     if (ImGui::Begin("Main Menu", nullptr, windowFlags))
