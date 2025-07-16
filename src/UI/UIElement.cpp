@@ -11,7 +11,7 @@ UIElement::UIElement(UIState& state) :
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoCollapse;
-	glfwGetWindowSize(glfwGetCurrentContext(), &windowW, &windowH);
+	glfwGetFramebufferSize(glfwGetCurrentContext(), &windowW, &windowH);
 	contentScale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
 }
 

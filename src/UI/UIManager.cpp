@@ -9,7 +9,7 @@ UIManager::UIManager(GameState& gameState) :
 	optionsMenu(OptionsMenu(uiState, gameState)),
 	hud(HUD(uiState))
 {
-	glfwGetWindowSize(window, &windowWidth, &windowHeight);
+	glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
 }
 
 void UIManager::DrawComponents()
