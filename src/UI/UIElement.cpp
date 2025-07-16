@@ -22,3 +22,11 @@ void UIElement::CentreNextItem(float itemWidth)
 	float avail = ImGui::GetContentRegionAvail().x;
 	ImGui::SetCursorPosX((avail - itemWidth) * 0.5f);
 }
+
+void UIElement::PushFont()
+{
+	ImGuiIO& io = ImGui::GetIO();
+	ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", localFontSize * contentScale);
+	io.Fonts->Build();
+	ImGui::PushFont(titleFont);
+}

@@ -14,6 +14,7 @@ TitleScreen::TitleScreen(UIState& uiState, GameState& gameState) : UIElement(uiS
         ImGuiWindowFlags_NoScrollbar |
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoTitleBar;
+    localFontSize = 24.0f;
 }
 
 void TitleScreen::Draw()
@@ -22,9 +23,7 @@ void TitleScreen::Draw()
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 
-    ImGuiIO& io = ImGui::GetIO();
-    ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", 24.0f);
-    ImGui::PushFont(titleFont);
+    PushFont();
 
     if (ImGui::Begin(" ", nullptr, windowFlags))
     {

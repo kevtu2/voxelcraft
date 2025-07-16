@@ -16,10 +16,7 @@ void OptionsMenu::Draw()
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(windowCenter, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-    ImGuiIO& io = ImGui::GetIO();
-    ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", 8.0f);
-    io.Fonts->Build();
-    ImGui::PushFont(titleFont);
+    PushFont();
 
     if (ImGui::Begin("Options", nullptr, windowFlags))
     {

@@ -13,8 +13,10 @@ protected:
 	ImGuiWindowFlags windowFlags;
 	int contentScale;
 	int windowW, windowH;
+	float localFontSize = 8.0f;
 
 	virtual void Draw() = 0;
 
 	void CentreNextItem(float itemWidth);
+	void PushFont();
 };
