@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "world/Player.hpp"
+#include "World/Player.hpp"
 
 #include <memory>
 

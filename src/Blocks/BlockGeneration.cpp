@@ -1,6 +1,6 @@
 #include "BlockGeneration.hpp"
 
-#include "graphics/vertex.hpp"
+#include "Graphics/Vertex.hpp"
 #include <vector>
 
 

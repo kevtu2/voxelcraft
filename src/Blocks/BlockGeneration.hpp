@@ -1,6 +1,6 @@
 #pragma once
-#include "blocks/Block.hpp"
-#include "world/ChunkMesh.hpp"
+#include "Blocks/Block.hpp"
+#include "World/ChunkMesh.hpp"
 
 #include <glm/glm.hpp>
 
