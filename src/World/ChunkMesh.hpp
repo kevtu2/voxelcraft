@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/Vertex.hpp"
+#include "Graphics/Vertex.hpp"
 
 #include <vector>
 
