@@ -9,6 +9,8 @@
 
 #include "Physics/Physics.hpp"
 
+#include <imgui_impl_glfw.h>
+
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 Application::Application()
@@ -30,7 +32,9 @@ Application::Application()
 	width = mode->width;
 	height = mode->height;
 
-	window = glfwCreateWindow(width, height, "voxelcraft", primaryMonitor, NULL);
+	float mainScale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
+
+	window = glfwCreateWindow((int)(width * mainScale), (int)(height * mainScale), "voxelcraft", primaryMonitor, NULL);
 	if (window == NULL)
 	{
 		std::cerr << "Failed to create a GLFW window" << std::endl;
@@ -70,7 +74,6 @@ Application::Application()
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
 	uiManager = std::make_unique<UIManager>(gameState);
-
 }
 
 void Application::CalculateNewMousePosition()

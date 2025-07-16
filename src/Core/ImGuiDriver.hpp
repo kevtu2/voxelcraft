@@ -10,6 +10,8 @@ public:
 	void StartGuiFrame();
 	void Render();
 
+	float GetMainScale() const { return scale; }
+
 private:
 	float scale;
 };
