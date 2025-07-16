@@ -25,9 +25,8 @@ UIManager::UIManager(GameState& gameState) :
 	style.ScaleAllSizes(dpi_scale);
 
 	ImGuiIO& io = ImGui::GetIO();
-	float scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
-	menuFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, SMALL_FONT_SIZE * scale);
-	titleFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, LARGE_FONT_SIZE * scale);
+	menuFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, SMALL_FONT_SIZE * dpi_scale);
+	titleFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, LARGE_FONT_SIZE * dpi_scale);
 }
 
 void UIManager::DrawComponents()
