@@ -173,7 +173,6 @@ void Application::Run()
 			/* --- Draw 3D world--- */
 			shaderProgram.UseProgram();
 
-			// Draw world chunks
 			Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
 
 			if (!uiManager->GameShouldPause())
