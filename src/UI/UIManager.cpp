@@ -13,6 +13,17 @@ UIManager::UIManager(GameState& gameState) :
 	optionsMenu(OptionsMenu(uiState, gameState)),
 	hud(HUD(uiState))
 {
+	float xscale, yscale;
+	glfwGetWindowContentScale(window, &xscale, &yscale);
+
+	// Use average of X and Y scale — usually they're the same
+	float dpi_scale = (xscale + yscale) * 0.5f;
+
+	// Scale style
+	ImGuiStyle& style = ImGui::GetStyle();
+	style = ImGuiStyle(); // reset
+	style.ScaleAllSizes(dpi_scale);
+
 	ImGuiIO& io = ImGui::GetIO();
 	float scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
 	menuFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, SMALL_FONT_SIZE * scale);

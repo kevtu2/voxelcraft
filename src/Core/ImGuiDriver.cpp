@@ -12,14 +12,14 @@ ImGuiDriver::ImGuiDriver(GLFWwindow* window)
 
 	ImGuiIO& io = ImGui::GetIO();
 	scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
-	io.DisplayFramebufferScale = ImVec2(1, 1);
+	//io.DisplayFramebufferScale = ImVec2(1, 1);
 
 	ImGui::StyleColorsDark();
 
-	// Setup scaling
-	ImGuiStyle& style = ImGui::GetStyle();
-	style.ScaleAllSizes(scale);
-	style.FontScaleDpi = scale;
+	//// Setup scaling
+	//ImGuiStyle& style = ImGui::GetStyle();
+	//style.ScaleAllSizes(scale);
+	//style.FontScaleDpi = scale;
 
 	// Setup backends
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
