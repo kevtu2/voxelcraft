@@ -32,9 +32,9 @@ Application::Application()
 	width = mode->width;
 	height = mode->height;
 
-	float mainScale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
+	float contentScale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
 
-	window = glfwCreateWindow((int)(width * mainScale), (int)(height * mainScale), "voxelcraft", primaryMonitor, NULL);
+	window = glfwCreateWindow((int)(width * contentScale), (int)(height * contentScale), "voxelcraft", primaryMonitor, NULL);
 	if (window == NULL)
 	{
 		std::cerr << "Failed to create a GLFW window" << std::endl;

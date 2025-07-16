@@ -23,7 +23,7 @@ void TitleScreen::Draw()
     ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 
     ImGuiIO& io = ImGui::GetIO();
-    ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", 24.0f);
+    ImFont* titleFont = io.Fonts->AddFontFromFileTTF("../resources/fonts/dogica/TTF/dogica.ttf", 24.0f * contentScale);
     ImGui::PushFont(titleFont);
 
     if (ImGui::Begin(" ", nullptr, windowFlags))

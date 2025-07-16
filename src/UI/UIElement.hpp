@@ -12,6 +12,7 @@ protected:
 	UIState& uiState;
 	ImGuiWindowFlags windowFlags;
 	int windowW, windowH;
+	int contentScale;
 
 	virtual void Draw() = 0;
 

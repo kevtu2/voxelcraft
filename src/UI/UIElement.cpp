@@ -1,7 +1,7 @@
 #include "UIElement.hpp"
 
 #include <GLFW/glfw3.h>
-
+#include <imgui_impl_glfw.h>
 
 UIElement::UIElement(UIState& state) :
 	uiState(state)
@@ -12,6 +12,7 @@ UIElement::UIElement(UIState& state) :
 		ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_NoCollapse;
 	glfwGetWindowSize(glfwGetCurrentContext(), &windowW, &windowH);
+	contentScale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
 }
 
 void UIElement::CentreNextItem(float itemWidth)
