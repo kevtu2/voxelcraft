@@ -19,7 +19,7 @@ UIElement::UIElement(UIState& state) :
 
 void UIElement::CentreNextItem(float itemWidth)
 {
-	float avail = ImGui::GetWindowWidth();
+	float avail = ImGui::GetWindowWidth() / contentScale;
 	ImGui::SetCursorPosX((avail - itemWidth) * 0.5f);
 }
 
