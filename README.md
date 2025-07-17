@@ -10,7 +10,7 @@ I am planning on adding more features in the future such as:
   - [x] Lighting
   - [x] Player & block collisions
   - [x] Gravity
-  - [ ] ImGui integration for metrics
+  - [x] ImGui integration for metrics
   - [ ] Day and night cycle
   - [ ] Block placement/destruction
   - [ ] Gameplay aspects such as a health bar, inventory, etc.
