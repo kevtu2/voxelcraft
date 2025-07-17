@@ -23,8 +23,8 @@ private:
 	int height;
 
 	// Application runtime properties
-	float deltaTime;
-	float lastTime;
+	float deltaTime = 0.0f;
+	float lastTime = 0.0f;
 
 	// UI
 	std::shared_ptr<ImGuiDriver> imgui;
@@ -58,6 +58,6 @@ public:
 	float mouseY;
 	float lastX = 0.0f;
 	float lastY = 0.0f;
-	bool firstMouseInput;
+	bool firstMouseInput = true;
 	bool overrideMouseCalculation = false;
 };

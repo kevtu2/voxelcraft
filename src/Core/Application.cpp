@@ -14,11 +14,6 @@
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 Application::Application()
-	: deltaTime(0.0f),
-	lastTime(0.0f),
-	firstMouseInput(true),
-	mouseX(400.0f),
-	mouseY(300.0f)
 {
 	// Initialize GLFW
 	glfwInit();
@@ -31,6 +26,9 @@ Application::Application()
 	const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
 	width = mode->width;
 	height = mode->height;
+
+	mouseX = width / 2;
+	mouseY = height / 2;
 
 	window = glfwCreateWindow(width, height, "voxelcraft", primaryMonitor, NULL);
 	if (window == NULL)
