@@ -7,14 +7,13 @@ class UIElement
 {
 public:
 	UIElement(UIState& state);
+	virtual void Draw() = 0;
 
 protected:
 	UIState& uiState;
 	ImGuiWindowFlags windowFlags;
 	int contentScale;
 	int windowW, windowH;
-
-	virtual void Draw() = 0;
 
 	void CentreNextItem(float itemWidth);
 };
