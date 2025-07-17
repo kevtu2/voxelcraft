@@ -21,8 +21,7 @@ I am planning on adding more features in the future such as:
 * WASD to move around
 * Use the mouse to look around
 * SPACE to jump [NEW!]
-* Q to pan down [REMOVED]
-* E to pan up [REMOVED]
+* ESC to pause game [NEW!]
 
 ## Installation
 

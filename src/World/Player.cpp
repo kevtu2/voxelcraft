@@ -10,7 +10,8 @@ Player::Player(int width, int height)
 	lastPosition(position),
 	lookDirection(glm::vec3(-1.0f, 0.0f, 0.0f)),
 	cameraSpeed(10.5f),
-	cameraSensitivity(0.1f),
+	cameraSensitivity(2.5f),
+	FOV(45.0f),
 	yaw(-90.0f),
 	pitch(0.0f),
 	aabb(AABB(position, 2.0f, 1.0f)), // Centre the box and move down, w/ height = 2 and width = 1
@@ -22,8 +23,8 @@ Player::Player(int width, int height)
 	cameraUp = glm::cross(lookDirection, cameraRight);
 
 	projection = glm::mat4(1.0f);
-	float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
-	projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 512.0f);
+	aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+	projection = glm::perspective(glm::radians(FOV), aspectRatio, 0.1f, 512.0f);
 }
 
 glm::mat4 Player::GetViewMatrix() const
@@ -83,8 +84,8 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 
 void Player::UpdatePlayerLookAt(float deltaTime, double xPos, double yPos)
 {
-	xPos = xPos * cameraSensitivity;
-	yPos = yPos * cameraSensitivity;
+	xPos = xPos * cameraSensitivity * deltaTime;
+	yPos = yPos * cameraSensitivity * deltaTime;
 
 	yaw += xPos;
 	pitch += yPos;

@@ -20,7 +20,9 @@ private:
 	glm::vec3 cameraRight;
 	glm::vec3 cameraUp;
 	const float cameraSpeed;
-	const float cameraSensitivity;
+	float cameraSensitivity;
+	float aspectRatio;
+	float FOV;
 
 	float yaw;
 	float pitch;
@@ -41,8 +43,13 @@ public:
 
 	inline glm::vec3 GetPlayerPosition() const { return position; }
 	inline glm::vec3 GetVelocity() const { return velocity; }
+
 	inline void SetVelocity(const glm::vec3& value) { velocity = value; }
 	inline void AddVelocity(const glm::vec3& value) { velocity += value; }
+
+	inline void SetFOV(float value) { projection = glm::perspective(glm::radians(value), aspectRatio, 0.1f, 512.0f); }
+	inline void SetMouseSensitivity(float value) { cameraSensitivity = glm::clamp(value, 0.1f, 10.f); }
+
 	void SetIsGrounded(bool value) { isGrounded = value; }
 	AABB GetAABBCollision() const { return aabb; }
 

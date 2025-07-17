@@ -49,6 +49,22 @@ public:
 	void DrawChunks();
 	BlockType FindBlock(int x, int y, int z) const;
 
-	void setRenderDistance(unsigned int renderDistance);
+	inline void setRenderDistance(unsigned int value)
+	{
+		{
+			if (value > 32)
+			{
+				renderDistance = 32;
+			}
+			else if (value < 5)
+			{
+				renderDistance = 5;
+			}
+			else
+			{
+				renderDistance = value;
+			}
+		}
+	}
 	unsigned int getRenderDistance() const { return renderDistance; }
 };

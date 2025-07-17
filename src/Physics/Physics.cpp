@@ -177,9 +177,7 @@ void Physics::CalculateCollisions(std::shared_ptr<Player> player, const glm::vec
 void Physics::CalculateGravity(std::shared_ptr<Player> player, float deltaTime)
 {
 	glm::vec3 vel = player->GetVelocity();
-	std::cout << "vel.y before: " << vel.y << std::endl;
 	vel.y += (GRAVITY * deltaTime);
 	vel.y = std::max(vel.y, TERMINAL_VEL);
-	std::cout << "vel.y " << vel.y << std::endl;
 	player->SetVelocity(vel);
 }
