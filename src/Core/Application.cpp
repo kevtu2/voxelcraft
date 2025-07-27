@@ -1,6 +1,7 @@
 #include "Application.hpp"
 
 #include <iostream>
+#include <thread>
 
 #include "Graphics/VoxelShader.hpp"
 #include "Graphics/Renderer.hpp"
@@ -72,6 +73,15 @@ Application::Application()
 	uiManager = std::make_unique<UIManager>(gameState);
 }
 
+Application::~Application()
+{
+	if (window != NULL)
+	{
+		glfwDestroyWindow(window);
+	}
+	glfwTerminate();
+}
+
 void Application::CalculateNewMousePosition()
 {
 	if (overrideMouseCalculation)
@@ -94,15 +104,6 @@ void Application::CalculateNewMousePosition()
 	mouseY = yPos;
 
 	player->UpdatePlayerLookAt(deltaTime, xOffset, yOffset);
-}
-
-Application::~Application()
-{
-	if (window != NULL)
-	{
-		glfwDestroyWindow(window);
-	}
-	glfwTerminate();
 }
 
 void Application::ProcessInput()
