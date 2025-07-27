@@ -1,6 +1,8 @@
 #pragma once
 #include <GLFW/glfw3.h>
 
+#define USER_DEFAULT_SCREEN_DPI 96
+
 class ImGuiDriver
 {
 public:
@@ -10,9 +12,6 @@ public:
 	void StartGuiFrame();
 	void Render();
 
-	float GetMainScale() const { return scale; }
 
-private:
-	float scale;
 };
 
