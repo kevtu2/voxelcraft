@@ -16,4 +16,6 @@ protected:
 	int windowW, windowH;
 
 	void CentreNextItem(float itemWidth);
+	ImVec2 EmVec2(float x, float y) { float k = ImGui::GetFontSize(); return ImVec2(k * x, k * y); }
+
 };

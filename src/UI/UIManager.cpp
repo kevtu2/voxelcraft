@@ -21,7 +21,6 @@ UIManager::UIManager(GameState& gameState) :
 
 	float dpiScale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
 	style.ScaleAllSizes(dpiScale);
-	//io.FontGlobalScale = dpiScale;
 }
 
 void UIManager::DrawComponents()
