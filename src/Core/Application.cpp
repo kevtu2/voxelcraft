@@ -29,8 +29,15 @@ Application::Application()
 	// Create the main application window
 	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
-	width = mode->width;
-	height = mode->height;
+
+	float xScale, yScale;
+	glfwGetMonitorContentScale(primaryMonitor, &xScale, &yScale);
+	float dpiScale = xScale;
+
+	width = mode->width / dpiScale;
+	height = mode->height / dpiScale;
+
+	std::cout << "Width: " << width << " Height: " << height << std::endl; 
 
 	window = glfwCreateWindow(width, height, "voxelcraft", primaryMonitor, NULL);
 	if (window == NULL)
@@ -72,6 +79,8 @@ Application::Application()
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
 	uiManager = std::make_unique<UIManager>(gameState);
+	uiManager->uiState.monitorWidth = width;
+	uiManager->uiState.monitorHeight = height;	
 }
 
 void Application::CalculateNewMousePosition()

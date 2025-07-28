@@ -18,7 +18,7 @@ TitleScreen::TitleScreen(UIState& uiState, GameState& gameState) : UIElement(uiS
 
 void TitleScreen::Draw()
 {
-    ImVec2 windowSize = ImVec2(windowW, windowH);
+    ImVec2 windowSize = ImVec2(uiState.monitorWidth, uiState.monitorHeight);
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 
