@@ -47,6 +47,7 @@ public:
 	void UpdateChunks(const Player& player);
 	void GenerateChunks();
 	void DrawChunks();
+	FastNoiseLite& GetNoiseInstance() { return perlinNoise; }
 	BlockType FindBlock(int x, int y, int z) const;
 
 	inline void setRenderDistance(unsigned int value)

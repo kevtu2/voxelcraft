@@ -34,11 +34,9 @@ private:
 	// Use to identify which blocks are contained in the chunk
 	std::array<unsigned char, CHUNK_BLOCK_COUNT> blocks;
 	
-	FastNoiseLite perlinNoise;
-
 public:
-	Chunk();
-	Chunk(int x, int y, int z, FastNoiseLite noise);
+	Chunk(const FastNoiseLite& perlinNoise);
+	Chunk(int x, int y, int z, const FastNoiseLite& perlinNoise);
 
 	~Chunk();
 
@@ -60,7 +58,7 @@ public:
 
 	BlockType GetBlock(int x, int y, int z) const;
 
-	void GenerateBlockData();
+	void GenerateBlockData(const FastNoiseLite& perlinNoise);
 	void GenerateChunkMesh(World* world);
 
 	bool IsReady() const { return chunkReady; }

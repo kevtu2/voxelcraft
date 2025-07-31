@@ -4,25 +4,24 @@
 #include "Blocks/BlockGeneration.hpp"
 #include "Graphics/Vertex.hpp"
 
-Chunk::Chunk()
+Chunk::Chunk(const FastNoiseLite& perlinNoise)
 {
 	glGenBuffers(1, &chunkVBO_ID);
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
 	position = glm::ivec3(0, 0, 0);
 	chunkMesh = std::make_unique<ChunkMesh>();
-	GenerateBlockData();
+	GenerateBlockData(perlinNoise);
 }
 
-Chunk::Chunk(int x, int y, int z, FastNoiseLite noise)
-	: position(glm::ivec3(x, y, z)),
-	perlinNoise(noise)
+Chunk::Chunk(int x, int y, int z, const FastNoiseLite& perlinNoise)
+	: position(glm::ivec3(x, y, z))
 {
 	glGenBuffers(1, &chunkVBO_ID);
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
 	chunkMesh = std::make_unique<ChunkMesh>();
-	GenerateBlockData();
+	GenerateBlockData(perlinNoise);
 }
 
 
@@ -103,7 +102,7 @@ void Chunk::DrawArrays() const
 }
 
 
-void Chunk::GenerateBlockData()
+void Chunk::GenerateBlockData(const FastNoiseLite& perlinNoise)
 {
 	for (int x = 0; x < CHUNK_X; ++x)
 	{
@@ -133,6 +132,7 @@ void Chunk::GenerateBlockData()
 void Chunk::GenerateChunkMesh(World* world)
 {
 	chunkMesh->Clear();
+	FastNoiseLite& perlinNoise = world->GetNoiseInstance();
 	for (int x = 0; x < CHUNK_X; ++x)
 	{
 		for (int z = 0; z < CHUNK_Z; ++z)
