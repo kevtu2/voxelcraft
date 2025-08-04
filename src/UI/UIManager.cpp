@@ -20,7 +20,7 @@ UIManager::UIManager(GameState& gameState) :
 	titleFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, LARGE_FONT_SIZE);
 
 	float dpiScale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
-	style.ScaleAllSizes(dpiScale);
+	// style.ScaleAllSizes(dpiScale);
 }
 
 void UIManager::DrawComponents()

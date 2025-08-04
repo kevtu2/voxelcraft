@@ -3,6 +3,8 @@
 #include "World.hpp"
 #include "Blocks/BlockGeneration.hpp"
 #include "Graphics/Vertex.hpp"
+#include <cstdint>
+#include <iostream>
 
 Chunk::Chunk()
 {
@@ -10,6 +12,7 @@ Chunk::Chunk()
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
 	position = glm::ivec3(0, 0, 0);
+	blocks.fill(static_cast<BlockType>(AIR));
 	chunkMesh = std::make_unique<ChunkMesh>();
 	GenerateBlockData();
 }
@@ -21,6 +24,7 @@ Chunk::Chunk(int x, int y, int z, FastNoiseLite noise)
 	glGenBuffers(1, &chunkVBO_ID);
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
+	blocks.fill(static_cast<BlockType>(AIR));
 	chunkMesh = std::make_unique<ChunkMesh>();
 	GenerateBlockData();
 }
@@ -72,6 +76,7 @@ Chunk& Chunk::operator=(Chunk&& o) noexcept
 
 void Chunk::BufferData() const
 {
+	// std::cout << "Vertices: " << chunkMesh->chunkVertexData.size() << ", Indices: " << chunkMesh->chunkIndexData.size() << std::endl;
 	glBindVertexArray(chunkVAO_ID);
 
 	glBindBuffer(GL_ARRAY_BUFFER, chunkVBO_ID);
@@ -102,7 +107,6 @@ void Chunk::DrawArrays() const
 	glBindVertexArray(0);
 }
 
-
 void Chunk::GenerateBlockData()
 {
 	for (int x = 0; x < CHUNK_X; ++x)
@@ -114,7 +118,7 @@ void Chunk::GenerateBlockData()
 			float noiseVal = perlinNoise.GetNoise(globalX, globalZ);
 			float normalizedVal = noiseVal * 0.5f + 0.5f;
 			int height = static_cast<int>(normalizedVal * surfaceY);
-		
+
 			for (int y = 0; y <= height; ++y)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
@@ -122,11 +126,6 @@ void Chunk::GenerateBlockData()
 				else blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
 			}
 		}
-	}
-
-	for (int i = 0; i < blocks.size(); ++i)
-	{
-		if (blocks[i] == 205) blocks[i] = BlockType::AIR;
 	}
 }
 
@@ -156,7 +155,7 @@ void Chunk::GenerateChunkMesh(World* world)
 				const BlockType upBlock		= world->FindBlock(blockWorldPos.x, blockWorldPos.y + 1, blockWorldPos.z);
 				const BlockType downBlock	= world->FindBlock(blockWorldPos.x, blockWorldPos.y - 1, blockWorldPos.z);
 
-				unsigned char cullingFlag = 0;
+				uint8_t cullingFlag = 0;
 				cullingFlag |= Block::IsTransparent(southBlock) ? 0 : CULL_POS_Z;
 				cullingFlag |= Block::IsTransparent(northBlock) ? 0 : CULL_NEG_Z;
 				cullingFlag |= Block::IsTransparent(eastBlock)	? 0 : CULL_POS_X;
@@ -164,12 +163,12 @@ void Chunk::GenerateChunkMesh(World* world)
 				cullingFlag |= Block::IsTransparent(upBlock)	? 0 : CULL_POS_Y;
 				cullingFlag |= Block::IsTransparent(downBlock)	? 0 : CULL_NEG_Y;
 
-				if ((cullingFlag & CULL_POS_Z) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, SOUTH);
-				if ((cullingFlag & CULL_NEG_Z) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, NORTH);
-				if ((cullingFlag & CULL_POS_X) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, EAST);
-				if ((cullingFlag & CULL_NEG_X) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, WEST);
-				if ((cullingFlag & CULL_POS_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, UP);
-				if ((cullingFlag & CULL_NEG_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, DOWN);
+				if ((cullingFlag & CULL_POS_Z) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, SOUTH); std::cout << "culling +Z" << std::endl;}
+				if ((cullingFlag & CULL_NEG_Z) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, NORTH); std::cout << "culling -Z" << std::endl;}
+				if ((cullingFlag & CULL_POS_X) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, EAST); std::cout << "culling +X" << std::endl;}
+				if ((cullingFlag & CULL_NEG_X) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, WEST); std::cout << "culling -X" << std::endl;}
+				if ((cullingFlag & CULL_POS_Y) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, UP); std::cout << "culling +Y" << std::endl;}
+				if ((cullingFlag & CULL_NEG_Y) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, DOWN); std::cout << "culling -Y" << std::endl;}
 			}
 		}
 	}

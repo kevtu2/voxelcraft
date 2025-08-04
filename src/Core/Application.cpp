@@ -195,7 +195,7 @@ void Application::Run()
 				// Physics::CheckCollisions(player, world, deltaTime);
 				player->Move(deltaTime);
 				glm::vec3 pos = player->GetPlayerPosition();
-				std::cout << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
+				// std::cout << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
 
 				shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
 				shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());

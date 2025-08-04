@@ -57,7 +57,6 @@ void Block::AssignBlockInfo(BlockType blockType)
 	}
 }
 
-
 bool Block::IsTransparent(BlockType blockType)
 {
 	switch (blockType) {
@@ -79,6 +78,8 @@ bool Block::IsTransparent(BlockType blockType)
 		return false;
 	case LEAVES:
 		return true;
+	default:
+		return false;
 	}
 }
 
