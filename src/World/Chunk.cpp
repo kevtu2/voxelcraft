@@ -163,13 +163,12 @@ void Chunk::GenerateChunkMesh(World* world)
 				cullingFlag |= Block::IsTransparent(upBlock)	? 0 : CULL_POS_Y;
 				cullingFlag |= Block::IsTransparent(downBlock)	? 0 : CULL_NEG_Y;
 
-				if ((cullingFlag & CULL_POS_Z) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, SOUTH); std::cout << "culling +Z" << std::endl;}
-				if ((cullingFlag & CULL_NEG_Z) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, NORTH); std::cout << "culling -Z" << std::endl;}
-				if ((cullingFlag & CULL_POS_X) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, EAST); std::cout << "culling +X" << std::endl;}
-				if ((cullingFlag & CULL_NEG_X) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, WEST); std::cout << "culling -X" << std::endl;}
-				if ((cullingFlag & CULL_POS_Y) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, UP); std::cout << "culling +Y" << std::endl;}
-				if ((cullingFlag & CULL_NEG_Y) == 0) {BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, DOWN); std::cout << "culling -Y" << std::endl;}
-			}
+				if ((cullingFlag & CULL_POS_Z) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, SOUTH);
+				if ((cullingFlag & CULL_NEG_Z) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, NORTH);
+				if ((cullingFlag & CULL_POS_X) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, EAST);
+				if ((cullingFlag & CULL_NEG_X) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, WEST);
+				if ((cullingFlag & CULL_POS_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, UP);
+				if ((cullingFlag & CULL_NEG_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, DOWN);
 		}
 	}
 	BufferData();
