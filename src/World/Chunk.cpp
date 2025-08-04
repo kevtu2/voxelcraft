@@ -169,6 +169,7 @@ void Chunk::GenerateChunkMesh(World* world)
 				if ((cullingFlag & CULL_NEG_X) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, WEST);
 				if ((cullingFlag & CULL_POS_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, UP);
 				if ((cullingFlag & CULL_NEG_Y) == 0) BlockGeneration::GenerateFace(chunkMesh.get(), currentBlock, blockWorldPos, DOWN);
+			}
 		}
 	}
 	BufferData();
