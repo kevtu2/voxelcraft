@@ -11,8 +11,8 @@ I am planning on adding more features in the future such as:
   - [x] Player & block collisions
   - [x] Gravity
   - [x] ImGui integration for metrics
-  - [ ] Day and night cycle
   - [ ] Block placement/destruction
+  - [ ] Day and night cycle
   - [ ] Gameplay aspects such as a health bar, inventory, etc.
   - [ ] Cool world destruction superpowers (For gameplay) 
  
