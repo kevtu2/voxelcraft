@@ -9,7 +9,7 @@
 HUD::HUD(UIState& state) : UIElement(state),
 	windowSize(ImVec2(200, 100))
 {
-	windowFlags |= ImGuiWindowFlags_NoTitleBar;
+	windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing;
 
 	// Setup crosshair
 	glGenVertexArrays(1, &crosshairVAO);

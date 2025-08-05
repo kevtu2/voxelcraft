@@ -37,11 +37,10 @@ void UIManager::DrawComponents()
 
 		if (uiState.showMainMenu)
 			mainMenu.Draw();
+		else if (uiState.showOptionsMenu)
+			optionsMenu.Draw();
 		else
 			hud.Draw();
-
-		if (uiState.showOptionsMenu)
-			optionsMenu.Draw();
 
 		ImGui::PopFont();
 	}
