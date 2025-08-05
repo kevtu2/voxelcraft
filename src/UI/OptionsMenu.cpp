@@ -1,5 +1,5 @@
 #include "OptionsMenu.hpp"
-
+#include "GLFW/glfw3.h"
 
 OptionsMenu::OptionsMenu(UIState& state, GameState& gameState) :
     UIElement(state),
@@ -24,7 +24,16 @@ void OptionsMenu::Draw()
         ImGui::SliderFloat("Mouse Sensitivity", &gameState.mouseSensitivity, 0.1f, 10.0f);
         ImGui::Separator();
 
-        ImGui::Dummy(ImVec2(0.0f, 100.0f));
+        ImGui::Dummy(ImVec2(0.0f, 50.0f));
+
+        CentreNextItem(buttonSize.x);
+        if (ImGui::Button("Resume", buttonSize))
+        {
+            uiState.showOptionsMenu = false;
+            uiState.pauseGame = false;
+            glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+
         CentreNextItem(buttonSize.x);
         if (ImGui::Button("Back", buttonSize))
         {
