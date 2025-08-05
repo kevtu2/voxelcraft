@@ -118,9 +118,6 @@ Application::~Application()
 
 void Application::ProcessInput()
 {
-	/*if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GLFW_TRUE);*/
-
 	// Assume player not moving initially
 	if (player->GetVelocity() != glm::vec3(0.0f))
 		player->SetVelocity(glm::vec3(0.0f, player->GetVelocity().y, 0.0f));
@@ -136,13 +133,6 @@ void Application::ProcessInput()
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		player->HandleInputControls(C_RIGHT, deltaTime);
-	
-	// Maybe used for freecam mode?
-	/*if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-		player->HandleInputControls(C_DOWN, deltaTime);
-
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-		player->HandleInputControls(C_UP, deltaTime);*/
 }
 
 void Application::Run()

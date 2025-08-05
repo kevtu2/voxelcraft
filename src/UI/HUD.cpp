@@ -7,8 +7,10 @@
 #include <iostream>
 
 HUD::HUD(UIState& state) : UIElement(state),
-	windowSize(ImVec2(150, 100))
+	windowSize(ImVec2(200, 100))
 {
+	windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing;
+
 	// Setup crosshair
 	glGenVertexArrays(1, &crosshairVAO);
 	glGenBuffers(1, &crosshairVBO);
@@ -53,13 +55,25 @@ void HUD::Draw()
 	glEnable(GL_DEPTH_TEST);
 
 	ImGui::SetNextWindowSize(windowSize);
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowPos(ImVec2(10, 10));
+	ImGui::SetNextWindowBgAlpha(0.5f);
+
+	ImGuiIO& io = ImGui::GetIO();
 
 	if (uiState.showFPSInHUD)
 	{
-		if (ImGui::Begin("Metrics"), nullptr, windowFlags)
+		if (ImGui::Begin("Metrics", nullptr, windowFlags))
 		{
+			CentreNextItem(ImGui::CalcTextSize("xxx FPS").x);
+			ImGui::Text("%d FPS", (int)io.Framerate);
+			
+			ImGui::Spacing();
+
+			CentreNextItem(ImGui::CalcTextSize("%.3f ms/frame").x);
+			ImGui::Text("%.3f ms/frame", 1000.0f / io.Framerate);
 			ImGui::End();
 		}
 	}
+
+	ImGui::SetNextWindowBgAlpha(1.0f);
 }
