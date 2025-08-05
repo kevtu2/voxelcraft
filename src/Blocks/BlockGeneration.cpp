@@ -2,6 +2,7 @@
 
 #include "Graphics/Vertex.hpp"
 #include <vector>
+#include <iostream>
 
 
 void BlockGeneration::GenerateFace(ChunkMesh* chunkMesh, BlockType type, const glm::vec3 blockOffset, Face face)

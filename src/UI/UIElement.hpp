@@ -13,7 +13,6 @@ protected:
 	UIState& uiState;
 	ImGuiWindowFlags windowFlags;
 	int contentScale;
-	int windowW, windowH;
 
 	void CentreNextItem(float itemWidth);
 };

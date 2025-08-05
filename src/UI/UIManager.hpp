@@ -20,7 +20,6 @@ class UIManager
 private:
 
 	GLFWwindow* window;
-	UIState uiState;
 
 	// UI Components
 	TitleScreen titleScreen;
@@ -34,6 +33,8 @@ private:
 
 public:
 	UIManager(GameState& gameState);
+
+	UIState uiState;
 
 	void DrawComponents();
 	void ToggleMainMenu(bool value);

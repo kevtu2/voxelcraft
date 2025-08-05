@@ -9,11 +9,6 @@
 HUD::HUD(UIState& state) : UIElement(state),
 	windowSize(ImVec2(150, 100))
 {
-	int windowW, windowH;
-	glfwGetWindowSize(glfwGetCurrentContext(), &windowW, &windowH);
-	/*std::cout << "uiState dims: " << uiState.monitorWidth << "x" << uiState.monitorHeight << std::endl;
-	std::cout << "glfwGet dims: " << windowW << "x" << windowH << std::endl;*/
-
 	// Setup crosshair
 	glGenVertexArrays(1, &crosshairVAO);
 	glGenBuffers(1, &crosshairVBO);
@@ -28,6 +23,16 @@ HUD::HUD(UIState& state) : UIElement(state),
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
+
+	float xScale, yScale;
+	glfwGetMonitorContentScale(primaryMonitor, &xScale, &yScale);
+	float dpiScale = xScale;
+
+	float windowW = mode->width / dpiScale;
+	float windowH = mode->height / dpiScale;
 
 	proj = glm::ortho(0.0f, float(windowW), 0.0f, float(windowH));
 }

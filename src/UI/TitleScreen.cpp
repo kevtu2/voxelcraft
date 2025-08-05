@@ -18,13 +18,13 @@ TitleScreen::TitleScreen(UIState& uiState, GameState& gameState) : UIElement(uiS
 
 void TitleScreen::Draw()
 {
-    ImVec2 windowSize = ImVec2(windowW, windowH);
+    ImVec2 windowSize = ImVec2(uiState.monitorWidth, uiState.monitorHeight);
     ImGui::SetNextWindowSize(windowSize);
     ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 
     if (ImGui::Begin(" ", nullptr, windowFlags))
     {
-        ImGui::Dummy(ImVec2(0.0f, 500.0f));
+        ImGui::Dummy(ImVec2(0.0f, windowSize.y * 0.35));
         CentreNextItem(ImGui::CalcTextSize(titleCard.c_str()).x);
         ImGui::Text("Welcome to Voxelcraft");
 
