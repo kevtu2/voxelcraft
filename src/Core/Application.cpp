@@ -80,7 +80,7 @@ Application::Application()
 	imgui = std::make_shared<ImGuiDriver>(window);
 	uiManager = std::make_unique<UIManager>(gameState);
 	uiManager->uiState.monitorWidth = width;
-	uiManager->uiState.monitorHeight = height;	
+	uiManager->uiState.monitorHeight = height;
 }
 
 void Application::CalculateNewMousePosition()
