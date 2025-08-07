@@ -12,11 +12,11 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, std::shared_ptr<Texture> 
 		float z = player->GetPlayerPosition().z;
 
 		// Multiply CHUNK_XorZ by a factor to prevent chunk loading everytime a new chunk is entered :(
-		if (((int)abs(x) % (CHUNK_X * world->getRenderDistance()) == 0) || ((int)abs(z) % (CHUNK_Z * world->getRenderDistance()) == 0))
-		{
+		/*if (((int)abs(x) % (CHUNK_X * world->getRenderDistance()) == 0) || ((int)abs(z) % (CHUNK_Z * world->getRenderDistance()) == 0))
+		{*/
 			world->UpdateChunks(*(player.get()));
 			world->GenerateChunks();
-		}
+		//}
 		world->DrawChunks();
 	}
 }

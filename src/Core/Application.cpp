@@ -30,7 +30,7 @@ Application::Application()
 	width = mode->width / dpiScale;
 	height = mode->height / dpiScale;
 
-	std::cout << "Width: " << width << " Height: " << height << std::endl; 
+	std::cout << "Width: " << width << " Height: " << height << std::endl;
 
 	mouseX = width / 2;
 	mouseY = height / 2;
@@ -59,7 +59,7 @@ Application::Application()
 	// Allow dynamic resizing of viewport
 	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
-	});
+		});
 
 	glfwSetKeyCallback(window, KeyCallback);
 	glfwSetWindowUserPointer(window, this);
@@ -72,17 +72,21 @@ Application::Application()
 
 	player = std::make_shared<Player>(width, height);
 
+	// Set up shaders
+	shaderProgram = std::make_unique<VoxelShader>("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
+	shaderProgram->UseProgram();
+	crosshairShader = std::make_unique<VoxelShader>("../src/Graphics/crosshair.vert", "../src/Graphics/crosshair.frag");
+
+	texture = std::make_shared<Texture>("../textures/blocks.png");
+
+	// Hello new world!
+	world = std::make_shared<World>();
+
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
 	uiManager = std::make_unique<UIManager>(gameState);
 	uiManager->uiState.monitorWidth = width;
 	uiManager->uiState.monitorHeight = height;
-
-	// Set up shaders
-	shaderProgram = std::make_unique<VoxelShader>("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
-	shaderProgram->UseProgram();
-
-	texture = std::make_shared<Texture>("../textures/blocks.png");
 }
 
 Application::~Application()
@@ -151,9 +155,6 @@ void Application::Run()
 
 void Application::MainLoop()
 {
-	std::unique_lock<std::mutex> newWorldLock(newWorldMutex);
-	VoxelShader crosshairShader("../src/Graphics/crosshair.vert", "../src/Graphics/crosshair.frag");
-
 	// Set camera origin
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
@@ -161,11 +162,6 @@ void Application::MainLoop()
 
 	// Set up light source
 	LightSource light;
-
-	// Hello new world!
-	world = std::shared_ptr<World>(new World());
-
-	newWorldLock.unlock();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -204,9 +200,9 @@ void Application::MainLoop()
 				shaderProgram->UseLightSource(light);
 
 				/* --- Enable Draw Crosshair --- */
-				crosshairShader.UseProgram();
-				crosshairShader.SetUniformMatrix4f("projection", uiManager->GetHUDProjectionMat());
-				crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
+				crosshairShader->UseProgram();
+				crosshairShader->SetUniformMatrix4f("projection", uiManager->GetHUDProjectionMat());
+				crosshairShader->SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
 			}
 		}
 

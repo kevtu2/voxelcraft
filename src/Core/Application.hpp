@@ -6,7 +6,6 @@
 
 #include <memory>
 #include <thread>
-#include <mutex>
 
 #include "World/Player.hpp"
 #include "World/World.hpp"
@@ -37,6 +36,7 @@ private:
 
 	// Shaders and textures
 	std::unique_ptr<VoxelShader> shaderProgram;
+	std::unique_ptr<VoxelShader> crosshairShader;
 	std::shared_ptr<Texture> texture;
 
 	// Game properties (states)
@@ -47,7 +47,6 @@ private:
 	// Game Threads
 	std::thread* mainLoopWorker = nullptr;
 	std::thread* updateChunksWorker = nullptr;
-	std::mutex newWorldMutex;
 
 	void ProcessInput();
 
