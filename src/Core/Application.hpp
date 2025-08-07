@@ -4,10 +4,10 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <glm/glm.hpp>
+#include <thread>
 
 #include "World/Player.hpp"
 #include "World/World.hpp"
-
 
 #include "Core/ImGuiDriver.hpp"
 #include "UI/UIManager.hpp"
@@ -30,10 +30,17 @@ private:
 	std::shared_ptr<ImGuiDriver> imgui;
 	std::unique_ptr<UIManager> uiManager;
 
+	// Shaders
+	std::unique_ptr<VoxelShader> shaderProgram;
+
 	// Game properties (states)
 	GameState gameState;
 	std::shared_ptr<Player> player;
 	std::shared_ptr<World> world;
+
+	// Game Threads
+	std::thread* mainLoopWorker = nullptr;
+	std::thread* updateChunksWorker = nullptr;
 
 	void ProcessInput();
 
@@ -43,6 +50,7 @@ public:
 	Application();
 	~Application();
 	void Run();
+	void MainLoop();
 
 	std::shared_ptr<Player> GetPlayer() const { return player; }
 	float GetWorldDeltaTime() const { return deltaTime; }

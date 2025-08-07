@@ -13,20 +13,14 @@ UIManager::UIManager(GameState& gameState) :
 	optionsMenu(OptionsMenu(uiState, gameState)),
 	hud(HUD(uiState))
 {
-	float xscale, yscale;
-	glfwGetWindowContentScale(window, &xscale, &yscale);
-
-	// Use average of X and Y scale — usually they're the same
-	float dpi_scale = (xscale + yscale) * 0.5f;
-
-	// Scale style
+	// Setup scaling
 	ImGuiStyle& style = ImGui::GetStyle();
-	style = ImGuiStyle(); // reset
-	style.ScaleAllSizes(dpi_scale);
-
 	ImGuiIO& io = ImGui::GetIO();
-	menuFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, SMALL_FONT_SIZE * dpi_scale);
-	titleFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, LARGE_FONT_SIZE * dpi_scale);
+	menuFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, SMALL_FONT_SIZE);
+	titleFont = io.Fonts->AddFontFromFileTTF(FONT_PATH, LARGE_FONT_SIZE);
+
+	float dpiScale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
+	// style.ScaleAllSizes(dpiScale);
 }
 
 void UIManager::DrawComponents()
@@ -43,11 +37,10 @@ void UIManager::DrawComponents()
 
 		if (uiState.showMainMenu)
 			mainMenu.Draw();
+		else if (uiState.showOptionsMenu)
+			optionsMenu.Draw();
 		else
 			hud.Draw();
-
-		if (uiState.showOptionsMenu)
-			optionsMenu.Draw();
 
 		ImGui::PopFont();
 	}

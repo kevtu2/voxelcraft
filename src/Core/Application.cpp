@@ -1,7 +1,6 @@
 #include "Application.hpp"
 
 #include <iostream>
-#include <thread>
 
 #include "Graphics/VoxelShader.hpp"
 #include "Graphics/Renderer.hpp"
@@ -25,8 +24,15 @@ Application::Application()
 	// Create the main application window
 	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
-	width = mode->width;
-	height = mode->height;
+
+	float xScale, yScale;
+	glfwGetMonitorContentScale(primaryMonitor, &xScale, &yScale);
+	float dpiScale = xScale;
+
+	width = mode->width / dpiScale;
+	height = mode->height / dpiScale;
+
+	std::cout << "Width: " << width << " Height: " << height << std::endl; 
 
 	mouseX = width / 2;
 	mouseY = height / 2;
@@ -71,6 +77,12 @@ Application::Application()
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
 	uiManager = std::make_unique<UIManager>(gameState);
+	uiManager->uiState.monitorWidth = width;
+	uiManager->uiState.monitorHeight = height;
+
+	// Set up shaders
+	shaderProgram = std::make_unique<VoxelShader>("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
+	shaderProgram->UseProgram();
 }
 
 Application::~Application()
@@ -80,6 +92,9 @@ Application::~Application()
 		glfwDestroyWindow(window);
 	}
 	glfwTerminate();
+
+	delete mainLoopWorker;
+	delete updateChunksWorker;
 }
 
 void Application::CalculateNewMousePosition()
@@ -108,9 +123,6 @@ void Application::CalculateNewMousePosition()
 
 void Application::ProcessInput()
 {
-	/*if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GLFW_TRUE);*/
-
 	// Assume player not moving initially
 	if (player->GetVelocity() != glm::vec3(0.0f))
 		player->SetVelocity(glm::vec3(0.0f, player->GetVelocity().y, 0.0f));
@@ -126,27 +138,22 @@ void Application::ProcessInput()
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		player->HandleInputControls(C_RIGHT, deltaTime);
-	
-	// Maybe used for freecam mode?
-	/*if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-		player->HandleInputControls(C_DOWN, deltaTime);
-
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-		player->HandleInputControls(C_UP, deltaTime);*/
 }
 
 void Application::Run()
 {
-	// Set up shaders
-	VoxelShader shaderProgram("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
-	shaderProgram.UseProgram();
+	mainLoopWorker = new std::thread(MainLoop);
+	updateChunksWorker = new std::thread(Renderer::DrawChunk, )
+}
 
+void Application::MainLoop()
+{
 	VoxelShader crosshairShader("../src/Graphics/crosshair.vert", "../src/Graphics/crosshair.frag");
 
 	// Set camera origin
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	shaderProgram.SetUniformMatrix4f("model", model);
+	shaderProgram->SetUniformMatrix4f("model", model);
 
 	// Set up light source and textures
 	LightSource light;
@@ -154,7 +161,7 @@ void Application::Run()
 
 	// Hello new world!
 	world = std::shared_ptr<World>(new World());
-	
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
@@ -162,7 +169,7 @@ void Application::Run()
 
 		if (!uiManager->ShouldShowTitleScreen())
 		{
-			shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
+			shaderProgram->SetUniformMatrix4f("projection", player->GetProjectionMatrix());
 
 			float currentTime = glfwGetTime();
 			deltaTime = currentTime - lastTime;
@@ -171,9 +178,7 @@ void Application::Run()
 			gameState.deltaTime = deltaTime;
 
 			/* --- Draw 3D world--- */
-			shaderProgram.UseProgram();
-
-			Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
+			shaderProgram->UseProgram();
 
 			if (!uiManager->GameShouldPause())
 			{
@@ -184,13 +189,14 @@ void Application::Run()
 				Physics::CalculateGravity(player, deltaTime);
 				Physics::CheckCollisions(player, world, deltaTime);
 				player->Move(deltaTime);
+				glm::vec3 pos = player->GetPlayerPosition();
 
-				shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
-				shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
+				shaderProgram->SetUniformMatrix4f("view", player->GetViewMatrix());
+				shaderProgram->SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
 
 				glm::vec3 cameraPos = player->GetPlayerPosition();
 				light.SetLightPosition(cameraPos);
-				shaderProgram.UseLightSource(light);
+				shaderProgram->UseLightSource(light);
 
 				/* --- Enable Draw Crosshair --- */
 				crosshairShader.UseProgram();
@@ -223,7 +229,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
 	std::shared_ptr<Player> player = app->GetPlayer();
 	UIManager& uiManager = app->GetUIManager();
-
 
 	if (!app)
 	{

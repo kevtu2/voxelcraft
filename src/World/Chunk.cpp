@@ -3,6 +3,8 @@
 #include "World.hpp"
 #include "Blocks/BlockGeneration.hpp"
 #include "Graphics/Vertex.hpp"
+#include <cstdint>
+#include <iostream>
 
 Chunk::Chunk(const FastNoiseLite& perlinNoise)
 {
@@ -10,6 +12,7 @@ Chunk::Chunk(const FastNoiseLite& perlinNoise)
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
 	position = glm::ivec3(0, 0, 0);
+	blocks.fill(static_cast<BlockType>(AIR));
 	chunkMesh = std::make_unique<ChunkMesh>();
 	GenerateBlockData(perlinNoise);
 }
@@ -20,6 +23,7 @@ Chunk::Chunk(int x, int y, int z, const FastNoiseLite& perlinNoise)
 	glGenBuffers(1, &chunkVBO_ID);
 	glGenBuffers(1, &chunkIBO_ID);
 	glGenVertexArrays(1, &chunkVAO_ID);
+	blocks.fill(static_cast<BlockType>(AIR));
 	chunkMesh = std::make_unique<ChunkMesh>();
 	GenerateBlockData(perlinNoise);
 }
@@ -71,6 +75,7 @@ Chunk& Chunk::operator=(Chunk&& o) noexcept
 
 void Chunk::BufferData() const
 {
+	// std::cout << "Vertices: " << chunkMesh->chunkVertexData.size() << ", Indices: " << chunkMesh->chunkIndexData.size() << std::endl;
 	glBindVertexArray(chunkVAO_ID);
 
 	glBindBuffer(GL_ARRAY_BUFFER, chunkVBO_ID);
@@ -113,7 +118,7 @@ void Chunk::GenerateBlockData(const FastNoiseLite& perlinNoise)
 			float noiseVal = perlinNoise.GetNoise(globalX, globalZ);
 			float normalizedVal = noiseVal * 0.5f + 0.5f;
 			int height = static_cast<int>(normalizedVal * surfaceY);
-		
+
 			for (int y = 0; y <= height; ++y)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
@@ -121,11 +126,6 @@ void Chunk::GenerateBlockData(const FastNoiseLite& perlinNoise)
 				else blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
 			}
 		}
-	}
-
-	for (int i = 0; i < blocks.size(); ++i)
-	{
-		if (blocks[i] == 205) blocks[i] = BlockType::AIR;
 	}
 }
 

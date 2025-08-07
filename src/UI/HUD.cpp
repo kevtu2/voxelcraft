@@ -7,12 +7,9 @@
 #include <iostream>
 
 HUD::HUD(UIState& state) : UIElement(state),
-	windowSize(ImVec2(150, 100))
+	windowSize(ImVec2(200, 100))
 {
-	int windowW, windowH;
-	glfwGetWindowSize(glfwGetCurrentContext(), &windowW, &windowH);
-	/*std::cout << "uiState dims: " << uiState.monitorWidth << "x" << uiState.monitorHeight << std::endl;
-	std::cout << "glfwGet dims: " << windowW << "x" << windowH << std::endl;*/
+	windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing;
 
 	// Setup crosshair
 	glGenVertexArrays(1, &crosshairVAO);
@@ -28,6 +25,16 @@ HUD::HUD(UIState& state) : UIElement(state),
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
+
+	float xScale, yScale;
+	glfwGetMonitorContentScale(primaryMonitor, &xScale, &yScale);
+	float dpiScale = xScale;
+
+	float windowW = mode->width / dpiScale;
+	float windowH = mode->height / dpiScale;
 
 	proj = glm::ortho(0.0f, float(windowW), 0.0f, float(windowH));
 }
@@ -48,13 +55,25 @@ void HUD::Draw()
 	glEnable(GL_DEPTH_TEST);
 
 	ImGui::SetNextWindowSize(windowSize);
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowPos(ImVec2(10, 10));
+	ImGui::SetNextWindowBgAlpha(0.5f);
+
+	ImGuiIO& io = ImGui::GetIO();
 
 	if (uiState.showFPSInHUD)
 	{
-		if (ImGui::Begin("Metrics"), nullptr, windowFlags)
+		if (ImGui::Begin("Metrics", nullptr, windowFlags))
 		{
+			CentreNextItem(ImGui::CalcTextSize("xxx FPS").x);
+			ImGui::Text("%d FPS", (int)io.Framerate);
+			
+			ImGui::Spacing();
+
+			CentreNextItem(ImGui::CalcTextSize("%.3f ms/frame").x);
+			ImGui::Text("%.3f ms/frame", 1000.0f / io.Framerate);
 			ImGui::End();
 		}
 	}
+
+	ImGui::SetNextWindowBgAlpha(1.0f);
 }

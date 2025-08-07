@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <iostream>
 
 ImGuiDriver::ImGuiDriver(GLFWwindow* window)
 {
@@ -10,16 +11,7 @@ ImGuiDriver::ImGuiDriver(GLFWwindow* window)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 
-	ImGuiIO& io = ImGui::GetIO();
-	scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
-	//io.DisplayFramebufferScale = ImVec2(1, 1);
-
 	ImGui::StyleColorsDark();
-
-	//// Setup scaling
-	//ImGuiStyle& style = ImGui::GetStyle();
-	//style.ScaleAllSizes(scale);
-	//style.FontScaleDpi = scale;
 
 	// Setup backends
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
