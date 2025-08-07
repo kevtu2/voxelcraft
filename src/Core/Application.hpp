@@ -2,12 +2,17 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <memory>
 #include <glm/glm.hpp>
+
+#include <memory>
 #include <thread>
+#include <mutex>
 
 #include "World/Player.hpp"
 #include "World/World.hpp"
+
+#include "Graphics/VoxelShader.hpp"
+#include "Graphics/Texture.hpp"
 
 #include "Core/ImGuiDriver.hpp"
 #include "UI/UIManager.hpp"
@@ -30,8 +35,9 @@ private:
 	std::shared_ptr<ImGuiDriver> imgui;
 	std::unique_ptr<UIManager> uiManager;
 
-	// Shaders
+	// Shaders and textures
 	std::unique_ptr<VoxelShader> shaderProgram;
+	std::shared_ptr<Texture> texture;
 
 	// Game properties (states)
 	GameState gameState;
@@ -41,6 +47,7 @@ private:
 	// Game Threads
 	std::thread* mainLoopWorker = nullptr;
 	std::thread* updateChunksWorker = nullptr;
+	std::mutex newWorldMutex;
 
 	void ProcessInput();
 

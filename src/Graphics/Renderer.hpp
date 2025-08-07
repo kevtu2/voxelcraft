@@ -13,5 +13,5 @@
 
 namespace Renderer
 {
-	void DrawChunk(std::shared_ptr<World> world, const Shader& shaderProgram, const Texture& texture, const Player& player);
+	void DrawChunk(std::shared_ptr<World> world, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player);
 };

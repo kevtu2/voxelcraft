@@ -2,9 +2,7 @@
 
 #include <iostream>
 
-#include "Graphics/VoxelShader.hpp"
 #include "Graphics/Renderer.hpp"
-#include "Graphics/Texture.hpp"
 #include "Graphics/LightSource.hpp"
 
 #include "Physics/Physics.hpp"
@@ -83,6 +81,8 @@ Application::Application()
 	// Set up shaders
 	shaderProgram = std::make_unique<VoxelShader>("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
 	shaderProgram->UseProgram();
+
+	texture = std::make_shared<Texture>("../textures/blocks.png");
 }
 
 Application::~Application()
@@ -142,12 +142,16 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	mainLoopWorker = new std::thread(MainLoop);
-	updateChunksWorker = new std::thread(Renderer::DrawChunk, )
+	mainLoopWorker = new std::thread(&Application::MainLoop, this);
+	updateChunksWorker = new std::thread(Renderer::DrawChunk, world, texture, player);
+
+	updateChunksWorker->join();
+	mainLoopWorker->join();
 }
 
 void Application::MainLoop()
 {
+	std::unique_lock<std::mutex> newWorldLock(newWorldMutex);
 	VoxelShader crosshairShader("../src/Graphics/crosshair.vert", "../src/Graphics/crosshair.frag");
 
 	// Set camera origin
@@ -155,12 +159,13 @@ void Application::MainLoop()
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
 	shaderProgram->SetUniformMatrix4f("model", model);
 
-	// Set up light source and textures
+	// Set up light source
 	LightSource light;
-	Texture textureAtlas("../textures/blocks.png");
 
 	// Hello new world!
 	world = std::shared_ptr<World>(new World());
+
+	newWorldLock.unlock();
 
 	while (!glfwWindowShouldClose(window))
 	{
