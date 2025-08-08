@@ -187,8 +187,10 @@ void Application::MainLoop()
 				// Physics calculations
 				Physics::CalculateGravity(player, deltaTime);
 				Physics::CheckCollisions(player, world, deltaTime);
+
+				std::unique_lock<std::mutex> updatePlayerLocationLock(updatePlayerLocationMutex);
 				player->Move(deltaTime);
-				glm::vec3 pos = player->GetPlayerPosition();
+				updatePlayerLocationLock.unlock();
 
 				shaderProgram->SetUniformMatrix4f("view", player->GetViewMatrix());
 				shaderProgram->SetUniformVec3f("cameraPosition", player->GetPlayerPosition());

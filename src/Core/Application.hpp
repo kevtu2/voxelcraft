@@ -47,6 +47,7 @@ private:
 
 	// Mutexes
 	std::mutex applyGameStateMutex;
+	std::mutex updatePlayerLocationMutex;
 
 	void ProcessInput();
 
