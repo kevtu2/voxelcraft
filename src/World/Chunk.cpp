@@ -173,7 +173,7 @@ void Chunk::GenerateChunkMesh(World* world)
 			}
 		}
 	}
-	chunkReady = true;
+	chunkReady.store(true);
 }
 
 BlockType Chunk::GetBlock(int x, int y, int z) const

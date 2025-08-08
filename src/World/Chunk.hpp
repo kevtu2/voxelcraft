@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <vector>
 #include <array>
+#include <mutex>
+#include <atomic>
 #include <memory>
 #include <FastNoiseLite.hpp>
 
@@ -33,7 +35,7 @@ private:
 
 	// Use to identify which blocks are contained in the chunk
 	std::array<unsigned char, CHUNK_BLOCK_COUNT> blocks;
-	
+
 public:
 	Chunk(const FastNoiseLite& perlinNoise);
 	Chunk(int x, int y, int z, const FastNoiseLite& perlinNoise);
@@ -63,6 +65,6 @@ public:
 
 	bool IsReady() const { return chunkReady; }
 
-	bool chunkReady = false;
+	std::atomic<bool> chunkReady = false;
 
 };

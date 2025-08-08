@@ -30,9 +30,9 @@ World::~World()
 
 }
 
-// TODO: Change this so that player camera is not contained inside of application.
 void World::UpdateChunks(const Player& player)
 {
+	std::lock_guard<std::mutex> lock(chunkMutex);
 	// Calculate current reference Chunk X-Z position.
 	int playerChunkPosX = (int)(player.GetPlayerPosition().x / CHUNK_X);
 	int playerChunkPosZ = (int)(player.GetPlayerPosition().z / CHUNK_Z);
@@ -88,9 +88,10 @@ void World::UpdateChunks(const Player& player)
 
 void World::GenerateChunks()
 {
+	std::lock_guard<std::mutex> lock(chunkMutex);
 	for (auto& pair : activeChunks)
 	{
-		if (!pair.second->chunkReady)
+		if (!pair.second->chunkReady.load())
 		{
 			pair.second->GenerateChunkMesh(this);
 		}
@@ -116,9 +117,10 @@ BlockType World::FindBlock(int x, int y, int z) const
 
 void World::DrawChunks()
 {
+	std::lock_guard<std::mutex> lock(chunkMutex);
 	for (auto& pair : activeChunks)
 	{
-		if (pair.second->chunkReady)
+		if (pair.second->chunkReady.load())
 		{
 			pair.second->BufferData();
 			pair.second->DrawArrays();

@@ -178,7 +178,7 @@ void Application::MainLoop()
 			deltaTime = glm::clamp(deltaTime, 0.0f, 0.05f);
 			gameState.deltaTime = deltaTime;
 
-			/* --- Draw 3D world--- */
+			/* --- Draw 3D world--- */ 
 			shaderProgram->UseProgram();
 			if (world->chunksReady.load())
 				world->DrawChunks();
@@ -191,7 +191,6 @@ void Application::MainLoop()
 				// Physics calculations
 				Physics::CalculateGravity(player, deltaTime);
 				Physics::CheckCollisions(player, world, deltaTime);
-
 				std::unique_lock<std::mutex> updatePlayerLocationLock(updatePlayerLocationMutex);
 				player->Move(deltaTime);
 				updatePlayerLocationLock.unlock();
