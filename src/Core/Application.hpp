@@ -50,6 +50,7 @@ private:
 	std::mutex applyGameStateMutex;
 	std::mutex updatePlayerLocationMutex;
 	std::atomic<std::shared_ptr<World>> worldAtomic;
+	std::atomic<bool> quitApp = false;
 
 	void ProcessInput();
 	void CalculateNewMousePosition();

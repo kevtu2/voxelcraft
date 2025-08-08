@@ -14,5 +14,5 @@
 
 namespace Renderer
 {
-	void DrawChunk(std::atomic<std::shared_ptr<World>>& worldAtomic, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player);
+	void DrawChunk(std::atomic<bool>& quitApp, std::atomic<std::shared_ptr<World>>& worldAtomic, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player);
 };

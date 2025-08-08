@@ -44,8 +44,6 @@ void UIManager::DrawComponents()
 
 		ImGui::PopFont();
 	}
-	if (uiState.quitGame)
-		glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
 }
 
 void UIManager::ToggleMainMenu(bool value)

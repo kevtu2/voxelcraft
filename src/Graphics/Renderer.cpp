@@ -5,12 +5,12 @@
 #include <iostream>
 #include <chrono>
 
-void Renderer::DrawChunk(std::atomic<std::shared_ptr<World>>& worldAtomic, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player)
+void Renderer::DrawChunk(std::atomic<bool>& quitApp, std::atomic<std::shared_ptr<World>>& worldAtomic, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player)
 {
     // ~60 Hz updates
     const std::chrono::milliseconds updateInterval(16);
 
-    while (true)
+    while (!quitApp.load())
     {
         auto start = std::chrono::steady_clock::now();
 

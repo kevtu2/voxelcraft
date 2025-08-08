@@ -41,6 +41,7 @@ private:
 	std::unordered_set<glm::ivec2, Vec2Hasher, Vec2Equals> dirtyChunks;
 	
 	FastNoiseLite perlinNoise;
+	std::mutex chunkMutex;
 
 public:
 	World();

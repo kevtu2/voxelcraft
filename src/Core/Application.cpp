@@ -140,7 +140,7 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	std::thread updateChunksWorker(Renderer::DrawChunk, std::ref(worldAtomic), texture, player);
+	std::thread updateChunksWorker(Renderer::DrawChunk, std::ref(quitApp), std::ref(worldAtomic), texture, player);
 
 	MainLoop();
 
@@ -218,6 +218,8 @@ void Application::MainLoop()
 		std::unique_lock<std::mutex> applyGameStateLock(applyGameStateMutex);
 		ApplyGameState();
 		applyGameStateLock.unlock();
+		
+		quitApp.store(uiManager->uiState.quitGame);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
