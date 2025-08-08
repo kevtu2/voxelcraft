@@ -8,9 +8,6 @@
 
 Chunk::Chunk(const FastNoiseLite& perlinNoise)
 {
-	glGenBuffers(1, &chunkVBO_ID);
-	glGenBuffers(1, &chunkIBO_ID);
-	glGenVertexArrays(1, &chunkVAO_ID);
 	position = glm::ivec3(0, 0, 0);
 	blocks.fill(static_cast<BlockType>(AIR));
 	chunkMesh = std::make_unique<ChunkMesh>();
@@ -20,9 +17,6 @@ Chunk::Chunk(const FastNoiseLite& perlinNoise)
 Chunk::Chunk(int x, int y, int z, const FastNoiseLite& perlinNoise)
 	: position(glm::ivec3(x, y, z))
 {
-	glGenBuffers(1, &chunkVBO_ID);
-	glGenBuffers(1, &chunkIBO_ID);
-	glGenVertexArrays(1, &chunkVAO_ID);
 	blocks.fill(static_cast<BlockType>(AIR));
 	chunkMesh = std::make_unique<ChunkMesh>();
 	GenerateBlockData(perlinNoise);
@@ -73,9 +67,16 @@ Chunk& Chunk::operator=(Chunk&& o) noexcept
 	return *this;
 }
 
-void Chunk::BufferData() const
+void Chunk::BufferData()
 {
-	// std::cout << "Vertices: " << chunkMesh->chunkVertexData.size() << ", Indices: " << chunkMesh->chunkIndexData.size() << std::endl;
+	
+	if (!buffersGenerated)
+	{
+		glGenBuffers(1, &chunkVBO_ID);
+		glGenBuffers(1, &chunkIBO_ID);
+		glGenVertexArrays(1, &chunkVAO_ID);
+		buffersGenerated = true;
+	}
 	glBindVertexArray(chunkVAO_ID);
 
 	glBindBuffer(GL_ARRAY_BUFFER, chunkVBO_ID);

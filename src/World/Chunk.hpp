@@ -50,7 +50,7 @@ public:
 	Chunk(const Chunk&) = delete;
 	Chunk& operator=(const Chunk&) = delete;
 
-	void BufferData() const;
+	void BufferData();
 
 	void DrawArrays() const;
 
@@ -66,5 +66,6 @@ public:
 	bool IsReady() const { return chunkReady; }
 
 	std::atomic<bool> chunkReady = false;
-
+	
+	bool buffersGenerated = false;
 };

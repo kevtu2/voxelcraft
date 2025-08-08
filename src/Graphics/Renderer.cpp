@@ -25,12 +25,12 @@ void Renderer::DrawChunk(std::atomic<std::shared_ptr<World>>& worldAtomic, std::
         float x = player->GetPlayerPosition().x;
         float z = player->GetPlayerPosition().z;
 
-        if (((int)abs(x) % (CHUNK_X * world->getRenderDistance()) == 0) ||
+       /* if (((int)abs(x) % (CHUNK_X * world->getRenderDistance()) == 0) ||
             ((int)abs(z) % (CHUNK_Z * world->getRenderDistance()) == 0))
-        {
+        {*/
             world->UpdateChunks(*(player.get()));
             world->GenerateChunks();
-        }
+        //}
 
         // Sleep for remaining time to maintain steady update rate
         auto end = std::chrono::steady_clock::now();
