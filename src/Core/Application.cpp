@@ -31,8 +31,6 @@ Application::Application()
 	width = mode->width / dpiScale;
 	height = mode->height / dpiScale;
 
-	std::cout << "Width: " << width << " Height: " << height << std::endl;
-
 	mouseX = width / 2;
 	mouseY = height / 2;
 
