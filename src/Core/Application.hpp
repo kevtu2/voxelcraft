@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <thread>
+#include <mutex>
 
 #include "World/Player.hpp"
 #include "World/World.hpp"
@@ -44,9 +45,8 @@ private:
 	std::shared_ptr<Player> player;
 	std::shared_ptr<World> world;
 
-	// Game Threads
-	std::thread* mainLoopWorker = nullptr;
-	std::thread* updateChunksWorker = nullptr;
+	// Mutexes
+	std::mutex applyGameStateMutex;
 
 	void ProcessInput();
 

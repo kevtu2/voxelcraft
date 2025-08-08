@@ -96,9 +96,6 @@ Application::~Application()
 		glfwDestroyWindow(window);
 	}
 	glfwTerminate();
-
-	delete mainLoopWorker;
-	delete updateChunksWorker;
 }
 
 void Application::CalculateNewMousePosition()
@@ -146,11 +143,10 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	mainLoopWorker = new std::thread(&Application::MainLoop, this);
-	updateChunksWorker = new std::thread(Renderer::DrawChunk, world, texture, player);
+	std::thread updateChunksWorker(Renderer::DrawChunk, world, texture, player);
+	MainLoop();
 
-	updateChunksWorker->join();
-	mainLoopWorker->join();
+	updateChunksWorker.join();
 }
 
 void Application::MainLoop()
@@ -213,7 +209,9 @@ void Application::MainLoop()
 		uiManager->DrawComponents();
 		imgui->Render();
 
+		std::unique_lock<std::mutex> applyGameStateLock(applyGameStateMutex);
 		ApplyGameState();
+		applyGameStateLock.unlock();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
