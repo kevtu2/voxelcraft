@@ -93,6 +93,7 @@ void World::GenerateChunks()
 			pair.second->GenerateChunkMesh(this);
 		}
 	}
+	chunksReady.store(true);
 }
 
 BlockType World::FindBlock(int x, int y, int z) const
@@ -112,7 +113,11 @@ void World::DrawChunks()
 {
 	for (auto& pair : activeChunks)
 	{
-		pair.second->DrawArrays();
+		if (pair.second->chunkReady)
+		{
+			pair.second->BufferData();
+			pair.second->DrawArrays();
+		}
 	}
 }
 
