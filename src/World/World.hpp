@@ -51,7 +51,8 @@ public:
 	FastNoiseLite& GetNoiseInstance() { return perlinNoise; }
 	BlockType FindBlock(int x, int y, int z) const;
 
-	std::atomic<bool> chunksReady;
+	std::atomic<bool> worldReady = false;
+	std::atomic<bool> chunksReady = false;
 
 	inline void setRenderDistance(unsigned int value)
 	{

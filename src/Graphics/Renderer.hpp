@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <utility>
 #include <vector>
+#include <atomic>
 
 #include "World/Player.hpp"
 #include "World/World.hpp"
@@ -13,5 +14,5 @@
 
 namespace Renderer
 {
-	void DrawChunk(std::shared_ptr<World> world, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player);
+	void DrawChunk(std::atomic<std::shared_ptr<World>>& worldAtomic, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player);
 };

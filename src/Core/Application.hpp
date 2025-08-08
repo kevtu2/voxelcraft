@@ -42,15 +42,16 @@ private:
 
 	// Game properties (states)
 	GameState gameState;
-	std::shared_ptr<Player> player;
+	std::shared_ptr<Player> player; // TODO: Move to world class
 	std::shared_ptr<World> world;
 
-	// Mutexes
+	// Mutexes and atomic variables
+	std::mutex createNewWorld;
 	std::mutex applyGameStateMutex;
 	std::mutex updatePlayerLocationMutex;
+	std::atomic<std::shared_ptr<World>> worldAtomic;
 
 	void ProcessInput();
-
 	void CalculateNewMousePosition();
 
 public:

@@ -79,9 +79,6 @@ Application::Application()
 
 	texture = std::make_shared<Texture>("../textures/blocks.png");
 
-	// Hello new world!
-	world = std::make_shared<World>();
-
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
 	uiManager = std::make_unique<UIManager>(gameState);
@@ -143,7 +140,7 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	std::thread updateChunksWorker(Renderer::DrawChunk, world, texture, player);
+	std::thread updateChunksWorker(Renderer::DrawChunk, std::ref(worldAtomic), texture, player);
 	MainLoop();
 
 	updateChunksWorker.join();
@@ -164,7 +161,14 @@ void Application::MainLoop()
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (!uiManager->ShouldShowTitleScreen())
+		if (uiManager->ShouldCreateNewWorld())
+		{
+			uiManager->uiState.createNewWorld = false;
+			world = std::make_shared<World>();
+			worldAtomic.store(world);
+		}
+
+		if (!uiManager->ShouldShowTitleScreen() && world->worldReady.load())
 		{
 			shaderProgram->SetUniformMatrix4f("projection", player->GetProjectionMatrix());
 
@@ -222,7 +226,8 @@ void Application::MainLoop()
 
 void Application::ApplyGameState()
 {
-	world->setRenderDistance(gameState.renderDistance);
+	if (world != nullptr)
+		world->setRenderDistance(gameState.renderDistance);
 	player->SetFOV(gameState.FOV);
 	player->SetMouseSensitivity(gameState.mouseSensitivity);
 }

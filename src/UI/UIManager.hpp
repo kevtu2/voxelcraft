@@ -40,6 +40,7 @@ public:
 	void ToggleMainMenu(bool value);
 	inline bool GameShouldPause() const { return uiState.pauseGame; }
 	inline bool ShouldShowMainMenu() const { return uiState.showMainMenu; }
+	inline bool ShouldCreateNewWorld() const { return uiState.createNewWorld; }
 	inline bool ShouldShowTitleScreen() const { return uiState.showTitleScreen; }
 	
 	glm::mat4 GetHUDProjectionMat() const { return hud.GetProjectionMatrix(); }

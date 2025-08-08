@@ -21,6 +21,8 @@ World::World()
 			activeChunks.emplace(chunkPos, std::move(currentChunk));
 		}
 	}
+	GenerateChunks();
+	worldReady.store(true);
 }
 
 World::~World()
@@ -93,6 +95,9 @@ void World::GenerateChunks()
 			pair.second->GenerateChunkMesh(this);
 		}
 	}
+	if (!worldReady)
+		worldReady.store(true);
+
 	chunksReady.store(true);
 }
 
