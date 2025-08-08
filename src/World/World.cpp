@@ -115,6 +115,7 @@ BlockType World::FindBlock(int x, int y, int z) const
 	return BlockType::BOUNDARY; // Prevent it from generating the face if chunk doesn't exist yet.
 }
 
+#include <iostream>
 void World::DrawChunks()
 {
 	for (auto& pair : activeChunks)

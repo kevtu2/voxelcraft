@@ -9,10 +9,11 @@
 
 #include "Graphics/Shader.hpp"
 #include "Graphics/Texture.hpp"
+#include "Core/GameState.hpp"
 
 #include "Physics/AABB.hpp"
 
 namespace Renderer
 {
-	void DrawChunk(std::atomic<bool>& quitApp, std::atomic<std::shared_ptr<World>>& worldAtomic, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player);
+	void DrawChunk(std::atomic_ref<GameState> atomicGameState, std::atomic<std::shared_ptr<World>>& atomicWorld, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player);
 };

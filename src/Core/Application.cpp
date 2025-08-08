@@ -12,6 +12,7 @@
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 Application::Application()
+	: gameStateAtomic(gameState)
 {
 	// Initialize GLFW
 	glfwInit();
@@ -140,7 +141,7 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	std::thread updateChunksWorker(Renderer::DrawChunk, std::ref(quitApp), std::ref(worldAtomic), texture, player);
+	std::thread updateChunksWorker(Renderer::DrawChunk, gameStateAtomic, std::ref(worldAtomic), texture, player);
 
 	MainLoop();
 
@@ -219,8 +220,6 @@ void Application::MainLoop()
 		ApplyGameState();
 		applyGameStateLock.unlock();
 		
-		quitApp.store(uiManager->uiState.quitGame);
-
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

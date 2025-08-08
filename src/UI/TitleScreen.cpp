@@ -37,8 +37,7 @@ void TitleScreen::Draw()
         ImGui::Dummy(ImVec2(0.0f, 50.0f));
         CentreNextItem(buttonSize.x);
         if (ImGui::Button("Quit to Desktop", buttonSize))
-            glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
-
+            uiState.quitGame = true;
         ImGui::End();
     }
 }

@@ -77,6 +77,7 @@ void Chunk::BufferData()
 		glGenVertexArrays(1, &chunkVAO_ID);
 		buffersGenerated = true;
 	}
+
 	glBindVertexArray(chunkVAO_ID);
 
 	glBindBuffer(GL_ARRAY_BUFFER, chunkVBO_ID);

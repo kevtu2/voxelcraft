@@ -35,6 +35,7 @@ public:
 	UIManager(GameState& gameState);
 
 	UIState uiState;
+	GameState& gameState;
 
 	void DrawComponents();
 	void ToggleMainMenu(bool value);
