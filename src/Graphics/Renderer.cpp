@@ -17,6 +17,5 @@ void Renderer::DrawChunk(std::shared_ptr<World> world, std::shared_ptr<Texture> 
 			world->UpdateChunks(*(player.get()));
 			world->GenerateChunks();
 		//}
-		world->DrawChunks();
 	}
 }

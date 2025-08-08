@@ -173,7 +173,6 @@ void Chunk::GenerateChunkMesh(World* world)
 			}
 		}
 	}
-	BufferData();
 	chunkReady = true;
 }
 

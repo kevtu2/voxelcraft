@@ -180,6 +180,8 @@ void Application::MainLoop()
 
 			/* --- Draw 3D world--- */
 			shaderProgram->UseProgram();
+			if (world->chunksReady.load())
+				world->DrawChunks();
 
 			if (!uiManager->GameShouldPause())
 			{

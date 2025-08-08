@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include <set>
+#include <atomic>
 #include <unordered_map>
 #include <unordered_set>
 #include <FastNoiseLite.hpp>
@@ -49,6 +50,8 @@ public:
 	void DrawChunks();
 	FastNoiseLite& GetNoiseInstance() { return perlinNoise; }
 	BlockType FindBlock(int x, int y, int z) const;
+
+	std::atomic<bool> chunksReady;
 
 	inline void setRenderDistance(unsigned int value)
 	{
