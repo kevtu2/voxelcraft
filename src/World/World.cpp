@@ -117,7 +117,6 @@ BlockType World::FindBlock(int x, int y, int z) const
 
 void World::DrawChunks()
 {
-	std::lock_guard<std::mutex> lock(chunkMutex);
 	for (auto& pair : activeChunks)
 	{
 		if (pair.second->chunkReady.load())

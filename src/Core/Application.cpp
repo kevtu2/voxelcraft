@@ -141,6 +141,7 @@ void Application::ProcessInput()
 void Application::Run()
 {
 	std::thread updateChunksWorker(Renderer::DrawChunk, std::ref(worldAtomic), texture, player);
+
 	MainLoop();
 
 	updateChunksWorker.join();
