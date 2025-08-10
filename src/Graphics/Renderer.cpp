@@ -5,7 +5,7 @@
 #include <iostream>
 #include <chrono>
 
-void Renderer::DrawChunk(std::atomic_ref<GameState> atomicGameState, std::atomic<std::shared_ptr<World>>& atomicWorld, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player)
+void Renderer::DrawChunk(std::atomic_ref<GameState> atomicGameState, std::atomic<World*>& atomicWorld, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player)
 {
     // ~60 Hz updates
     const std::chrono::milliseconds updateInterval(16);
@@ -14,7 +14,7 @@ void Renderer::DrawChunk(std::atomic_ref<GameState> atomicGameState, std::atomic
     {
         auto start = std::chrono::steady_clock::now();
 
-        std::shared_ptr<World> world = atomicWorld.load();
+        World* world = atomicWorld.load();
 
         if (!world)
         {

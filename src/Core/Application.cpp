@@ -92,6 +92,7 @@ Application::~Application()
 		glfwDestroyWindow(window);
 	}
 	glfwTerminate();
+	delete world;
 }
 
 void Application::CalculateNewMousePosition()
@@ -141,12 +142,12 @@ void Application::Run()
 {
 	std::thread updateChunksWorker(Renderer::DrawChunk, gameStateAtomic, std::ref(worldAtomic), texture, player);
 
-	MainLoop();
+	GameLoop();
 
 	updateChunksWorker.join();
 }
 
-void Application::MainLoop()
+void Application::GameLoop()
 {
 	// Set camera origin
 	glm::mat4 model = glm::mat4(1.0f);
@@ -164,7 +165,7 @@ void Application::MainLoop()
 		if (uiManager->ShouldCreateNewWorld())
 		{
 			uiManager->uiState.createNewWorld = false;
-			world = std::make_shared<World>();
+			world = new World();
 			worldAtomic.store(world);
 		}
 
@@ -226,7 +227,7 @@ void Application::MainLoop()
 void Application::ApplyGameState()
 {
 	if (world != nullptr)
-		world->setRenderDistance(gameState.renderDistance);
+		world->SetRenderDistance(gameState.renderDistance);
 	player->SetFOV(gameState.FOV);
 	player->SetMouseSensitivity(gameState.mouseSensitivity);
 }

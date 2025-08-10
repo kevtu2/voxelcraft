@@ -56,7 +56,7 @@ public:
 	std::atomic<bool> worldReady = false;
 	std::atomic<bool> chunksReady = false;
 
-	inline void setRenderDistance(unsigned int value)
+	inline void SetRenderDistance(unsigned int value)
 	{
 		{
 			if (value > 32)
@@ -73,5 +73,5 @@ public:
 			}
 		}
 	}
-	unsigned int getRenderDistance() const { return renderDistance; }
+	unsigned int GetRenderDistance() const { return renderDistance; }
 };

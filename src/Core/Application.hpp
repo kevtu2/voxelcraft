@@ -43,13 +43,13 @@ private:
 	// Game properties (states)
 	GameState gameState;
 	std::shared_ptr<Player> player; // TODO: Move to world class
-	std::shared_ptr<World> world;
+	World* world;
 
 	// Mutexes and atomic variables
 	std::mutex createNewWorld;
 	std::mutex applyGameStateMutex;
 	std::mutex updatePlayerLocationMutex;
-	std::atomic<std::shared_ptr<World>> worldAtomic;
+	std::atomic<World*> worldAtomic;
 	std::atomic_ref<GameState> gameStateAtomic;
 
 	void ProcessInput();
@@ -59,7 +59,7 @@ public:
 	Application();
 	~Application();
 	void Run();
-	void MainLoop();
+	void GameLoop();
 
 	std::shared_ptr<Player> GetPlayer() const { return player; }
 	float GetWorldDeltaTime() const { return deltaTime; }

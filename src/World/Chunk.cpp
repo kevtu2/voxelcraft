@@ -69,7 +69,11 @@ Chunk& Chunk::operator=(Chunk&& o) noexcept
 
 void Chunk::BufferData()
 {
-	
+	if (chunkMesh->chunkVertexData.empty() || chunkMesh->chunkIndexData.empty())
+	{
+		std::cerr << "Warning: Attempting to buffer empty chunk mesh data!" << std::endl;
+		return;
+	}
 	if (!buffersGenerated)
 	{
 		glGenBuffers(1, &chunkVBO_ID);
