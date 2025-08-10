@@ -54,8 +54,6 @@ public:
 
 	void DrawArrays() const;
 
-	//void GenerateChunkVertexData();
-	
 	glm::ivec3 GetWorldPosition() const { return position; }
 
 	BlockType GetBlock(int x, int y, int z) const;

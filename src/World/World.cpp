@@ -1,6 +1,7 @@
 #include "World.hpp"
 
 #include "Core/Utils.hpp"
+#include <iostream>
 
 
 World::World()
@@ -84,6 +85,7 @@ void World::UpdateChunks(const Player& player)
 	{
 		activeChunks.erase(chunkKey);
 	}
+	dirtyChunks.clear();
 }
 
 void World::GenerateChunks()
