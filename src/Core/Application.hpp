@@ -43,7 +43,7 @@ private:
 	// Game properties (states)
 	GameState gameState;
 	std::shared_ptr<Player> player; // TODO: Move to world class
-	World* world;
+	World* world = nullptr;
 
 	// Mutexes and atomic variables
 	std::mutex createNewWorld;

@@ -4,6 +4,7 @@
 #include "Blocks/BlockGeneration.hpp"
 #include <iostream>
 #include <chrono>
+#include <thread>
 
 void Renderer::DrawChunk(std::atomic_ref<GameState> atomicGameState, std::atomic<World*>& atomicWorld, std::shared_ptr<Texture> texture, std::shared_ptr<Player> player)
 {
