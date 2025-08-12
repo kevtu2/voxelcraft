@@ -140,7 +140,7 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	std::thread updateChunksWorker(Renderer::DrawChunk, gameStateAtomic, std::ref(worldAtomic), texture, player);
+	std::thread updateChunksWorker(Renderer::UpdateWorldChunks, gameStateAtomic, std::ref(worldAtomic), texture, player);
 
 	GameLoop();
 

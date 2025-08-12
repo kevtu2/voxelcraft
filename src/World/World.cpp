@@ -1,8 +1,6 @@
 #include "World.hpp"
 
 #include "Core/Utils.hpp"
-#include <iostream>
-
 
 World::World()
 	: renderDistance(12)
@@ -12,7 +10,6 @@ World::World()
 	perlinNoise.SetFrequency(0.01f);
 	perlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 
-	// Generate new world chunks
 	for (int x = -renderDistance; x < renderDistance; ++x)
 	{
 		for (int z = -renderDistance; z < renderDistance; ++z)
@@ -23,6 +20,7 @@ World::World()
 		}
 	}
 	GenerateChunks();
+	runnableChunks = activeChunks; // Copy active chunks to runnable chunks
 	worldReady.store(true);
 }
 
@@ -34,13 +32,11 @@ World::~World()
 void World::UpdateChunks(const Player& player)
 {
 	std::lock_guard<std::mutex> lock(chunkMutex);
-	// Calculate current reference Chunk X-Z position.
 	int playerChunkPosX = (int)(player.GetPlayerPosition().x / CHUNK_X);
 	int playerChunkPosZ = (int)(player.GetPlayerPosition().z / CHUNK_Z);
 
 	dirtyChunks.clear();
 
-	// Add all the previous coordinates to remove
 	for (auto& chunk : activeChunks)
 	{
 		dirtyChunks.insert(chunk.first);
@@ -59,6 +55,7 @@ void World::UpdateChunks(const Player& player)
 				std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z, perlinNoise);
 				activeChunks.emplace(chunkPos, std::move(currentChunk));
 
+				// Older chunks need to remesh if they are adjacent to the new chunk
 				if (activeChunks.contains(chunkPos + glm::ivec2(-1, 0)))
 					activeChunks.at(chunkPos + glm::ivec2(-1, 0))->chunkReady = false;
 
@@ -98,7 +95,7 @@ void World::GenerateChunks()
 			pair.second->GenerateChunkMesh(this);
 		}
 	}
-	if (!worldReady)
+	if (!worldReady) // Initial world generation
 		worldReady.store(true);
 
 	chunksReady.store(true);
@@ -117,10 +114,9 @@ BlockType World::FindBlock(int x, int y, int z) const
 	return BlockType::BOUNDARY; // Prevent it from generating the face if chunk doesn't exist yet.
 }
 
-#include <iostream>
 void World::DrawChunks()
 {
-	for (auto& pair : activeChunks)
+	for (auto& pair : runnableChunks)
 	{
 		if (pair.second->chunkReady.load())
 		{
@@ -128,5 +124,7 @@ void World::DrawChunks()
 			pair.second->DrawArrays();
 		}
 	}
+	std::lock_guard<std::mutex> lock(chunkMutex);
+	runnableChunks = activeChunks;
 }
 
