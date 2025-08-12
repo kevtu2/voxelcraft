@@ -36,13 +36,14 @@ private:
 	int renderDistance;
 
 	// Chunk data
-	std::unique_ptr<Chunk> spawnChunk;
-	std::unordered_map<glm::ivec2, std::unique_ptr<Chunk>, Vec2Hasher, Vec2Equals> activeChunks;
-	std::unordered_map<glm::ivec2, std::unique_ptr<Chunk>, Vec2Hasher, Vec2Equals> runnableChunks;
+	std::shared_ptr<Chunk> spawnChunk;
+	std::unordered_map<glm::ivec2, std::shared_ptr<Chunk>, Vec2Hasher, Vec2Equals> activeChunks;
+	std::unordered_map<glm::ivec2, std::shared_ptr<Chunk>, Vec2Hasher, Vec2Equals> runnableChunks;
 	std::unordered_set<glm::ivec2, Vec2Hasher, Vec2Equals> dirtyChunks;
 	
 	FastNoiseLite perlinNoise;
 	std::mutex chunkMutex;
+	std::mutex updateRunnableChunksMutex;
 
 public:
 	World();

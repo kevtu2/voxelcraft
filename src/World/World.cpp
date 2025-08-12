@@ -15,7 +15,7 @@ World::World()
 		for (int z = -renderDistance; z < renderDistance; ++z)
 		{
 			glm::ivec2 chunkPos = glm::ivec2(x, z);
-			std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z, perlinNoise);
+			std::shared_ptr<Chunk> currentChunk = std::make_shared<Chunk>(x, 0, z, perlinNoise);
 			activeChunks.emplace(chunkPos, std::move(currentChunk));
 		}
 	}
@@ -31,7 +31,6 @@ World::~World()
 
 void World::UpdateChunks(const Player& player)
 {
-	std::lock_guard<std::mutex> lock(chunkMutex);
 	int playerChunkPosX = (int)(player.GetPlayerPosition().x / CHUNK_X);
 	int playerChunkPosZ = (int)(player.GetPlayerPosition().z / CHUNK_Z);
 
@@ -52,7 +51,7 @@ void World::UpdateChunks(const Player& player)
 			// This generates chunks that aren't generated already.
 			if (!activeChunks.contains(chunkPos))
 			{
-				std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z, perlinNoise);
+				std::shared_ptr<Chunk> currentChunk = std::make_shared<Chunk>(x, 0, z, perlinNoise);
 				activeChunks.emplace(chunkPos, std::move(currentChunk));
 
 				// Older chunks need to remesh if they are adjacent to the new chunk
@@ -87,7 +86,6 @@ void World::UpdateChunks(const Player& player)
 
 void World::GenerateChunks()
 {
-	std::lock_guard<std::mutex> lock(chunkMutex);
 	for (auto& pair : activeChunks)
 	{
 		if (!pair.second->chunkReady.load())
@@ -99,6 +97,9 @@ void World::GenerateChunks()
 		worldReady.store(true);
 
 	chunksReady.store(true);
+
+	std::lock_guard<std::mutex> updateLock(updateRunnableChunksMutex);
+	runnableChunks = activeChunks;
 }
 
 BlockType World::FindBlock(int x, int y, int z) const
@@ -116,6 +117,7 @@ BlockType World::FindBlock(int x, int y, int z) const
 
 void World::DrawChunks()
 {
+	std::lock_guard<std::mutex> lock(updateRunnableChunksMutex);
 	for (auto& pair : runnableChunks)
 	{
 		if (pair.second->chunkReady.load())
@@ -124,7 +126,5 @@ void World::DrawChunks()
 			pair.second->DrawArrays();
 		}
 	}
-	std::lock_guard<std::mutex> lock(chunkMutex);
-	runnableChunks = activeChunks;
 }
 
