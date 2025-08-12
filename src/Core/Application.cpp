@@ -208,6 +208,21 @@ void Application::GameLoop()
 			}
 		}
 
+		if (world != nullptr) 
+		{
+			std::unique_lock<std::mutex> lock(world->deleteChunksMutex);
+			if (world->dirtyChunks.size() > 0)
+			{
+				// Remove dirty chunks
+				for (const auto& chunkPos : world->dirtyChunks)
+				{
+					world->activeChunks.erase(chunkPos);
+					world->runnableChunks.erase(chunkPos);
+				}
+				world->dirtyChunks.clear();
+			}
+		}
+		
 		// ImGui and UI drawing
 		imgui->StartGuiFrame();
 		uiManager->DrawComponents();

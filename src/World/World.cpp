@@ -31,6 +31,7 @@ World::~World()
 
 void World::UpdateChunks(const Player& player)
 {
+	std::lock_guard<std::mutex> lock(deleteChunksMutex);
 	int playerChunkPosX = (int)(player.GetPlayerPosition().x / CHUNK_X);
 	int playerChunkPosZ = (int)(player.GetPlayerPosition().z / CHUNK_Z);
 
@@ -74,17 +75,16 @@ void World::UpdateChunks(const Player& player)
 		}
 	}
 
-	// Delete chunks outside render distance
-	for (auto& chunkKey : dirtyChunks)
-	{
- 		activeChunks.erase(chunkKey);
-	}
-	dirtyChunks.clear();
+	//// Delete chunks outside render distance
+	//for (auto& chunkKey : dirtyChunks)
+	//{
+ //		activeChunks.erase(chunkKey);
+	//}
+	//dirtyChunks.clear();
 }
 
 void World::GenerateChunks()
 {
-
 	for (auto& pair : activeChunks)
 	{
 		if (!pair.second->chunkReady.load())

@@ -12,7 +12,6 @@
 #include "Chunk.hpp"
 #include "Player.hpp"
 
-
 class World
 {
 	// Define hasher for glm::vec2 used for unordered_map (activeChunks)
@@ -37,12 +36,7 @@ private:
 
 	// Chunk data
 	std::shared_ptr<Chunk> spawnChunk;
-	std::unordered_map<glm::ivec2, std::shared_ptr<Chunk>, Vec2Hasher, Vec2Equals> activeChunks;
-	std::unordered_map<glm::ivec2, std::shared_ptr<Chunk>, Vec2Hasher, Vec2Equals> runnableChunks;
-	std::unordered_set<glm::ivec2, Vec2Hasher, Vec2Equals> dirtyChunks;
-	
 	FastNoiseLite perlinNoise;
-	std::mutex chunkMutex;
 	std::mutex updateRunnableChunksMutex;
 
 public:
@@ -57,6 +51,12 @@ public:
 
 	std::atomic<bool> worldReady = false;
 	std::atomic<bool> chunksReady = false;
+
+	std::unordered_map<glm::ivec2, std::shared_ptr<Chunk>, Vec2Hasher, Vec2Equals> activeChunks;
+	std::unordered_map<glm::ivec2, std::shared_ptr<Chunk>, Vec2Hasher, Vec2Equals> runnableChunks;
+	std::unordered_set<glm::ivec2, Vec2Hasher, Vec2Equals> dirtyChunks;
+	std::mutex deleteChunksMutex;
+
 
 	inline void SetRenderDistance(unsigned int value)
 	{
