@@ -34,8 +34,6 @@ void World::UpdateChunks(const Player& player)
 	int playerChunkPosX = (int)(player.GetPlayerPosition().x / CHUNK_X);
 	int playerChunkPosZ = (int)(player.GetPlayerPosition().z / CHUNK_Z);
 
-	dirtyChunks.clear();
-
 	for (auto& chunk : activeChunks)
 	{
 		dirtyChunks.insert(chunk.first);
@@ -79,13 +77,14 @@ void World::UpdateChunks(const Player& player)
 	// Delete chunks outside render distance
 	for (auto& chunkKey : dirtyChunks)
 	{
-		activeChunks.erase(chunkKey);
+ 		activeChunks.erase(chunkKey);
 	}
 	dirtyChunks.clear();
 }
 
 void World::GenerateChunks()
 {
+
 	for (auto& pair : activeChunks)
 	{
 		if (!pair.second->chunkReady.load())

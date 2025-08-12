@@ -192,9 +192,7 @@ void Application::GameLoop()
 				// Physics calculations
 				Physics::CalculateGravity(player, deltaTime);
 				Physics::CheckCollisions(player, world, deltaTime);
-				std::unique_lock<std::mutex> updatePlayerLocationLock(updatePlayerLocationMutex);
 				player->Move(deltaTime);
-				updatePlayerLocationLock.unlock();
 
 				shaderProgram->SetUniformMatrix4f("view", player->GetViewMatrix());
 				shaderProgram->SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
@@ -215,9 +213,7 @@ void Application::GameLoop()
 		uiManager->DrawComponents();
 		imgui->Render();
 
-		std::unique_lock<std::mutex> applyGameStateLock(applyGameStateMutex);
 		ApplyGameState();
-		applyGameStateLock.unlock();
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -6,7 +6,6 @@
 
 #include <memory>
 #include <thread>
-#include <mutex>
 
 #include "World/Player.hpp"
 #include "World/World.hpp"
@@ -45,10 +44,7 @@ private:
 	std::shared_ptr<Player> player; // TODO: Move to world class
 	World* world = nullptr;
 
-	// Mutexes and atomic variables
-	std::mutex createNewWorld;
-	std::mutex applyGameStateMutex;
-	std::mutex updatePlayerLocationMutex;
+	// Thread safety
 	std::atomic<World*> worldAtomic;
 	std::atomic_ref<GameState> gameStateAtomic;
 
