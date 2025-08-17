@@ -3,8 +3,6 @@
 #include <imgui.h>
 #include <GLFW/glfw3.h>
 
-
-
 TitleScreen::TitleScreen(UIState& uiState, GameState& gameState) : UIElement(uiState),
     buttonSize(ImVec2(800, 100))
 {
@@ -33,13 +31,13 @@ void TitleScreen::Draw()
         if (ImGui::Button("Play Game", buttonSize))
         {
             uiState.showTitleScreen = false;
+            uiState.createNewWorld = true;
             glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
         ImGui::Dummy(ImVec2(0.0f, 50.0f));
         CentreNextItem(buttonSize.x);
         if (ImGui::Button("Quit to Desktop", buttonSize))
-            glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
-
+            uiState.quitGame = true;
         ImGui::End();
     }
 }

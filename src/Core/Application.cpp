@@ -2,9 +2,7 @@
 
 #include <iostream>
 
-#include "Graphics/VoxelShader.hpp"
 #include "Graphics/Renderer.hpp"
-#include "Graphics/Texture.hpp"
 #include "Graphics/LightSource.hpp"
 
 #include "Physics/Physics.hpp"
@@ -14,11 +12,7 @@
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 Application::Application()
-	: deltaTime(0.0f),
-	lastTime(0.0f),
-	firstMouseInput(true),
-	mouseX(400.0f),
-	mouseY(300.0f)
+	: gameStateAtomic(gameState)
 {
 	// Initialize GLFW
 	glfwInit();
@@ -37,7 +31,8 @@ Application::Application()
 	width = mode->width / dpiScale;
 	height = mode->height / dpiScale;
 
-	std::cout << "Width: " << width << " Height: " << height << std::endl; 
+	mouseX = width / 2;
+	mouseY = height / 2;
 
 	window = glfwCreateWindow(width, height, "voxelcraft", primaryMonitor, NULL);
 	if (window == NULL)
@@ -63,7 +58,7 @@ Application::Application()
 	// Allow dynamic resizing of viewport
 	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
-	});
+		});
 
 	glfwSetKeyCallback(window, KeyCallback);
 	glfwSetWindowUserPointer(window, this);
@@ -76,11 +71,28 @@ Application::Application()
 
 	player = std::make_shared<Player>(width, height);
 
+	// Set up shaders
+	shaderProgram = std::make_unique<VoxelShader>("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
+	shaderProgram->UseProgram();
+	crosshairShader = std::make_unique<VoxelShader>("../src/Graphics/crosshair.vert", "../src/Graphics/crosshair.frag");
+
+	texture = std::make_shared<Texture>("../textures/blocks.png");
+
 	// Set up ImGui and UI
 	imgui = std::make_shared<ImGuiDriver>(window);
 	uiManager = std::make_unique<UIManager>(gameState);
 	uiManager->uiState.monitorWidth = width;
 	uiManager->uiState.monitorHeight = height;
+}
+
+Application::~Application()
+{
+	if (window != NULL)
+	{
+		glfwDestroyWindow(window);
+	}
+	glfwTerminate();
+	delete world;
 }
 
 void Application::CalculateNewMousePosition()
@@ -107,15 +119,6 @@ void Application::CalculateNewMousePosition()
 	player->UpdatePlayerLookAt(deltaTime, xOffset, yOffset);
 }
 
-Application::~Application()
-{
-	if (window != NULL)
-	{
-		glfwDestroyWindow(window);
-	}
-	glfwTerminate();
-}
-
 void Application::ProcessInput()
 {
 	// Assume player not moving initially
@@ -137,32 +140,38 @@ void Application::ProcessInput()
 
 void Application::Run()
 {
-	// Set up shaders
-	VoxelShader shaderProgram("../src/Graphics/shader.vert", "../src/Graphics/shader.frag");
-	shaderProgram.UseProgram();
+	std::thread updateChunksWorker(Renderer::UpdateWorldChunks, gameStateAtomic, std::ref(worldAtomic), texture, player);
 
-	VoxelShader crosshairShader("../src/Graphics/crosshair.vert", "../src/Graphics/crosshair.frag");
+	GameLoop();
 
+	updateChunksWorker.join();
+}
+
+void Application::GameLoop()
+{
 	// Set camera origin
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-	shaderProgram.SetUniformMatrix4f("model", model);
+	shaderProgram->SetUniformMatrix4f("model", model);
 
-	// Set up light source and textures
+	// Set up light source
 	LightSource light;
-	Texture textureAtlas("../textures/blocks.png");
 
-	// Hello new world!
-	world = std::shared_ptr<World>(new World());
-	
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.53f, 0.81f, 0.92f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (!uiManager->ShouldShowTitleScreen())
+		if (uiManager->ShouldCreateNewWorld())
 		{
-			shaderProgram.SetUniformMatrix4f("projection", player->GetProjectionMatrix());
+			uiManager->uiState.createNewWorld = false;
+			world = new World();
+			worldAtomic.store(world);
+		}
+
+		if (!uiManager->ShouldShowTitleScreen() && world->worldReady.load())
+		{
+			shaderProgram->SetUniformMatrix4f("projection", player->GetProjectionMatrix());
 
 			float currentTime = glfwGetTime();
 			deltaTime = currentTime - lastTime;
@@ -170,10 +179,10 @@ void Application::Run()
 			deltaTime = glm::clamp(deltaTime, 0.0f, 0.05f);
 			gameState.deltaTime = deltaTime;
 
-			/* --- Draw 3D world--- */
-			shaderProgram.UseProgram();
-
-			Renderer::DrawChunk(world, shaderProgram, textureAtlas, *player.get());
+			/* --- Draw 3D world--- */ 
+			shaderProgram->UseProgram();
+			if (world->chunksReady.load())
+				world->DrawChunks();
 
 			if (!uiManager->GameShouldPause())
 			{
@@ -184,29 +193,43 @@ void Application::Run()
 				Physics::CalculateGravity(player, deltaTime);
 				Physics::CheckCollisions(player, world, deltaTime);
 				player->Move(deltaTime);
-				glm::vec3 pos = player->GetPlayerPosition();
 
-				shaderProgram.SetUniformMatrix4f("view", player->GetViewMatrix());
-				shaderProgram.SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
+				shaderProgram->SetUniformMatrix4f("view", player->GetViewMatrix());
+				shaderProgram->SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
 
 				glm::vec3 cameraPos = player->GetPlayerPosition();
 				light.SetLightPosition(cameraPos);
-				shaderProgram.UseLightSource(light);
+				shaderProgram->UseLightSource(light);
 
 				/* --- Enable Draw Crosshair --- */
-				crosshairShader.UseProgram();
-				crosshairShader.SetUniformMatrix4f("projection", uiManager->GetHUDProjectionMat());
-				crosshairShader.SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
+				crosshairShader->UseProgram();
+				crosshairShader->SetUniformMatrix4f("projection", uiManager->GetHUDProjectionMat());
+				crosshairShader->SetUniformVec2f("translation", glm::vec2(width / 2, height / 2));
 			}
 		}
 
+		if (world != nullptr) 
+		{
+			std::unique_lock<std::mutex> lock(world->deleteChunksMutex);
+			if (world->dirtyChunks.size() > 0)
+			{
+				// Remove dirty chunks
+				for (const auto& chunkPos : world->dirtyChunks)
+				{
+					world->activeChunks.erase(chunkPos);
+					world->runnableChunks.erase(chunkPos);
+				}
+				world->dirtyChunks.clear();
+			}
+		}
+		
 		// ImGui and UI drawing
 		imgui->StartGuiFrame();
 		uiManager->DrawComponents();
 		imgui->Render();
 
 		ApplyGameState();
-
+		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
@@ -214,7 +237,8 @@ void Application::Run()
 
 void Application::ApplyGameState()
 {
-	world->setRenderDistance(gameState.renderDistance);
+	if (world != nullptr)
+		world->SetRenderDistance(gameState.renderDistance);
 	player->SetFOV(gameState.FOV);
 	player->SetMouseSensitivity(gameState.mouseSensitivity);
 }
@@ -224,7 +248,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	Application* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
 	std::shared_ptr<Player> player = app->GetPlayer();
 	UIManager& uiManager = app->GetUIManager();
-
 
 	if (!app)
 	{

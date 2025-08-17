@@ -2,12 +2,16 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <memory>
 #include <glm/glm.hpp>
+
+#include <memory>
+#include <thread>
 
 #include "World/Player.hpp"
 #include "World/World.hpp"
 
+#include "Graphics/VoxelShader.hpp"
+#include "Graphics/Texture.hpp"
 
 #include "Core/ImGuiDriver.hpp"
 #include "UI/UIManager.hpp"
@@ -23,26 +27,35 @@ private:
 	int height;
 
 	// Application runtime properties
-	float deltaTime;
-	float lastTime;
+	float deltaTime = 0.0f;
+	float lastTime = 0.0f;
 
 	// UI
 	std::shared_ptr<ImGuiDriver> imgui;
 	std::unique_ptr<UIManager> uiManager;
 
+	// Shaders and textures
+	std::unique_ptr<VoxelShader> shaderProgram;
+	std::unique_ptr<VoxelShader> crosshairShader;
+	std::shared_ptr<Texture> texture;
+
 	// Game properties (states)
 	GameState gameState;
-	std::shared_ptr<Player> player;
-	std::shared_ptr<World> world;
+	std::shared_ptr<Player> player; // TODO: Move to world class
+	World* world = nullptr;
+
+	// Thread safety
+	std::atomic<World*> worldAtomic;
+	std::atomic_ref<GameState> gameStateAtomic;
 
 	void ProcessInput();
-
 	void CalculateNewMousePosition();
 
 public:
 	Application();
 	~Application();
 	void Run();
+	void GameLoop();
 
 	std::shared_ptr<Player> GetPlayer() const { return player; }
 	float GetWorldDeltaTime() const { return deltaTime; }
@@ -58,6 +71,6 @@ public:
 	float mouseY;
 	float lastX = 0.0f;
 	float lastY = 0.0f;
-	bool firstMouseInput;
+	bool firstMouseInput = true;
 	bool overrideMouseCalculation = false;
 };

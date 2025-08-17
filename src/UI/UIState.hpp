@@ -13,5 +13,6 @@ struct UIState
 	bool showOptionsMenu = false;
 	bool showFPSInHUD = false;
 	bool showTitleScreen = true;
+	bool createNewWorld = false;
 	// unsigned int playerHealth
 };

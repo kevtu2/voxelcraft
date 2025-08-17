@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <vector>
 #include <array>
+#include <mutex>
+#include <atomic>
 #include <memory>
 #include <FastNoiseLite.hpp>
 
@@ -33,12 +35,10 @@ private:
 
 	// Use to identify which blocks are contained in the chunk
 	std::array<unsigned char, CHUNK_BLOCK_COUNT> blocks;
-	
-	FastNoiseLite perlinNoise;
 
 public:
-	Chunk();
-	Chunk(int x, int y, int z, FastNoiseLite noise);
+	Chunk(const FastNoiseLite& perlinNoise);
+	Chunk(int x, int y, int z, const FastNoiseLite& perlinNoise);
 
 	~Chunk();
 
@@ -50,21 +50,20 @@ public:
 	Chunk(const Chunk&) = delete;
 	Chunk& operator=(const Chunk&) = delete;
 
-	void BufferData() const;
+	void BufferData();
 
 	void DrawArrays() const;
 
-	//void GenerateChunkVertexData();
-	
 	glm::ivec3 GetWorldPosition() const { return position; }
 
 	BlockType GetBlock(int x, int y, int z) const;
 
-	void GenerateBlockData();
+	void GenerateBlockData(const FastNoiseLite& perlinNoise);
 	void GenerateChunkMesh(World* world);
 
 	bool IsReady() const { return chunkReady; }
 
-	bool chunkReady = false;
-
+	std::atomic<bool> chunkReady = false;
+	
+	bool buffersGenerated = false;
 };

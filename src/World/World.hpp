@@ -3,13 +3,14 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include <set>
+#include <atomic>
+#include <mutex>
 #include <unordered_map>
 #include <unordered_set>
 #include <FastNoiseLite.hpp>
 
 #include "Chunk.hpp"
 #include "Player.hpp"
-
 
 class World
 {
@@ -34,11 +35,9 @@ private:
 	int renderDistance;
 
 	// Chunk data
-	std::unique_ptr<Chunk> spawnChunk;
-	std::unordered_map<glm::ivec2, std::unique_ptr<Chunk>, Vec2Hasher, Vec2Equals> activeChunks;
-	std::unordered_set<glm::ivec2, Vec2Hasher, Vec2Equals> dirtyChunks;
-	
+	std::shared_ptr<Chunk> spawnChunk;
 	FastNoiseLite perlinNoise;
+	std::mutex updateRunnableChunksMutex;
 
 public:
 	World();
@@ -47,9 +46,19 @@ public:
 	void UpdateChunks(const Player& player);
 	void GenerateChunks();
 	void DrawChunks();
+	FastNoiseLite& GetNoiseInstance() { return perlinNoise; }
 	BlockType FindBlock(int x, int y, int z) const;
 
-	inline void setRenderDistance(unsigned int value)
+	std::atomic<bool> worldReady = false;
+	std::atomic<bool> chunksReady = false;
+
+	std::unordered_map<glm::ivec2, std::shared_ptr<Chunk>, Vec2Hasher, Vec2Equals> activeChunks;
+	std::unordered_map<glm::ivec2, std::shared_ptr<Chunk>, Vec2Hasher, Vec2Equals> runnableChunks;
+	std::unordered_set<glm::ivec2, Vec2Hasher, Vec2Equals> dirtyChunks;
+	std::mutex deleteChunksMutex;
+
+
+	inline void SetRenderDistance(unsigned int value)
 	{
 		{
 			if (value > 32)
@@ -66,5 +75,5 @@ public:
 			}
 		}
 	}
-	unsigned int getRenderDistance() const { return renderDistance; }
+	unsigned int GetRenderDistance() const { return renderDistance; }
 };

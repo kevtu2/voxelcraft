@@ -8,6 +8,7 @@
 UIManager::UIManager(GameState& gameState) :
 	window(glfwGetCurrentContext()),
 	uiState(UIState()),
+	gameState(gameState),
 	titleScreen(uiState, gameState),
 	mainMenu(MainMenu(uiState)),
 	optionsMenu(OptionsMenu(uiState, gameState)),
@@ -45,7 +46,10 @@ void UIManager::DrawComponents()
 		ImGui::PopFont();
 	}
 	if (uiState.quitGame)
-		glfwSetWindowShouldClose(glfwGetCurrentContext(), true);
+	{
+		gameState.quitGame = true;
+		glfwSetWindowShouldClose(window, true);
+	}
 }
 
 void UIManager::ToggleMainMenu(bool value)

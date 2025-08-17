@@ -7,6 +7,7 @@ struct GameState
 	// Rendering
 	int renderDistance = 12;
 	float FOV = 45.0f;
+	bool quitGame = false;
 
 	// Gameplay
 	float mouseSensitivity = 2.5f;

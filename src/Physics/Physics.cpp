@@ -20,7 +20,7 @@ float CalculateTime(float x, float y)
 	}
 }
 
-void Physics::CheckCollisions(std::shared_ptr<Player> player, std::shared_ptr<World> world, float deltaTime)
+void Physics::CheckCollisions(std::shared_ptr<Player> player, World* world, float deltaTime)
 {
 	// 3 iterations for 3 of the axes.
 	for (int i = 0; i < 3; ++i)

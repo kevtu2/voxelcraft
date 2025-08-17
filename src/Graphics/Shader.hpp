@@ -12,6 +12,7 @@ private:
 public:
 	Shader(const char* vertexPath, const char* fragmentPath);
 	~Shader();
+	void CheckShaderCompileErrors(unsigned int shader);
 
 	void UseProgram() const;
 

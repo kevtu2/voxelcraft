@@ -60,4 +60,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 	imgui
 )
 
+if (UNIX)
+	target_link_libraries(${PROJECT_NAME} PUBLIC atomic)
+endif (UNIX)
+
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+

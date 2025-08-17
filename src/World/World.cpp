@@ -2,7 +2,6 @@
 
 #include "Core/Utils.hpp"
 
-
 World::World()
 	: renderDistance(12)
 {
@@ -11,16 +10,18 @@ World::World()
 	perlinNoise.SetFrequency(0.01f);
 	perlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 
-	// Generate new world chunks
 	for (int x = -renderDistance; x < renderDistance; ++x)
 	{
 		for (int z = -renderDistance; z < renderDistance; ++z)
 		{
 			glm::ivec2 chunkPos = glm::ivec2(x, z);
-			std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z, perlinNoise);
+			std::shared_ptr<Chunk> currentChunk = std::make_shared<Chunk>(x, 0, z, perlinNoise);
 			activeChunks.emplace(chunkPos, std::move(currentChunk));
 		}
 	}
+	GenerateChunks();
+	runnableChunks = activeChunks; // Copy active chunks to runnable chunks
+	worldReady.store(true);
 }
 
 World::~World()
@@ -28,16 +29,12 @@ World::~World()
 
 }
 
-// TODO: Change this so that player camera is not contained inside of application.
 void World::UpdateChunks(const Player& player)
 {
-	// Calculate current reference Chunk X-Z position.
+	std::lock_guard<std::mutex> lock(deleteChunksMutex);
 	int playerChunkPosX = (int)(player.GetPlayerPosition().x / CHUNK_X);
 	int playerChunkPosZ = (int)(player.GetPlayerPosition().z / CHUNK_Z);
 
-	dirtyChunks.clear();
-
-	// Add all the previous coordinates to remove
 	for (auto& chunk : activeChunks)
 	{
 		dirtyChunks.insert(chunk.first);
@@ -53,9 +50,10 @@ void World::UpdateChunks(const Player& player)
 			// This generates chunks that aren't generated already.
 			if (!activeChunks.contains(chunkPos))
 			{
-				std::unique_ptr<Chunk> currentChunk = std::make_unique<Chunk>(x, 0, z, perlinNoise);
+				std::shared_ptr<Chunk> currentChunk = std::make_shared<Chunk>(x, 0, z, perlinNoise);
 				activeChunks.emplace(chunkPos, std::move(currentChunk));
 
+				// Older chunks need to remesh if they are adjacent to the new chunk
 				if (activeChunks.contains(chunkPos + glm::ivec2(-1, 0)))
 					activeChunks.at(chunkPos + glm::ivec2(-1, 0))->chunkReady = false;
 
@@ -77,22 +75,30 @@ void World::UpdateChunks(const Player& player)
 		}
 	}
 
-	// Delete chunks outside render distance
-	for (auto& chunkKey : dirtyChunks)
-	{
-		activeChunks.erase(chunkKey);
-	}
+	//// Delete chunks outside render distance
+	//for (auto& chunkKey : dirtyChunks)
+	//{
+ //		activeChunks.erase(chunkKey);
+	//}
+	//dirtyChunks.clear();
 }
 
 void World::GenerateChunks()
 {
 	for (auto& pair : activeChunks)
 	{
-		if (!pair.second->chunkReady)
+		if (!pair.second->chunkReady.load())
 		{
 			pair.second->GenerateChunkMesh(this);
 		}
 	}
+	if (!worldReady) // Initial world generation
+		worldReady.store(true);
+
+	chunksReady.store(true);
+
+	std::lock_guard<std::mutex> updateLock(updateRunnableChunksMutex);
+	runnableChunks = activeChunks;
 }
 
 BlockType World::FindBlock(int x, int y, int z) const
@@ -110,9 +116,14 @@ BlockType World::FindBlock(int x, int y, int z) const
 
 void World::DrawChunks()
 {
-	for (auto& pair : activeChunks)
+	std::lock_guard<std::mutex> lock(updateRunnableChunksMutex);
+	for (auto& pair : runnableChunks)
 	{
-		pair.second->DrawArrays();
+		if (pair.second->chunkReady.load())
+		{
+			pair.second->BufferData();
+			pair.second->DrawArrays();
+		}
 	}
 }
 

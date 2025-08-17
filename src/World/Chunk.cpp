@@ -6,27 +6,20 @@
 #include <cstdint>
 #include <iostream>
 
-Chunk::Chunk()
+Chunk::Chunk(const FastNoiseLite& perlinNoise)
 {
-	glGenBuffers(1, &chunkVBO_ID);
-	glGenBuffers(1, &chunkIBO_ID);
-	glGenVertexArrays(1, &chunkVAO_ID);
 	position = glm::ivec3(0, 0, 0);
 	blocks.fill(static_cast<BlockType>(AIR));
 	chunkMesh = std::make_unique<ChunkMesh>();
-	GenerateBlockData();
+	GenerateBlockData(perlinNoise);
 }
 
-Chunk::Chunk(int x, int y, int z, FastNoiseLite noise)
-	: position(glm::ivec3(x, y, z)),
-	perlinNoise(noise)
+Chunk::Chunk(int x, int y, int z, const FastNoiseLite& perlinNoise)
+	: position(glm::ivec3(x, y, z))
 {
-	glGenBuffers(1, &chunkVBO_ID);
-	glGenBuffers(1, &chunkIBO_ID);
-	glGenVertexArrays(1, &chunkVAO_ID);
 	blocks.fill(static_cast<BlockType>(AIR));
 	chunkMesh = std::make_unique<ChunkMesh>();
-	GenerateBlockData();
+	GenerateBlockData(perlinNoise);
 }
 
 
@@ -74,9 +67,26 @@ Chunk& Chunk::operator=(Chunk&& o) noexcept
 	return *this;
 }
 
-void Chunk::BufferData() const
+void Chunk::BufferData()
 {
-	// std::cout << "Vertices: " << chunkMesh->chunkVertexData.size() << ", Indices: " << chunkMesh->chunkIndexData.size() << std::endl;
+	if (!chunkMesh)
+	{
+		std::cerr << "Error: Chunk mesh is null!" << std::endl;
+		return;
+	}
+	if (chunkMesh->chunkVertexData.empty() || chunkMesh->chunkIndexData.empty())
+	{
+		std::cerr << "Warning: Attempting to buffer empty chunk mesh data!" << std::endl;
+		return;
+	}
+	if (!buffersGenerated)
+	{
+		glGenBuffers(1, &chunkVBO_ID);
+		glGenBuffers(1, &chunkIBO_ID);
+		glGenVertexArrays(1, &chunkVAO_ID);
+		buffersGenerated = true;
+	}
+
 	glBindVertexArray(chunkVAO_ID);
 
 	glBindBuffer(GL_ARRAY_BUFFER, chunkVBO_ID);
@@ -107,7 +117,8 @@ void Chunk::DrawArrays() const
 	glBindVertexArray(0);
 }
 
-void Chunk::GenerateBlockData()
+
+void Chunk::GenerateBlockData(const FastNoiseLite& perlinNoise)
 {
 	for (int x = 0; x < CHUNK_X; ++x)
 	{
@@ -132,6 +143,7 @@ void Chunk::GenerateBlockData()
 void Chunk::GenerateChunkMesh(World* world)
 {
 	chunkMesh->Clear();
+	FastNoiseLite& perlinNoise = world->GetNoiseInstance();
 	for (int x = 0; x < CHUNK_X; ++x)
 	{
 		for (int z = 0; z < CHUNK_Z; ++z)
@@ -155,7 +167,7 @@ void Chunk::GenerateChunkMesh(World* world)
 				const BlockType upBlock		= world->FindBlock(blockWorldPos.x, blockWorldPos.y + 1, blockWorldPos.z);
 				const BlockType downBlock	= world->FindBlock(blockWorldPos.x, blockWorldPos.y - 1, blockWorldPos.z);
 
-				uint8_t cullingFlag = 0;
+				unsigned char cullingFlag = 0;
 				cullingFlag |= Block::IsTransparent(southBlock) ? 0 : CULL_POS_Z;
 				cullingFlag |= Block::IsTransparent(northBlock) ? 0 : CULL_NEG_Z;
 				cullingFlag |= Block::IsTransparent(eastBlock)	? 0 : CULL_POS_X;
@@ -172,8 +184,7 @@ void Chunk::GenerateChunkMesh(World* world)
 			}
 		}
 	}
-	BufferData();
-	chunkReady = true;
+	chunkReady.store(true);
 }
 
 BlockType Chunk::GetBlock(int x, int y, int z) const
