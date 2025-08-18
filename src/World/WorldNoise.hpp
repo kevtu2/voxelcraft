@@ -10,17 +10,25 @@
 */
 
 /* Continental noise spline points */
-// Contintenalness (x-axis)
-#define C_X1 -1.0f
-#define C_X2 0.3f
-#define C_X3 0.4f
-#define C_X4 1.0f
+// Continentalness (x-axis)
+#define C_X1 -1.0f    // Deep ocean floor
+#define C_X2 -0.8f    // Ocean plateau
+#define C_X3 -0.6f    // Coastline low shelf
+#define C_X4 -0.55f   // Start of coast rise
+#define C_X5 -0.1f    // Rapid rise to inland
+#define C_X6  0.1f    // Inland shelf
+#define C_X7  0.5f    // Inland rise
+#define C_X8  1.0f    // Far inland
 
 // Terrain height (y-axis)
-#define C_Y1 50.0f
-#define C_Y2 100.0f
-#define C_Y3 150.0f
-#define C_Y4 150.0f
+#define C_Y1   0.0f   
+#define C_Y2   0.0f   
+#define C_Y3  10.0f   
+#define C_Y4  20.0f   
+#define C_Y5 100.0f   // Rapid inland rise
+#define C_Y6 110.0f   // Inland plateau
+#define C_Y7 120.0f   // Slight inland rise
+#define C_Y8 130.0f   // Far inland max
 
 struct WorldNoise
 {
@@ -32,18 +40,7 @@ private:
 	float Lerp(float x1, float x2, float y1, float y2, float x) const;
 
 public:
-	WorldNoise()
-	{
-		cNoise.SetSeed(rand());
-		cNoise.SetFrequency(0.01f);
-		cNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-		eNoise.SetSeed(rand());
-		eNoise.SetFrequency(0.01f);
-		eNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-		pvNoise.SetSeed(rand());
-		pvNoise.SetFrequency(0.01f);
-		pvNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-	}
+	WorldNoise();
 
 	~WorldNoise() = default;
 	

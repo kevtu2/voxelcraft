@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <iostream>
 
-Chunk::Chunk(const FastNoiseLite& perlinNoise)
+Chunk::Chunk(const WorldNoise& perlinNoise)
 {
 	position = glm::ivec3(0, 0, 0);
 	blocks.fill(static_cast<BlockType>(AIR));
@@ -14,7 +14,7 @@ Chunk::Chunk(const FastNoiseLite& perlinNoise)
 	GenerateBlockData(perlinNoise);
 }
 
-Chunk::Chunk(int x, int y, int z, const FastNoiseLite& perlinNoise)
+Chunk::Chunk(int x, int y, int z, const WorldNoise& perlinNoise)
 	: position(glm::ivec3(x, y, z))
 {
 	blocks.fill(static_cast<BlockType>(AIR));
@@ -118,7 +118,7 @@ void Chunk::DrawArrays() const
 }
 
 
-void Chunk::GenerateBlockData(const FastNoiseLite& perlinNoise)
+void Chunk::GenerateBlockData(const WorldNoise& noise)
 {
 	for (int x = 0; x < CHUNK_X; ++x)
 	{
@@ -126,9 +126,11 @@ void Chunk::GenerateBlockData(const FastNoiseLite& perlinNoise)
 		{
 			float globalX = static_cast<float>(position.x * CHUNK_X + x);
 			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
-			float noiseVal = perlinNoise.GetNoise(globalX, globalZ);
+			/*float noiseVal = perlinNoise.GetNoise(globalX, globalZ);
 			float normalizedVal = noiseVal * 0.5f + 0.5f;
-			int height = static_cast<int>(normalizedVal * surfaceY);
+			int height = static_cast<int>(normalizedVal * surfaceY);*/
+			int height = noise.GetContintentalNoiseHeight(globalX, globalZ);
+			//std::cout << "Resulting height: " << height << std::endl;
 
 			for (int y = 0; y <= height; ++y)
 			{
@@ -143,16 +145,16 @@ void Chunk::GenerateBlockData(const FastNoiseLite& perlinNoise)
 void Chunk::GenerateChunkMesh(World* world)
 {
 	chunkMesh->Clear();
-	FastNoiseLite& perlinNoise = world->GetNoiseInstance();
+	const WorldNoise& noise = world->GetNoiseInstance();
 	for (int x = 0; x < CHUNK_X; ++x)
 	{
 		for (int z = 0; z < CHUNK_Z; ++z)
 		{
 			float globalX = static_cast<float>(position.x * CHUNK_X + x);
 			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
-			float noiseVal = perlinNoise.GetNoise(globalX, globalZ);
-			float normalizedVal = noiseVal * 0.5f + 0.5f;
-			int height = static_cast<int>(normalizedVal * surfaceY);
+			float height = noise.GetContintentalNoiseHeight(globalX, globalZ);
+			/*float normalizedVal = noiseVal * 0.5f + 0.5f;
+			int height = static_cast<int>(normalizedVal * surfaceY);*/
 
 			for (int y = 0; y <= height; ++y)
 			{

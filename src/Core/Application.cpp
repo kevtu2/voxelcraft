@@ -136,6 +136,9 @@ void Application::ProcessInput()
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		player->HandleInputControls(C_RIGHT, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+		player->HandleInputControls(C_SPRINT, deltaTime);
 }
 
 void Application::Run()
@@ -210,7 +213,7 @@ void Application::GameLoop()
 
 		if (world != nullptr) 
 		{
-			std::unique_lock<std::mutex> lock(world->deleteChunksMutex);
+			std::lock_guard<std::mutex> lock(world->deleteChunksMutex);
 			if (world->dirtyChunks.size() > 0)
 			{
 				// Remove dirty chunks
