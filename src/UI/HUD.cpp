@@ -7,7 +7,7 @@
 #include <iostream>
 
 HUD::HUD(UIState& state, GameState& gameState) : UIElement(state),
-	windowSize(ImVec2(300, 150)),
+	windowSize(ImVec2(300, 200)),
 	gameState(gameState)
 {
 	windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing;
@@ -65,8 +65,8 @@ void HUD::Draw()
 	{
 		if (ImGui::Begin("Metrics", nullptr, windowFlags))
 		{
-			CentreNextItem(ImGui::CalcTextSize("X: %.2f, Y: %2.f, Z: %2.f").x);
-			ImGui::Text("X: %.2f, Y: %2.f, Z: %2.f", gameState.playerX, gameState.playerY, gameState.playerZ);
+			CentreNextItem(ImGui::CalcTextSize("X: %.2f, Y: %.2f, Z: %.2f").x);
+			ImGui::Text("X: %.2f, Y: %.2f, Z: %.2f", gameState.playerX, gameState.playerY, gameState.playerZ);
 			
 			ImGui::Spacing();
 
@@ -80,17 +80,17 @@ void HUD::Draw()
 
 			ImGui::Spacing();
 
-			CentreNextItem(ImGui::CalcTextSize("C: %3.f").x);
+			CentreNextItem(ImGui::CalcTextSize("C: %.3f").x);
 			ImGui::Text("C: %.3f", gameState.continentalVal);
 			
 			ImGui::Spacing();
 
-			CentreNextItem(ImGui::CalcTextSize("E: %3.f").x);
+			CentreNextItem(ImGui::CalcTextSize("E: %.3f").x);
 			ImGui::Text("E: %.3f", gameState.erosionVal);
 
 			ImGui::Spacing();
 
-			CentreNextItem(ImGui::CalcTextSize("PV: %3.f").x);
+			CentreNextItem(ImGui::CalcTextSize("PV: %.3f").x);
 			ImGui::Text("PV: %.3f", gameState.pvVal);
 
 			ImGui::End();

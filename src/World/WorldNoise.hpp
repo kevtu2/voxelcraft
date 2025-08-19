@@ -27,8 +27,8 @@
 #define C_Y4  90.0f   
 #define C_Y5  90.0f   
 #define C_Y6 200.0f   
-#define C_Y7 215.0f   
-#define C_Y8 218.0f  
+#define C_Y7 230.0f   
+#define C_Y8 320.0f  
 
 /* Erosion noise spline points */
 // Erosion (x-axis)
@@ -44,16 +44,16 @@
 #define E_X10  1.0f
 
 // Terrain Height (y-axis)
-#define E_Y1  120.0f
-#define E_Y2  105.0f
-#define E_Y3   90.0f
-#define E_Y4   75.0f
-#define E_Y5   85.0f
-#define E_Y6   20.0f
-#define E_Y7   20.0f
-#define E_Y8   18.0f
-#define E_Y9   57.0f
-#define E_Y10  60.0f
+#define E_Y1  300.0f
+#define E_Y2  200.0f
+#define E_Y3  150.0f
+#define E_Y4  120.0f
+#define E_Y5  100.0f
+#define E_Y6  80.0f
+#define E_Y7  60.0f
+#define E_Y8  50.0f
+#define E_Y9  55.0f
+#define E_Y10 60.0f
 
 /* Peaks and Valleys noise spline points */
 // Peaks & Valleys (x-axis)
@@ -71,6 +71,8 @@
 #define PV_Y4  40.0f  
 #define PV_Y5  90.0f   
 #define PV_Y6 100.0f
+
+#define RUGGEDNESS_FACTOR 60
 
 static constexpr float continentalXPoints[8] = { C_X1, C_X2, C_X3, C_X4, C_X5, C_X6, C_X7, C_X8 };
 static constexpr float continentalYPoints[8] = { C_Y1, C_Y2, C_Y3, C_Y4, C_Y5, C_Y6, C_Y7, C_Y8 };

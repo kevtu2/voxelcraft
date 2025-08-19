@@ -43,9 +43,19 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 	float continentalVal = 0;
 	for (int i = 0; i < 6; ++i)
 	{
+		if (noiseVal < C_Y1)
+		{
+			continentalVal = C_Y1;
+			break;
+		}
 		if (noiseVal > continentalXPoints[i] && noiseVal <= continentalXPoints[i + 1])
 		{
 			continentalVal = Lerp(continentalXPoints[i], continentalXPoints[i + 1], continentalYPoints[i], continentalYPoints[i + 1], noiseVal);
+			break;
+		}
+		if (noiseVal > C_Y8)
+		{
+			continentalVal = C_Y8;
 			break;
 		}
 	}
@@ -58,9 +68,19 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 	float erosionVal = 0;
 	for (int i = 0; i < 8; ++i)
 	{
+		if (erosionVal < E_Y1)
+		{
+			erosionVal = E_Y1;
+			break;
+		}
 		if (noiseVal > erosionXPoints[i] && noiseVal <= erosionXPoints[i + 1])
 		{
 			erosionVal = Lerp(erosionXPoints[i], erosionXPoints[i + 1], erosionYPoints[i], erosionYPoints[i + 1], noiseVal);
+			break;
+		}
+		if (erosionVal > E_Y10)
+		{
+			erosionVal = E_Y10;
 			break;
 		}
 	}
@@ -72,7 +92,13 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 
 	for (int i = 0; i < 4; ++i)
 	{
+		if (noiseVal < PV_Y1)
+			return PV_Y1;
+
 		if (noiseVal > peakValleyXPoints[i] && noiseVal <= peakValleyXPoints[i + 1])
 			return Lerp(peakValleyXPoints[i], peakValleyXPoints[i + 1], peakValleyYPoints[i], peakValleyYPoints[i + 1], noiseVal);
+
+		if (noiseVal > PV_Y6)
+			return PV_Y6;
 	}
 }

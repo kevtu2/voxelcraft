@@ -82,7 +82,7 @@ void World::GenerateChunks()
 {
 	for (auto& pair : activeChunks)
 	{
-		if (!pair.second->chunkReady.load())
+		if (pair.second != nullptr && !pair.second->chunkReady.load())
 		{
 			pair.second->GenerateChunkMesh(this);
 		}
