@@ -40,29 +40,39 @@ float WorldNoise::Lerp(float x1, float x2, float y1, float y2, float x) const
 int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 {
 	float noiseVal = cNoise.GetNoise(x, z);
-	if (noiseVal <= C_X1)
-		return static_cast<int>(C_Y1);
+	float continentalVal = 0;
+	for (int i = 0; i < 6; ++i)
+	{
+		if (noiseVal > continentalXPoints[i] && noiseVal <= continentalXPoints[i + 1])
+		{
+			continentalVal = Lerp(continentalXPoints[i], continentalXPoints[i + 1], continentalYPoints[i], continentalYPoints[i + 1], noiseVal);
+			break;
+		}
+	}
 
-	else if (noiseVal > C_X1 && noiseVal <= C_X2)
-		return static_cast<int>(Lerp(C_X1, C_X2, C_Y1, C_Y2, noiseVal));
+	if (continentalVal >= 0.5f)
+		noiseVal = eNoise.GetNoise(x, z);
+	else
+		return continentalVal;
 
-	else if (noiseVal > C_X2 && noiseVal <= C_X3)
-		return static_cast<int>(Lerp(C_X2, C_X3, C_Y2, C_Y3, noiseVal));
+	float erosionVal = 0;
+	for (int i = 0; i < 8; ++i)
+	{
+		if (noiseVal > erosionXPoints[i] && noiseVal <= erosionXPoints[i + 1])
+		{
+			erosionVal = Lerp(erosionXPoints[i], erosionXPoints[i + 1], erosionYPoints[i], erosionYPoints[i + 1], noiseVal);
+			break;
+		}
+	}
 
-	else if (noiseVal > C_X3 && noiseVal <= C_X4)
-		return static_cast<int>(Lerp(C_X3, C_X4, C_Y3, C_Y4, noiseVal));
+	if (erosionVal >= 0.3f)
+		noiseVal = pvNoise.GetNoise(x, z);
+	else
+		return erosionVal;
 
-	else if (noiseVal > C_X4 && noiseVal <= C_X5)
-		return static_cast<int>(Lerp(C_X4, C_X5, C_Y4, C_Y5, noiseVal));
-
-	else if (noiseVal > C_X5 && noiseVal <= C_X6)
-		return static_cast<int>(Lerp(C_X5, C_X6, C_Y5, C_Y6, noiseVal));
-
-	else if (noiseVal > C_X6 && noiseVal <= C_X7)
-		return static_cast<int>(Lerp(C_X6, C_X7, C_Y6, C_Y7, noiseVal));
-
-	else if (noiseVal > C_X7 && noiseVal <= C_X8)
-		return static_cast<int>(Lerp(C_X7, C_X8, C_Y7, C_Y8, noiseVal));
-
-	return static_cast<int>(C_Y8);
+	for (int i = 0; i < 4; ++i)
+	{
+		if (noiseVal > peakValleyXPoints[i] && noiseVal <= peakValleyXPoints[i + 1])
+			return Lerp(peakValleyXPoints[i], peakValleyXPoints[i + 1], peakValleyYPoints[i], peakValleyYPoints[i + 1], noiseVal);
+	}
 }
