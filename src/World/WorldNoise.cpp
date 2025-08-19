@@ -18,6 +18,12 @@ WorldNoise::WorldNoise()
 
 	pvNoise.SetSeed(rand());
 	pvNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+	pvNoise.SetFractalType(FastNoiseLite::FractalType_PingPong);
+	pvNoise.SetFractalOctaves(4);
+	pvNoise.SetFractalGain(0.490f);
+	pvNoise.SetFractalLacunarity(0.40f);
+	pvNoise.SetFractalWeightedStrength(-0.640f);
+	pvNoise.SetFractalPingPongStrength(4.150f);
 	pvNoise.SetFrequency(0.01f);
 }
 
