@@ -7,10 +7,10 @@
 #include <iostream>
 
 HUD::HUD(UIState& state, GameState& gameState) : UIElement(state),
-	windowSize(ImVec2(300, 200)),
+	windowSize(ImVec2(350, 150)),
 	gameState(gameState)
 {
-	windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing;
+	windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_AlwaysAutoResize;
 
 	// Setup crosshair
 	glGenVertexArrays(1, &crosshairVAO);
@@ -55,7 +55,6 @@ void HUD::Draw()
 	glDrawArrays(GL_LINES, 0, 4);
 	glEnable(GL_DEPTH_TEST);
 
-	ImGui::SetNextWindowSize(windowSize);
 	ImGui::SetNextWindowPos(ImVec2(10, 10));
 	ImGui::SetNextWindowBgAlpha(0.5f);
 
@@ -65,8 +64,14 @@ void HUD::Draw()
 	{
 		if (ImGui::Begin("Metrics", nullptr, windowFlags))
 		{
-			CentreNextItem(ImGui::CalcTextSize("X: %.2f, Y: %.2f, Z: %.2f").x);
-			ImGui::Text("X: %.2f, Y: %.2f, Z: %.2f", gameState.playerX, gameState.playerY, gameState.playerZ);
+			CentreNextItem(ImGui::CalcTextSize("X: %.2f").x);
+			ImGui::Text("X: %.2f", gameState.playerX);
+
+			CentreNextItem(ImGui::CalcTextSize("Y: %.2f").x);
+			ImGui::Text("Y: %.2f", gameState.playerY);
+
+			CentreNextItem(ImGui::CalcTextSize("Z: %.2f").x);
+			ImGui::Text("Z: %.2f", gameState.playerZ);
 			
 			ImGui::Spacing();
 
