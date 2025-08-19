@@ -73,8 +73,8 @@ void Player::HandleInputControls(CameraMovement move, float deltaTime)
 		break;
 
 	case C_SPRINT:
-		velocity.x * 2.0f;
-		velocity.y * 2.0f;
+		velocity.x *= 2.0f;
+		velocity.y *= 2.0f;
 		break;
 
 	case C_JUMP:

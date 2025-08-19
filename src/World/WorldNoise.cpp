@@ -6,11 +6,11 @@ WorldNoise::WorldNoise()
 	cNoise.SetSeed(rand());
 	cNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 	cNoise.SetFractalType(FastNoiseLite::FractalType_FBm);
-	cNoise.SetFractalOctaves(4);
-	cNoise.SetFractalGain(0.07f);
-	cNoise.SetFractalLacunarity(3.5f);
-	cNoise.SetFractalWeightedStrength(6.0f);
-	cNoise.SetFrequency(0.01f);
+	cNoise.SetFractalOctaves(6);
+	cNoise.SetFractalGain(0.290f);
+	cNoise.SetFractalLacunarity(2.380f);
+	cNoise.SetFractalWeightedStrength(-0.920f);
+	cNoise.SetFrequency(0.002f);
 
 	eNoise.SetSeed(rand());
 	eNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);

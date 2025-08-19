@@ -22,13 +22,13 @@
 
 // Terrain height (y-axis)
 #define C_Y1   0.0f   
-#define C_Y2   0.0f   
+#define C_Y2   10.0f   
 #define C_Y3  10.0f   
-#define C_Y4  20.0f   
-#define C_Y5 100.0f   // Rapid inland rise
-#define C_Y6 110.0f   // Inland plateau
+#define C_Y4  15.0f   
+#define C_Y5  90.0f   // Rapid inland rise
+#define C_Y6 100.0f   // Inland plateau
 #define C_Y7 120.0f   // Slight inland rise
-#define C_Y8 130.0f   // Far inland max
+#define C_Y8 200.0f   // Far inland max
 
 struct WorldNoise
 {
