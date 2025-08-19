@@ -241,9 +241,21 @@ void Application::GameLoop()
 void Application::ApplyGameState()
 {
 	if (world != nullptr)
+	{
 		world->SetRenderDistance(gameState.renderDistance);
+		glm::vec3 playerPos = player->GetPlayerPosition();
+
+		gameState.playerX = playerPos.x;
+		gameState.playerY = playerPos.y;
+		gameState.playerZ = playerPos.z;
+
+		gameState.continentalVal = world->GetNoiseInstance().GetContinentalVal(playerPos.x, playerPos.z);
+		gameState.erosionVal = world->GetNoiseInstance().GetErosionVal(playerPos.x, playerPos.z);
+		gameState.pvVal = world->GetNoiseInstance().GetPeakValleyVal(playerPos.x, playerPos.z);
+	}
 	player->SetFOV(gameState.FOV);
 	player->SetMouseSensitivity(gameState.mouseSensitivity);
+
 }
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)

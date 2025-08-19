@@ -16,7 +16,7 @@ static constexpr float crosshairVertices[] = {
 class HUD : public UIElement
 {	
 public:
-	HUD(UIState& state);
+	HUD(UIState& state, GameState& gameState);
 	~HUD();
 	void Draw() override;
 
@@ -24,6 +24,7 @@ public:
 
 private:
 	ImVec2 windowSize;
+	GameState& gameState;
 	// Crosshair attributes
 	unsigned int crosshairVAO, crosshairVBO;
 	glm::mat4 proj;

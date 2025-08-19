@@ -10,7 +10,7 @@ WorldNoise::WorldNoise()
 	cNoise.SetFractalGain(0.290f);
 	cNoise.SetFractalLacunarity(2.380f);
 	cNoise.SetFractalWeightedStrength(-0.920f);
-	cNoise.SetFrequency(0.002f);
+	cNoise.SetFrequency(0.0015f);
 
 	eNoise.SetSeed(rand());
 	eNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
@@ -50,7 +50,7 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 		}
 	}
 
-	if (continentalVal > 0.6f)
+	if (continentalVal > C_Y7)
 		noiseVal = eNoise.GetNoise(x, z);
 	else
 		return continentalVal;
@@ -65,7 +65,7 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 		}
 	}
 
-	if (erosionVal > 0.45f)
+	if (erosionVal > E_Y8)
 		noiseVal = pvNoise.GetNoise(x, z);
 	else
 		return erosionVal;

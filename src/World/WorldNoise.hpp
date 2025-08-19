@@ -49,10 +49,10 @@
 #define E_Y3   90.0f
 #define E_Y4   75.0f
 #define E_Y5   85.0f
-#define E_Y6   30.0f
+#define E_Y6   20.0f
 #define E_Y7   20.0f
 #define E_Y8   18.0f
-#define E_Y9   55.0f
+#define E_Y9   57.0f
 #define E_Y10  60.0f
 
 /* Peaks and Valleys noise spline points */
@@ -94,5 +94,8 @@ public:
 	~WorldNoise() = default;
 	
 	int GetWorldNoiseHeight(float x, float z) const;
+	inline float GetContinentalVal(float x, float z) const { return cNoise.GetNoise(x, z); }
+	inline float GetErosionVal(float x, float z) const { return eNoise.GetNoise(x, z); }
+	inline float GetPeakValleyVal(float x, float z) const { return pvNoise.GetNoise(x, z); }
 
 };

@@ -6,8 +6,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-HUD::HUD(UIState& state) : UIElement(state),
-	windowSize(ImVec2(200, 100))
+HUD::HUD(UIState& state, GameState& gameState) : UIElement(state),
+	windowSize(ImVec2(300, 150)),
+	gameState(gameState)
 {
 	windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing;
 
@@ -64,6 +65,11 @@ void HUD::Draw()
 	{
 		if (ImGui::Begin("Metrics", nullptr, windowFlags))
 		{
+			CentreNextItem(ImGui::CalcTextSize("X: %.2f, Y: %2.f, Z: %2.f").x);
+			ImGui::Text("X: %.2f, Y: %2.f, Z: %2.f", gameState.playerX, gameState.playerY, gameState.playerZ);
+			
+			ImGui::Spacing();
+
 			CentreNextItem(ImGui::CalcTextSize("xxx FPS").x);
 			ImGui::Text("%d FPS", (int)io.Framerate);
 			
@@ -71,9 +77,24 @@ void HUD::Draw()
 
 			CentreNextItem(ImGui::CalcTextSize("%.3f ms/frame").x);
 			ImGui::Text("%.3f ms/frame", 1000.0f / io.Framerate);
+
+			ImGui::Spacing();
+
+			CentreNextItem(ImGui::CalcTextSize("C: %3.f").x);
+			ImGui::Text("C: %.3f", gameState.continentalVal);
+			
+			ImGui::Spacing();
+
+			CentreNextItem(ImGui::CalcTextSize("E: %3.f").x);
+			ImGui::Text("E: %.3f", gameState.erosionVal);
+
+			ImGui::Spacing();
+
+			CentreNextItem(ImGui::CalcTextSize("PV: %3.f").x);
+			ImGui::Text("PV: %.3f", gameState.pvVal);
+
 			ImGui::End();
 		}
 	}
-
 	ImGui::SetNextWindowBgAlpha(1.0f);
 }
