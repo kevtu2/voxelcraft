@@ -129,7 +129,7 @@ void Chunk::GenerateBlockData(const WorldNoise& noise)
 			/*float noiseVal = perlinNoise.GetNoise(globalX, globalZ);
 			float normalizedVal = noiseVal * 0.5f + 0.5f;
 			int height = static_cast<int>(normalizedVal * surfaceY);*/
-			int height = noise.GetContintentalNoiseHeight(globalX, globalZ);
+			int height = noise.GetWorldNoiseHeight(globalX, globalZ);
 			//std::cout << "Resulting height: " << height << std::endl;
 
 			for (int y = 0; y <= height; ++y)
@@ -152,7 +152,7 @@ void Chunk::GenerateChunkMesh(World* world)
 		{
 			float globalX = static_cast<float>(position.x * CHUNK_X + x);
 			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
-			float height = noise.GetContintentalNoiseHeight(globalX, globalZ);
+			float height = noise.GetWorldNoiseHeight(globalX, globalZ);
 			/*float normalizedVal = noiseVal * 0.5f + 0.5f;
 			int height = static_cast<int>(normalizedVal * surfaceY);*/
 

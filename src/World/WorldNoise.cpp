@@ -14,7 +14,12 @@ WorldNoise::WorldNoise()
 
 	eNoise.SetSeed(rand());
 	eNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-	eNoise.SetFrequency(0.01f);
+	eNoise.SetFractalType(FastNoiseLite::FractalType_FBm);
+	eNoise.SetFractalOctaves(6);
+	eNoise.SetFractalGain(0.080f);
+	eNoise.SetFractalLacunarity(0.930f);
+	eNoise.SetFractalWeightedStrength(25.280f);
+	eNoise.SetFrequency(0.005f);
 
 	pvNoise.SetSeed(rand());
 	pvNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
@@ -32,10 +37,9 @@ float WorldNoise::Lerp(float x1, float x2, float y1, float y2, float x) const
 	return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1);
 }
 
-int WorldNoise::GetContintentalNoiseHeight(float x, float z) const
+int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 {
 	float noiseVal = cNoise.GetNoise(x, z);
-	//std::cout << "Noise val: " << noiseVal << " ";
 	if (noiseVal <= C_X1)
 		return static_cast<int>(C_Y1);
 
