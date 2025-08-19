@@ -30,6 +30,23 @@
 #define C_Y7 120.0f   // Slight inland rise
 #define C_Y8 200.0f   // Far inland max
 
+/* Peaks and Valleys noise spline points */
+// Peaks & Valleys (x-axis)
+#define PV_X1 -1.0f
+#define PV_X2 -0.6f
+#define PV_X3 -0.3f
+#define PV_X4  0.0f
+#define PV_X5  0.5f
+#define PV_X6  1.0f
+
+// Terrain Height (y-axis)
+#define PV_Y1  10.0f   
+#define PV_Y2  25.0f  
+#define PV_Y3  35.0f  
+#define PV_Y4  40.0f  
+#define PV_Y5  90.0f   
+#define PV_Y6 100.0f 
+
 struct WorldNoise
 {
 private:
