@@ -41,21 +41,14 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 {
 	float noiseVal = cNoise.GetNoise(x, z);
 	float continentalVal = 0;
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 7; ++i)
 	{
-		if (noiseVal < C_Y1)
+		if (noiseVal >= continentalXPoints[i] && noiseVal <= continentalXPoints[i + 1])
 		{
-			continentalVal = C_Y1;
-			break;
-		}
-		if (noiseVal > continentalXPoints[i] && noiseVal <= continentalXPoints[i + 1])
-		{
-			continentalVal = Lerp(continentalXPoints[i], continentalXPoints[i + 1], continentalYPoints[i], continentalYPoints[i + 1], noiseVal);
-			break;
-		}
-		if (noiseVal > C_Y8)
-		{
-			continentalVal = C_Y8;
+			continentalVal = Lerp(
+				continentalXPoints[i], continentalXPoints[i + 1], 
+				continentalYPoints[i], continentalYPoints[i + 1], 
+				noiseVal);
 			break;
 		}
 	}
@@ -66,7 +59,7 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 		return continentalVal;
 
 	float erosionVal = 0;
-	for (int i = 0; i < 8; ++i)
+	for (int i = 0; i < 9; ++i)
 	{
 		if (erosionVal < E_Y1)
 		{
@@ -90,7 +83,7 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 	else
 		return erosionVal;
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
 		if (noiseVal < PV_Y1)
 			return PV_Y1;
