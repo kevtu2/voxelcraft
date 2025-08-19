@@ -50,7 +50,7 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 		}
 	}
 
-	if (continentalVal >= 0.5f)
+	if (continentalVal > 0.6f)
 		noiseVal = eNoise.GetNoise(x, z);
 	else
 		return continentalVal;
@@ -65,7 +65,7 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 		}
 	}
 
-	if (erosionVal >= 0.3f)
+	if (erosionVal > 0.45f)
 		noiseVal = pvNoise.GetNoise(x, z);
 	else
 		return erosionVal;
