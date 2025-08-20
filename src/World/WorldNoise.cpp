@@ -39,59 +39,56 @@ float WorldNoise::Lerp(float x1, float x2, float y1, float y2, float x) const
 
 int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 {
-	float noiseVal = cNoise.GetNoise(x, z);
+	float terrainHeight = BASE_HEIGHT;
+
+	float cNoiseVal = cNoise.GetNoise(x, z);
 	float continentalVal = 0;
 	for (int i = 0; i < 7; ++i)
 	{
-		if (noiseVal >= continentalXPoints[i] && noiseVal <= continentalXPoints[i + 1])
+		if (cNoiseVal >= continentalXPoints[i] && cNoiseVal <= continentalXPoints[i + 1])
 		{
 			continentalVal = Lerp(
 				continentalXPoints[i], continentalXPoints[i + 1], 
 				continentalYPoints[i], continentalYPoints[i + 1], 
-				noiseVal);
+				cNoiseVal
+			);
 			break;
 		}
 	}
 
-	if (continentalVal > C_Y7)
-		noiseVal = eNoise.GetNoise(x, z);
-	else
-		return continentalVal;
+	terrainHeight += continentalVal;
 
+	float eNoiseVal = eNoise.GetNoise(x, z);
 	float erosionVal = 0;
 	for (int i = 0; i < 9; ++i)
 	{
-		if (erosionVal < E_Y1)
+		if (eNoiseVal >= erosionXPoints[i] && eNoiseVal <= erosionXPoints[i + 1])
 		{
-			erosionVal = E_Y1;
-			break;
-		}
-		if (noiseVal > erosionXPoints[i] && noiseVal <= erosionXPoints[i + 1])
-		{
-			erosionVal = Lerp(erosionXPoints[i], erosionXPoints[i + 1], erosionYPoints[i], erosionYPoints[i + 1], noiseVal);
-			break;
-		}
-		if (erosionVal > E_Y10)
-		{
-			erosionVal = E_Y10;
+			erosionVal = Lerp(
+				erosionXPoints[i], erosionXPoints[i + 1], 
+				erosionYPoints[i], erosionYPoints[i + 1], 
+				eNoiseVal
+			);
 			break;
 		}
 	}
+	terrainHeight -= erosionVal;
 
-	if (erosionVal > E_Y8)
-		noiseVal = pvNoise.GetNoise(x, z);
-	else
-		return erosionVal;
-
+	float pvNoiseVal = pvNoise.GetNoise(x, z);
+	float pvVal = 0;
 	for (int i = 0; i < 5; ++i)
 	{
-		if (noiseVal < PV_Y1)
-			return PV_Y1;
-
-		if (noiseVal > peakValleyXPoints[i] && noiseVal <= peakValleyXPoints[i + 1])
-			return Lerp(peakValleyXPoints[i], peakValleyXPoints[i + 1], peakValleyYPoints[i], peakValleyYPoints[i + 1], noiseVal);
-
-		if (noiseVal > PV_Y6)
-			return PV_Y6;
+		if (pvNoiseVal >= peakValleyXPoints[i] && pvNoiseVal <= peakValleyXPoints[i + 1])
+		{
+			pvVal = Lerp(
+				peakValleyXPoints[i], peakValleyXPoints[i + 1],
+				peakValleyYPoints[i], peakValleyYPoints[i + 1],
+				pvNoiseVal
+			);
+			break;
+		}
 	}
+	terrainHeight += pvVal;
+
+	return static_cast<int>(terrainHeight);
 }
