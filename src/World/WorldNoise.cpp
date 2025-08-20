@@ -15,21 +15,21 @@ WorldNoise::WorldNoise()
 	eNoise.SetSeed(rand());
 	eNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 	eNoise.SetFractalType(FastNoiseLite::FractalType_FBm);
-	eNoise.SetFractalOctaves(6);
-	eNoise.SetFractalGain(0.080f);
-	eNoise.SetFractalLacunarity(0.930f);
-	eNoise.SetFractalWeightedStrength(25.280f);
-	eNoise.SetFrequency(0.005f);
+	eNoise.SetFractalOctaves(5);
+	eNoise.SetFractalGain(0.5f);
+	eNoise.SetFractalLacunarity(2.0f);
+	eNoise.SetFractalWeightedStrength(-0.2f);
+	eNoise.SetFrequency(0.0025f);
 
 	pvNoise.SetSeed(rand());
 	pvNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 	pvNoise.SetFractalType(FastNoiseLite::FractalType_PingPong);
-	pvNoise.SetFractalOctaves(4);
-	pvNoise.SetFractalGain(0.490f);
-	pvNoise.SetFractalLacunarity(0.40f);
-	pvNoise.SetFractalWeightedStrength(-0.640f);
-	pvNoise.SetFractalPingPongStrength(4.150f);
-	pvNoise.SetFrequency(0.01f);
+	pvNoise.SetFractalOctaves(3);
+	pvNoise.SetFractalGain(0.4f);
+	pvNoise.SetFractalLacunarity(2.0f);
+	pvNoise.SetFractalWeightedStrength(-0.15f);
+	pvNoise.SetFractalPingPongStrength(2.0f);
+	pvNoise.SetFrequency(0.0045f);
 }
 
 float WorldNoise::Lerp(float x1, float x2, float y1, float y2, float x) const

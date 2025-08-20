@@ -65,12 +65,12 @@
 #define PV_X6  1.0f
 
 // Terrain Height (y-axis)
-#define PV_Y1  10.0f   
-#define PV_Y2  25.0f  
-#define PV_Y3  35.0f  
-#define PV_Y4  40.0f  
-#define PV_Y5  90.0f   
-#define PV_Y6 100.0f
+#define PV_Y1   5.0f   
+#define PV_Y2  12.0f  
+#define PV_Y3  18.0f  
+#define PV_Y4  20.0f  
+#define PV_Y5  45.0f   
+#define PV_Y6  50.0f
 
 #define BASE_HEIGHT 50.0f
 
