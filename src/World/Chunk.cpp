@@ -126,16 +126,14 @@ void Chunk::GenerateBlockData(const WorldNoise& noise)
 		{
 			float globalX = static_cast<float>(position.x * CHUNK_X + x);
 			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
-			/*float noiseVal = perlinNoise.GetNoise(globalX, globalZ);
-			float normalizedVal = noiseVal * 0.5f + 0.5f;
-			int height = static_cast<int>(normalizedVal * surfaceY);*/
 			int height = noise.GetWorldNoiseHeight(globalX, globalZ);
-			//std::cout << "Resulting height: " << height << std::endl;
+			if (height < 0) height = 0;
 
 			for (int y = 0; y <= height; ++y)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
 				if (y == height) blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
+				else if (y < height - 4) blocks[index] = static_cast<unsigned char>(BlockType::STONE);
 				else blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
 			}
 		}
@@ -153,8 +151,6 @@ void Chunk::GenerateChunkMesh(World* world)
 			float globalX = static_cast<float>(position.x * CHUNK_X + x);
 			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
 			float height = noise.GetWorldNoiseHeight(globalX, globalZ);
-			/*float normalizedVal = noiseVal * 0.5f + 0.5f;
-			int height = static_cast<int>(normalizedVal * surfaceY);*/
 
 			for (int y = 0; y <= height; ++y)
 			{
