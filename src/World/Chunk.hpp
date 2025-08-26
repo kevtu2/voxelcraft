@@ -9,7 +9,8 @@
 #include <FastNoiseLite.hpp>
 
 #include "Blocks/Block.hpp"
-#include "World/ChunkMesh.hpp"
+#include "ChunkMesh.hpp"
+#include "WorldNoise.hpp"
 
 #define CHUNK_X 16
 #define CHUNK_Y 384
@@ -37,8 +38,8 @@ private:
 	std::array<unsigned char, CHUNK_BLOCK_COUNT> blocks;
 
 public:
-	Chunk(const FastNoiseLite& perlinNoise);
-	Chunk(int x, int y, int z, const FastNoiseLite& perlinNoise);
+	Chunk(const WorldNoise& noise);
+	Chunk(int x, int y, int z, const WorldNoise& noise);
 
 	~Chunk();
 
@@ -58,7 +59,7 @@ public:
 
 	BlockType GetBlock(int x, int y, int z) const;
 
-	void GenerateBlockData(const FastNoiseLite& perlinNoise);
+	void GenerateBlockData(const WorldNoise& noise);
 	void GenerateChunkMesh(World* world);
 
 	bool IsReady() const { return chunkReady; }

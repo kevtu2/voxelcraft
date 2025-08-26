@@ -5,17 +5,12 @@
 World::World()
 	: renderDistance(12)
 {
-	perlinNoise = FastNoiseLite();
-	perlinNoise.SetSeed(rand());
-	perlinNoise.SetFrequency(0.01f);
-	perlinNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-
 	for (int x = -renderDistance; x < renderDistance; ++x)
 	{
 		for (int z = -renderDistance; z < renderDistance; ++z)
 		{
 			glm::ivec2 chunkPos = glm::ivec2(x, z);
-			std::shared_ptr<Chunk> currentChunk = std::make_shared<Chunk>(x, 0, z, perlinNoise);
+			std::shared_ptr<Chunk> currentChunk = std::make_shared<Chunk>(x, 0, z, noise);
 			activeChunks.emplace(chunkPos, std::move(currentChunk));
 		}
 	}
@@ -50,7 +45,7 @@ void World::UpdateChunks(const Player& player)
 			// This generates chunks that aren't generated already.
 			if (!activeChunks.contains(chunkPos))
 			{
-				std::shared_ptr<Chunk> currentChunk = std::make_shared<Chunk>(x, 0, z, perlinNoise);
+				std::shared_ptr<Chunk> currentChunk = std::make_shared<Chunk>(x, 0, z, noise);
 				activeChunks.emplace(chunkPos, std::move(currentChunk));
 
 				// Older chunks need to remesh if they are adjacent to the new chunk
@@ -87,7 +82,7 @@ void World::GenerateChunks()
 {
 	for (auto& pair : activeChunks)
 	{
-		if (!pair.second->chunkReady.load())
+		if (pair.second != nullptr && !pair.second->chunkReady.load())
 		{
 			pair.second->GenerateChunkMesh(this);
 		}

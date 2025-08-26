@@ -7,10 +7,10 @@
 #include <mutex>
 #include <unordered_map>
 #include <unordered_set>
-#include <FastNoiseLite.hpp>
 
 #include "Chunk.hpp"
 #include "Player.hpp"
+#include "WorldNoise.hpp"
 
 class World
 {
@@ -36,8 +36,9 @@ private:
 
 	// Chunk data
 	std::shared_ptr<Chunk> spawnChunk;
-	FastNoiseLite perlinNoise;
 	std::mutex updateRunnableChunksMutex;
+
+	WorldNoise noise;
 
 public:
 	World();
@@ -46,7 +47,7 @@ public:
 	void UpdateChunks(const Player& player);
 	void GenerateChunks();
 	void DrawChunks();
-	FastNoiseLite& GetNoiseInstance() { return perlinNoise; }
+	const WorldNoise& GetNoiseInstance() const { return noise; }
 	BlockType FindBlock(int x, int y, int z) const;
 
 	std::atomic<bool> worldReady = false;

@@ -126,16 +126,25 @@ void Application::ProcessInput()
 		player->SetVelocity(glm::vec3(0.0f, player->GetVelocity().y, 0.0f));
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		player->HandleInputControls(C_FORWARD, deltaTime);
+		player->HandleInputControls(C_FORWARD);
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		player->HandleInputControls(C_LEFT, deltaTime);
+		player->HandleInputControls(C_LEFT);
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		player->HandleInputControls(C_BACKWARD, deltaTime);
+		player->HandleInputControls(C_BACKWARD);
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		player->HandleInputControls(C_RIGHT, deltaTime);
+		player->HandleInputControls(C_RIGHT);
+	
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+		player->HandleInputControls(C_SPRINT);
+
+	if (gameState.enableFreeFlight && glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		player->HandleInputControls(C_UP);
+
+	if (gameState.enableFreeFlight && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		player->HandleInputControls(C_DOWN);
 }
 
 void Application::Run()
@@ -190,12 +199,23 @@ void Application::GameLoop()
 				ProcessInput();
 
 				// Physics calculations
-				Physics::CalculateGravity(player, deltaTime);
-				Physics::CheckCollisions(player, world, deltaTime);
+				if (!gameState.enableFreeFlight)
+				{
+					Physics::CalculateGravity(player, deltaTime);
+					Physics::CheckCollisions(player, world, deltaTime);
+				}
 				player->Move(deltaTime);
 
 				shaderProgram->SetUniformMatrix4f("view", player->GetViewMatrix());
 				shaderProgram->SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
+
+				// Cancel out flying velocity
+				if (gameState.enableFreeFlight)
+				{
+					glm::vec3 vel = player->GetVelocity();
+					vel.y = 0;
+					player->SetVelocity(vel);
+				}
 
 				glm::vec3 cameraPos = player->GetPlayerPosition();
 				light.SetLightPosition(cameraPos);
@@ -210,7 +230,7 @@ void Application::GameLoop()
 
 		if (world != nullptr) 
 		{
-			std::unique_lock<std::mutex> lock(world->deleteChunksMutex);
+			std::lock_guard<std::mutex> lock(world->deleteChunksMutex);
 			if (world->dirtyChunks.size() > 0)
 			{
 				// Remove dirty chunks
@@ -238,9 +258,21 @@ void Application::GameLoop()
 void Application::ApplyGameState()
 {
 	if (world != nullptr)
+	{
 		world->SetRenderDistance(gameState.renderDistance);
+		glm::vec3 playerPos = player->GetPlayerPosition();
+
+		gameState.playerX = playerPos.x;
+		gameState.playerY = playerPos.y;
+		gameState.playerZ = playerPos.z;
+
+		gameState.continentalVal = world->GetNoiseInstance().GetContinentalVal(playerPos.x, playerPos.z);
+		gameState.erosionVal = world->GetNoiseInstance().GetErosionVal(playerPos.x, playerPos.z);
+		gameState.pvVal = world->GetNoiseInstance().GetPeakValleyVal(playerPos.x, playerPos.z);
+	}
 	player->SetFOV(gameState.FOV);
 	player->SetMouseSensitivity(gameState.mouseSensitivity);
+
 }
 
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -276,6 +308,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	}
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
-		player->HandleInputControls(C_JUMP, app->GetWorldDeltaTime());
+		player->HandleInputControls(C_JUMP);
 	}
 }

@@ -6,10 +6,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-HUD::HUD(UIState& state) : UIElement(state),
-	windowSize(ImVec2(200, 100))
+HUD::HUD(UIState& state, GameState& gameState) : UIElement(state),
+	windowSize(ImVec2(350, 150)),
+	gameState(gameState)
 {
-	windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing;
+	windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_AlwaysAutoResize;
 
 	// Setup crosshair
 	glGenVertexArrays(1, &crosshairVAO);
@@ -54,7 +55,6 @@ void HUD::Draw()
 	glDrawArrays(GL_LINES, 0, 4);
 	glEnable(GL_DEPTH_TEST);
 
-	ImGui::SetNextWindowSize(windowSize);
 	ImGui::SetNextWindowPos(ImVec2(10, 10));
 	ImGui::SetNextWindowBgAlpha(0.5f);
 
@@ -64,6 +64,17 @@ void HUD::Draw()
 	{
 		if (ImGui::Begin("Metrics", nullptr, windowFlags))
 		{
+			CentreNextItem(ImGui::CalcTextSize("X: %.2f").x);
+			ImGui::Text("X: %.2f", gameState.playerX);
+
+			CentreNextItem(ImGui::CalcTextSize("Y: %.2f").x);
+			ImGui::Text("Y: %.2f", gameState.playerY);
+
+			CentreNextItem(ImGui::CalcTextSize("Z: %.2f").x);
+			ImGui::Text("Z: %.2f", gameState.playerZ);
+			
+			ImGui::Spacing();
+
 			CentreNextItem(ImGui::CalcTextSize("xxx FPS").x);
 			ImGui::Text("%d FPS", (int)io.Framerate);
 			
@@ -71,9 +82,24 @@ void HUD::Draw()
 
 			CentreNextItem(ImGui::CalcTextSize("%.3f ms/frame").x);
 			ImGui::Text("%.3f ms/frame", 1000.0f / io.Framerate);
+
+			ImGui::Spacing();
+
+			CentreNextItem(ImGui::CalcTextSize("C: %.3f").x);
+			ImGui::Text("C: %.3f", gameState.continentalVal);
+			
+			ImGui::Spacing();
+
+			CentreNextItem(ImGui::CalcTextSize("E: %.3f").x);
+			ImGui::Text("E: %.3f", gameState.erosionVal);
+
+			ImGui::Spacing();
+
+			CentreNextItem(ImGui::CalcTextSize("PV: %.3f").x);
+			ImGui::Text("PV: %.3f", gameState.pvVal);
+
 			ImGui::End();
 		}
 	}
-
 	ImGui::SetNextWindowBgAlpha(1.0f);
 }

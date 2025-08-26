@@ -7,7 +7,7 @@
 
 enum CameraMovement
 {
-	C_FORWARD, C_BACKWARD, C_RIGHT, C_LEFT, C_UP, C_DOWN, C_JUMP, C_NONE
+	C_FORWARD, C_BACKWARD, C_RIGHT, C_LEFT, C_UP, C_SPRINT, C_DOWN, C_JUMP, C_NONE
 };
 
 class Player
@@ -37,7 +37,7 @@ public:
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix() const { return projection; }
 
-	void HandleInputControls(CameraMovement move, float deltaTime);
+	void HandleInputControls(CameraMovement move);
 	void UpdatePlayerLookAt(float deltaTime, double xPos, double yPos);
 	void ResetPosAfterCollision(const glm::vec3 position);
 

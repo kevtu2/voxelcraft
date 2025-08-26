@@ -12,7 +12,7 @@ UIManager::UIManager(GameState& gameState) :
 	titleScreen(uiState, gameState),
 	mainMenu(MainMenu(uiState)),
 	optionsMenu(OptionsMenu(uiState, gameState)),
-	hud(HUD(uiState))
+	hud(HUD(uiState, gameState))
 {
 	// Setup scaling
 	ImGuiStyle& style = ImGui::GetStyle();
