@@ -217,8 +217,6 @@ void Application::GameLoop()
 					player->SetVelocity(vel);
 				}
 
-				glm::vec3 cameraPos = player->GetPlayerPosition();
-				light.SetLightPosition(cameraPos);
 				shaderProgram->UseLightSource(light);
 
 				/* --- Enable Draw Crosshair --- */

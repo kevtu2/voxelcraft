@@ -9,13 +9,15 @@ out vec4 FragColor;
 uniform sampler2D Texture;
 
 uniform vec3 lightColor;
-uniform vec3 lightPosition;
 uniform vec3 cameraPosition;
 uniform float ambientIntensity;
 uniform float specularIntensity;
+vec3 lightPosition = vec3(0.0, 250, 0.0);
 
 void main()
 {
+	lightPosition.x = Coords.x;
+	lightPosition.z = Coords.z;
 	vec3 objectTexture = texture(Texture, TexCoord).xyz;
 	vec3 objectColor = lightColor * objectTexture;
 	
