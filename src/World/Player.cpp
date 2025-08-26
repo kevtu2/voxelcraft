@@ -34,7 +34,7 @@ glm::mat4 Player::GetViewMatrix() const
 }
 
 
-void Player::HandleInputControls(CameraMovement move, float deltaTime)
+void Player::HandleInputControls(CameraMovement move)
 {
 	lastPosition = position;
 
