@@ -17,6 +17,7 @@ struct GameState
 
 	// Utils
 	float deltaTime = 0.0f;
+	bool enableFreeFlight = false;
 
 	// Terrain Generation
 	float continentalVal = 0.0f;

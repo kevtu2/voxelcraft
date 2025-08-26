@@ -19,6 +19,7 @@ void OptionsMenu::Draw()
     if (ImGui::Begin("Options", nullptr, windowFlags))
     {
         ImGui::Checkbox("Show FPS", &uiState.showFPSInHUD);
+        ImGui::Checkbox("Enable flight", &gameState.enableFreeFlight);
         ImGui::SliderInt("Render Distance", &gameState.renderDistance, 5, 32);
         ImGui::SliderFloat("FOV", &gameState.FOV, 1.0f, 60.0f);
         ImGui::SliderFloat("Mouse Sensitivity", &gameState.mouseSensitivity, 0.1f, 10.0f);

@@ -139,6 +139,12 @@ void Application::ProcessInput()
 	
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
 		player->HandleInputControls(C_SPRINT, deltaTime);
+
+	if (gameState.enableFreeFlight && glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		player->HandleInputControls(C_UP, deltaTime);
+
+	if (gameState.enableFreeFlight && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		player->HandleInputControls(C_DOWN, deltaTime);
 }
 
 void Application::Run()
@@ -193,12 +199,23 @@ void Application::GameLoop()
 				ProcessInput();
 
 				// Physics calculations
-				//Physics::CalculateGravity(player, deltaTime);
-				Physics::CheckCollisions(player, world, deltaTime);
+				if (!gameState.enableFreeFlight)
+				{
+					Physics::CalculateGravity(player, deltaTime);
+					Physics::CheckCollisions(player, world, deltaTime);
+				}
 				player->Move(deltaTime);
 
 				shaderProgram->SetUniformMatrix4f("view", player->GetViewMatrix());
 				shaderProgram->SetUniformVec3f("cameraPosition", player->GetPlayerPosition());
+
+				// Cancel out flying velocity
+				if (gameState.enableFreeFlight)
+				{
+					glm::vec3 vel = player->GetVelocity();
+					vel.y = 0;
+					player->SetVelocity(vel);
+				}
 
 				glm::vec3 cameraPos = player->GetPlayerPosition();
 				light.SetLightPosition(cameraPos);
