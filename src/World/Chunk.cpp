@@ -128,12 +128,13 @@ void Chunk::GenerateBlockData(const WorldNoise& noise)
 			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
 			int height = noise.GetWorldNoiseHeight(globalX, globalZ);
 			if (height < 0) height = 0;
+			int stoneVariation = rand() % 5;
 
 			for (int y = 0; y <= height; ++y)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
 				if (y == height) blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
-				else if (y < height - 4) blocks[index] = static_cast<unsigned char>(BlockType::STONE);
+				else if (y < height - stoneVariation) blocks[index] = static_cast<unsigned char>(BlockType::STONE);
 				else blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
 			}
 		}

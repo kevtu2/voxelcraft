@@ -194,7 +194,7 @@ void Application::GameLoop()
 
 				// Physics calculations
 				//Physics::CalculateGravity(player, deltaTime);
-				//Physics::CheckCollisions(player, world, deltaTime);
+				Physics::CheckCollisions(player, world, deltaTime);
 				player->Move(deltaTime);
 
 				shaderProgram->SetUniformMatrix4f("view", player->GetViewMatrix());

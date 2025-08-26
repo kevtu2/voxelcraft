@@ -90,5 +90,8 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 	}
 	terrainHeight += pvVal;
 
+	if (terrainHeight < 0)
+		terrainHeight = 0;
+
 	return static_cast<int>(terrainHeight);
 }
