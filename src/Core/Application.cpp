@@ -126,25 +126,25 @@ void Application::ProcessInput()
 		player->SetVelocity(glm::vec3(0.0f, player->GetVelocity().y, 0.0f));
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		player->HandleInputControls(C_FORWARD, deltaTime);
+		player->HandleInputControls(C_FORWARD);
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		player->HandleInputControls(C_LEFT, deltaTime);
+		player->HandleInputControls(C_LEFT);
 
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		player->HandleInputControls(C_BACKWARD, deltaTime);
+		player->HandleInputControls(C_BACKWARD);
 
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		player->HandleInputControls(C_RIGHT, deltaTime);
+		player->HandleInputControls(C_RIGHT);
 	
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-		player->HandleInputControls(C_SPRINT, deltaTime);
+		player->HandleInputControls(C_SPRINT);
 
 	if (gameState.enableFreeFlight && glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		player->HandleInputControls(C_UP, deltaTime);
+		player->HandleInputControls(C_UP);
 
 	if (gameState.enableFreeFlight && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		player->HandleInputControls(C_DOWN, deltaTime);
+		player->HandleInputControls(C_DOWN);
 }
 
 void Application::Run()
@@ -308,6 +308,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	}
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
-		player->HandleInputControls(C_JUMP, app->GetWorldDeltaTime());
+		player->HandleInputControls(C_JUMP);
 	}
 }

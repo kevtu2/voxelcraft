@@ -37,7 +37,7 @@ public:
 	glm::mat4 GetViewMatrix() const;
 	glm::mat4 GetProjectionMatrix() const { return projection; }
 
-	void HandleInputControls(CameraMovement move, float deltaTime);
+	void HandleInputControls(CameraMovement move);
 	void UpdatePlayerLookAt(float deltaTime, double xPos, double yPos);
 	void ResetPosAfterCollision(const glm::vec3 position);
 
