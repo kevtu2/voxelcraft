@@ -32,7 +32,7 @@ void Block::AssignBlockInfo(BlockType blockType)
 	case WATER:
 		textureCoords = { 0, 0 };
 		texturesUsed = 1;
-		transparent = true;
+		transparent = false;
 		break;
 	case STONE:
 		textureCoords = { 3, 15 };
@@ -69,7 +69,7 @@ bool Block::IsTransparent(BlockType blockType)
 	case DIRT:
 		return false;
 	case WATER:
-		return true;
+		return false;
 	case STONE:
 		return false;
 	case SAND:

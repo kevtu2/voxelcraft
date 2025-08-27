@@ -9,7 +9,7 @@
 Chunk::Chunk(const WorldNoise& perlinNoise)
 {
 	position = glm::ivec3(0, 0, 0);
-	blocks.fill(static_cast<BlockType>(AIR));
+	blocks.fill(static_cast<unsigned char>(AIR));
 	chunkMesh = std::make_unique<ChunkMesh>();
 	GenerateBlockData(perlinNoise);
 }
@@ -17,7 +17,7 @@ Chunk::Chunk(const WorldNoise& perlinNoise)
 Chunk::Chunk(int x, int y, int z, const WorldNoise& perlinNoise)
 	: position(glm::ivec3(x, y, z))
 {
-	blocks.fill(static_cast<BlockType>(AIR));
+	blocks.fill(static_cast<unsigned char>(AIR));
 	chunkMesh = std::make_unique<ChunkMesh>();
 	GenerateBlockData(perlinNoise);
 }
@@ -127,15 +127,30 @@ void Chunk::GenerateBlockData(const WorldNoise& noise)
 			float globalX = static_cast<float>(position.x * CHUNK_X + x);
 			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
 			int height = noise.GetWorldNoiseHeight(globalX, globalZ);
+			float continentalVal = noise.GetContinentalVal(globalX, globalZ);
+
 			if (height < 0) height = 0;
 			int stoneVariation = rand() % 5;
 
 			for (int y = 0; y <= height; ++y)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
-				if (y == height) blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
+
+				if (continentalVal > SHALLOW_OCEAN && continentalVal <= COAST_LINE)
+					blocks[index] = static_cast<unsigned char>(BlockType::SAND);
+				
+				else if (y == height) blocks[index] = static_cast<unsigned char>(BlockType::GRASS);
+
 				else if (y < height - stoneVariation) blocks[index] = static_cast<unsigned char>(BlockType::STONE);
+
 				else blocks[index] = static_cast<unsigned char>(BlockType::DIRT);
+			}
+
+			// Fill in bodies of water
+			for (int y = height + 1; y <= SEA_LEVEL; ++y)
+			{
+				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
+				blocks[index] = static_cast<unsigned char>(BlockType::WATER);
 			}
 		}
 	}
@@ -149,11 +164,7 @@ void Chunk::GenerateChunkMesh(World* world)
 	{
 		for (int z = 0; z < CHUNK_Z; ++z)
 		{
-			float globalX = static_cast<float>(position.x * CHUNK_X + x);
-			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
-			float height = noise.GetWorldNoiseHeight(globalX, globalZ);
-
-			for (int y = 0; y <= height; ++y)
+			for (int y = 0; y < CHUNK_Y; ++y)
 			{
 				glm::ivec3 blockWorldPos = glm::ivec3((position.x * CHUNK_X) + x, y, (position.z * CHUNK_Z) + z);
 				const BlockType currentBlock = GetBlock(blockWorldPos.x, y, blockWorldPos.z);
