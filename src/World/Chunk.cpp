@@ -128,6 +128,7 @@ void Chunk::GenerateBlockData(const WorldNoise& noise)
 			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
 			int height = noise.GetWorldNoiseHeight(globalX, globalZ);
 			float continentalVal = noise.GetContinentalVal(globalX, globalZ);
+			float erosionVal = noise.GetErosionVal(globalX, globalZ);
 
 			if (height < 0) height = 0;
 			int stoneVariation = rand() % 5;
@@ -136,7 +137,8 @@ void Chunk::GenerateBlockData(const WorldNoise& noise)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
 
-				if (continentalVal > SHALLOW_OCEAN && continentalVal <= COAST_LINE)
+				if ((continentalVal > C_SHALLOW_OCEAN && continentalVal <= C_COAST_LINE) &&
+					(erosionVal > E_SHALLOW_OCEAN && erosionVal <= E_COAST_LINE))
 					blocks[index] = static_cast<unsigned char>(BlockType::SAND);
 				
 				else if (y == height) blocks[index] = static_cast<unsigned char>(BlockType::GRASS);

@@ -73,8 +73,10 @@
 #define PV_Y6  50.0f
 
 #define BASE_HEIGHT 50.0f
-#define SHALLOW_OCEAN -0.19f // <= -0.19
-#define COAST_LINE -0.11f // > -0.19 && <= -0.11
+#define C_SHALLOW_OCEAN -0.19f // <= -0.19
+#define C_COAST_LINE -0.11f // > -0.19 && <= -0.11
+#define E_SHALLOW_OCEAN 0.15f
+#define E_COAST_LINE 0.30f
 
 static constexpr float continentalXPoints[8] = { C_X1, C_X2, C_X3, C_X4, C_X5, C_X6, C_X7, C_X8 };
 static constexpr float continentalYPoints[8] = { C_Y1, C_Y2, C_Y3, C_Y4, C_Y5, C_Y6, C_Y7, C_Y8 };
