@@ -16,9 +16,7 @@
 #define CHUNK_Y 384
 #define CHUNK_Z 16
 #define CHUNK_BLOCK_COUNT CHUNK_X * CHUNK_Y * CHUNK_Z
-#define surfaceY 100
-#define PERLIN_OCTAVES 8
-#define PERLIN_GRID_SIZE 400
+#define SEA_LEVEL 30
 
 class World;
 
