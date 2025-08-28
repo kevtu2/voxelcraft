@@ -201,7 +201,11 @@ void Chunk::GenerateChunkMesh(World* world)
 
 void Chunk::SetBlock(const glm::ivec3& blockLocation, BlockType blockType)
 {
-	return;
+	unsigned int index = blockLocation.x + (blockLocation.y * CHUNK_X) + (blockLocation.z * CHUNK_Y * CHUNK_X);
+	if (index >= CHUNK_BLOCK_COUNT)
+		return;
+
+	blocks[index] = static_cast<unsigned char>(blockType);
 }
 
 BlockType Chunk::GetBlock(int x, int y, int z) const

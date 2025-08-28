@@ -111,6 +111,7 @@ BlockType World::FindBlock(int x, int y, int z) const
 
 void World::DestroyBlockAt(const glm::ivec3& blockLocation)
 {
+	std::lock_guard<std::mutex> lock(deleteChunksMutex);
 	BlockType foundBlock = FindBlock(blockLocation.x, blockLocation.y, blockLocation.z);
 	if (foundBlock == BlockType::BOUNDARY) // Block not found
 		return;
@@ -127,7 +128,15 @@ void World::DestroyBlockAt(const glm::ivec3& blockLocation)
 
 void World::PlaceBlockAt(const glm::ivec3& blockLocation, BlockType blockType)
 {
+	std::lock_guard<std::mutex> lock(deleteChunksMutex);
+	int chunkX = VMath::DivFloor(x, CHUNK_X);
+	int chunkZ = VMath::DivFloor(z, CHUNK_Z);
 
+	glm::vec2 chunkWorldPos = glm::ivec2(chunkX, chunkZ);
+	if (activeChunks.contains(chunkWorldPos))
+	{
+		activeChunks.at(chunkWorldPos)->SetBlock(blockLocation, blockType);
+	}
 }
 
 void World::DrawChunks()
