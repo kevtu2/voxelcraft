@@ -109,6 +109,27 @@ BlockType World::FindBlock(int x, int y, int z) const
 	return BlockType::BOUNDARY; // Prevent it from generating the face if chunk doesn't exist yet.
 }
 
+void World::DestroyBlockAt(const glm::ivec3& blockLocation)
+{
+	BlockType foundBlock = FindBlock(blockLocation.x, blockLocation.y, blockLocation.z);
+	if (foundBlock == BlockType::BOUNDARY) // Block not found
+		return;
+
+	int chunkX = VMath::DivFloor(x, CHUNK_X);
+	int chunkZ = VMath::DivFloor(z, CHUNK_Z);
+
+	glm::vec2 chunkWorldPos = glm::ivec2(chunkX, chunkZ);
+	if (activeChunks.contains(chunkWorldPos))
+	{
+		activeChunks.at(chunkWorldPos)->SetBlock(blockLocation, BlockType::AIR);
+	}
+}
+
+void World::PlaceBlockAt(const glm::ivec3& blockLocation, BlockType blockType)
+{
+
+}
+
 void World::DrawChunks()
 {
 	std::lock_guard<std::mutex> lock(updateRunnableChunksMutex);

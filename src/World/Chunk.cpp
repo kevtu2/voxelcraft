@@ -199,6 +199,11 @@ void Chunk::GenerateChunkMesh(World* world)
 	chunkReady.store(true);
 }
 
+void Chunk::SetBlock(const glm::ivec3& blockLocation, BlockType blockType)
+{
+	return;
+}
+
 BlockType Chunk::GetBlock(int x, int y, int z) const
 {
 	if (y < 0) return BlockType::BOUNDARY;

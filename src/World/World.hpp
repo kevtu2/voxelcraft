@@ -77,4 +77,7 @@ public:
 		}
 	}
 	unsigned int GetRenderDistance() const { return renderDistance; }
+
+	void DestroyBlockAt(const glm::ivec3& blockLocation);
+	void PlaceBlockAt(const glm::ivec3& blockLocation, BlockType blockType);
 };

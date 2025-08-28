@@ -65,4 +65,6 @@ public:
 	std::atomic<bool> chunkReady = false;
 	
 	bool buffersGenerated = false;
+
+	void SetBlock(const glm::ivec3& blockLocation, BlockType blockType);
 };
