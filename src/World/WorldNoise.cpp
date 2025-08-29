@@ -30,6 +30,14 @@ WorldNoise::WorldNoise()
 	pvNoise.SetFractalWeightedStrength(-0.15f);
 	pvNoise.SetFractalPingPongStrength(2.0f);
 	pvNoise.SetFrequency(0.0045f);
+
+	caveNoise.SetSeed(rand());
+	caveNoise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
+	caveNoise.SetFrequency(0.015f);
+	caveNoise.SetFractalType(FastNoiseLite::FractalType_FBm);
+	caveNoise.SetFractalOctaves(3);
+	caveNoise.SetFractalLacunarity(2.0f);
+	caveNoise.SetFractalGain(0.5f);
 }
 
 float WorldNoise::Lerp(float x1, float x2, float y1, float y2, float x) const

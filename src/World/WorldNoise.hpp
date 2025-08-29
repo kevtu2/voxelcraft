@@ -78,6 +78,8 @@
 #define E_SHALLOW_OCEAN 0.15f
 #define E_COAST_LINE 0.30f
 
+#define AIR_BLOCK_THRESHOLD 0.05f // > 0.05 = solid block
+
 static constexpr float continentalXPoints[8] = { C_X1, C_X2, C_X3, C_X4, C_X5, C_X6, C_X7, C_X8 };
 static constexpr float continentalYPoints[8] = { C_Y1, C_Y2, C_Y3, C_Y4, C_Y5, C_Y6, C_Y7, C_Y8 };
 static constexpr float erosionXPoints[10] = { E_X1, E_X2, E_X3, E_X4, E_X5, E_X6, E_X7, E_X8, E_X9, E_X10 };
@@ -91,6 +93,7 @@ private:
 	FastNoiseLite cNoise; // Continental noise
 	FastNoiseLite eNoise; // Erosion noise
 	FastNoiseLite pvNoise; // Peak & valley noise
+	FastNoiseLite caveNoise;
 
 	float Lerp(float x1, float x2, float y1, float y2, float x) const;
 
