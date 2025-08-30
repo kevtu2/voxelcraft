@@ -33,7 +33,7 @@ WorldNoise::WorldNoise()
 
 	caveNoise.SetSeed(rand());
 	caveNoise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
-	caveNoise.SetFrequency(0.005f);
+	caveNoise.SetFrequency(0.015f);
 	caveNoise.SetFractalType(FastNoiseLite::FractalType_FBm);
 	caveNoise.SetFractalOctaves(3);
 	caveNoise.SetFractalLacunarity(2.0f);
