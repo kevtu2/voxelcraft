@@ -78,7 +78,7 @@
 #define E_SHALLOW_OCEAN 0.15f
 #define E_COAST_LINE 0.30f
 
-#define AIR_BLOCK_THRESHOLD 0.05f // > 0.05 = solid block
+#define AIR_BLOCK_THRESHOLD 0.0f // > 0.00 = solid block
 
 static constexpr float continentalXPoints[8] = { C_X1, C_X2, C_X3, C_X4, C_X5, C_X6, C_X7, C_X8 };
 static constexpr float continentalYPoints[8] = { C_Y1, C_Y2, C_Y3, C_Y4, C_Y5, C_Y6, C_Y7, C_Y8 };
@@ -103,6 +103,7 @@ public:
 	~WorldNoise() = default;
 	
 	int GetWorldNoiseHeight(float x, float z) const;
+	inline float GetCaveNoise(float x, float y, float z) const { return caveNoise.GetNoise(x, y, z); }
 	inline float GetContinentalVal(float x, float z) const { return cNoise.GetNoise(x, z); }
 	inline float GetErosionVal(float x, float z) const { return eNoise.GetNoise(x, z); }
 	inline float GetPeakValleyVal(float x, float z) const { return pvNoise.GetNoise(x, z); }

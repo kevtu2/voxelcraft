@@ -126,6 +126,7 @@ void Chunk::GenerateBlockData(const WorldNoise& noise)
 		{
 			float globalX = static_cast<float>(position.x * CHUNK_X + x);
 			float globalZ = static_cast<float>(position.z * CHUNK_Z + z);
+
 			int height = noise.GetWorldNoiseHeight(globalX, globalZ);
 			float continentalVal = noise.GetContinentalVal(globalX, globalZ);
 			float erosionVal = noise.GetErosionVal(globalX, globalZ);
@@ -137,7 +138,11 @@ void Chunk::GenerateBlockData(const WorldNoise& noise)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
 
-				if ((continentalVal > C_SHALLOW_OCEAN && continentalVal <= C_COAST_LINE) &&
+				float caveNoise = noise.GetCaveNoise(globalX, y, globalZ);
+				if (caveNoise <= AIR_BLOCK_THRESHOLD)
+					blocks[index] = static_cast<unsigned char>(BlockType::AIR);
+
+				else if ((continentalVal > C_SHALLOW_OCEAN && continentalVal <= C_COAST_LINE) &&
 					(erosionVal > E_SHALLOW_OCEAN && erosionVal <= E_COAST_LINE))
 					blocks[index] = static_cast<unsigned char>(BlockType::SAND);
 				
