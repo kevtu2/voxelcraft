@@ -77,6 +77,11 @@
 #define C_COAST_LINE -0.11f // > -0.19 && <= -0.11
 #define E_SHALLOW_OCEAN 0.15f
 #define E_COAST_LINE 0.30f
+#define MAX_HEIGHT 320.0f 
+
+#define AIR_BLOCK_THRESHOLD 0.0f // > 0.00 = solid block
+#define DENSITY_MID_Y 30
+#define BIAS_STRENGTH 100.0f
 
 static constexpr float continentalXPoints[8] = { C_X1, C_X2, C_X3, C_X4, C_X5, C_X6, C_X7, C_X8 };
 static constexpr float continentalYPoints[8] = { C_Y1, C_Y2, C_Y3, C_Y4, C_Y5, C_Y6, C_Y7, C_Y8 };
@@ -91,6 +96,7 @@ private:
 	FastNoiseLite cNoise; // Continental noise
 	FastNoiseLite eNoise; // Erosion noise
 	FastNoiseLite pvNoise; // Peak & valley noise
+	FastNoiseLite terrainShapeNoise;
 
 	float Lerp(float x1, float x2, float y1, float y2, float x) const;
 
@@ -100,6 +106,7 @@ public:
 	~WorldNoise() = default;
 	
 	int GetWorldNoiseHeight(float x, float z) const;
+	float GetDensity(float x, float y, float z) const;
 	inline float GetContinentalVal(float x, float z) const { return cNoise.GetNoise(x, z); }
 	inline float GetErosionVal(float x, float z) const { return eNoise.GetNoise(x, z); }
 	inline float GetPeakValleyVal(float x, float z) const { return pvNoise.GetNoise(x, z); }
