@@ -31,13 +31,13 @@ WorldNoise::WorldNoise()
 	pvNoise.SetFractalPingPongStrength(2.0f);
 	pvNoise.SetFrequency(0.0045f);
 
-	caveNoise.SetSeed(rand());
-	caveNoise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
-	caveNoise.SetFrequency(0.015f);
-	caveNoise.SetFractalType(FastNoiseLite::FractalType_FBm);
-	caveNoise.SetFractalOctaves(3);
-	caveNoise.SetFractalLacunarity(2.0f);
-	caveNoise.SetFractalGain(0.5f);
+	terrainShapeNoise.SetSeed(rand());
+	terrainShapeNoise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
+	terrainShapeNoise.SetFrequency(0.015f);
+	terrainShapeNoise.SetFractalType(FastNoiseLite::FractalType_FBm);
+	terrainShapeNoise.SetFractalOctaves(3);
+	terrainShapeNoise.SetFractalLacunarity(2.0f);
+	terrainShapeNoise.SetFractalGain(0.5f);
 
 }
 
@@ -103,4 +103,21 @@ int WorldNoise::GetWorldNoiseHeight(float x, float z) const
 		terrainHeight = 0;
 
 	return static_cast<int>(terrainHeight);
+}
+
+float WorldNoise::GetDensity(float x, float y, float z) const
+{
+	float density = terrainShapeNoise.GetNoise(x, y, z);
+
+	float distance = (y - DENSITY_MID_Y) / MAX_HEIGHT;
+
+	// Squash curve: quadratic grows stronger as you move away from center
+	float squash = distance * distance;
+
+	// Keep sign of distance (+ above, - below)
+	float bias = distance * squash * BIAS_STRENGTH;
+
+	density += bias;
+
+	return density;
 }

@@ -138,7 +138,7 @@ void Chunk::GenerateBlockData(const WorldNoise& noise)
 			{
 				unsigned int index = x + (y * CHUNK_X) + (z * CHUNK_Y * CHUNK_X);
 
-				float caveNoise = noise.GetCaveNoise(globalX, y, globalZ);
+				float caveNoise = noise.GetDensity(globalX, y, globalZ);
 				if (caveNoise <= AIR_BLOCK_THRESHOLD)
 					blocks[index] = static_cast<unsigned char>(BlockType::AIR);
 
